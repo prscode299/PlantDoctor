@@ -27,10 +27,23 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.mostafamousavi.plantapp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "name": "گیاه‌یار",
+      "shortName": "گیاه‌یار",
+      "themeColor": "#2D6A4F",
+      "backgroundColor": "#F4F7F4",
+      "display": "standalone",
+      "orientation": "portrait"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1e415db3-6b56-493c-8a5e-98bebe57cf00"
+      }
     }
   }
 }
