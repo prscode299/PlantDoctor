@@ -28,6 +28,9 @@ jobs:
           rm -f package-lock.json
           npm install --legacy-peer-deps --registry=https://registry.npmjs.org/
 
+      - name: Prebuild Native Android Project
+        run: npx expo prebuild --platform android --clean
+
       - name: Build Android APK
         run: |
           cd android
