@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
+    fontFamily: 'IRANSansWeb',
     fontWeight: '700',
   },
   small: {

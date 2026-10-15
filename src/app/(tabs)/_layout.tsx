@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   tabBarLabel: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     fontWeight: '700',
     marginTop: 2,

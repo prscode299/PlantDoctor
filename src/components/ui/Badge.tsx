@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   text: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     fontWeight: '700',
   },

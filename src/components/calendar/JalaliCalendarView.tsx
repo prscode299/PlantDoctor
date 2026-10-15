@@ -263,7 +263,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   monthTitle: {
-    fontSize: 18,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 17,
     fontWeight: '800',
     color: Colors.textPrimary,
   },
@@ -289,6 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   weekDayText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
     color: Colors.textMuted,
@@ -316,6 +318,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
   },
   dayNumberText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
     fontWeight: '600',
     color: Colors.textPrimary,
@@ -356,6 +359,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   legendText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     color: Colors.textMuted,
     marginRight: 4,
@@ -383,11 +387,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   agendaTitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
     fontWeight: '700',
     color: Colors.textPrimary,
   },
   agendaEmptyText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     color: Colors.textMuted,
     textAlign: 'right',
@@ -411,17 +417,20 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   agendaPlantName: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
     fontWeight: '700',
     color: Colors.textPrimary,
   },
   agendaTaskTypeWater: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     color: Colors.waterBlue,
     marginTop: 2,
     fontWeight: '600',
   },
   agendaTaskTypeFert: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     color: Colors.fertilizerDark,
     marginTop: 2,
@@ -440,6 +449,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   agendaActionBtnText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     color: '#FFFFFF',
     fontWeight: '700',

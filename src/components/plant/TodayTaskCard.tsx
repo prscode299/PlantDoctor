@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 16,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 15,
     fontWeight: '800',
     color: Colors.textPrimary,
   },
@@ -145,11 +146,13 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   counterText: {
+    fontFamily: 'IRANSansWeb',
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '800',
   },
   waterAllText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
     color: Colors.primary,
@@ -178,17 +181,20 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   plantName: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 14,
     fontWeight: '700',
     color: Colors.textPrimary,
   },
   taskTypeWater: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     color: Colors.waterBlue,
     fontWeight: '600',
     marginTop: 2,
   },
   taskTypeFert: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     color: Colors.fertilizerDark,
     fontWeight: '600',
@@ -211,6 +217,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   actionButtonText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     color: '#FFFFFF',
     fontWeight: '700',
@@ -238,11 +245,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   emptyTitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 14,
     fontWeight: '800',
     color: Colors.primaryDark,
   },
   emptySubtitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     color: Colors.textSecondary,
     marginTop: 2,

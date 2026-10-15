@@ -169,7 +169,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   plantName: {
-    fontSize: 16,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 15,
     fontWeight: '800',
     color: Colors.textPrimary,
     flex: 1,
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   scientificName: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     color: Colors.textMuted,
     fontStyle: 'italic',
@@ -206,6 +208,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.fertilizerLight,
   },
   carePillText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     fontWeight: '700',
   },
@@ -216,6 +219,7 @@ const styles = StyleSheet.create({
     color: Colors.terracotta,
   },
   carePillTextFert: {
+    fontFamily: 'IRANSansWeb',
     color: Colors.fertilizerDark,
     fontSize: 11,
     fontWeight: '700',
@@ -230,6 +234,7 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.borderLight,
   },
   quickActionHint: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     color: Colors.terracotta,
     fontWeight: '600',
@@ -243,6 +248,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   quickWaterText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     color: '#FFFFFF',
     fontWeight: '700',

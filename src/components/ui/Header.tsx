@@ -61,12 +61,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   title: {
-    fontSize: 24,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 22,
     fontWeight: '800',
     color: Colors.textPrimary,
     letterSpacing: -0.3,
   },
   subtitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
     color: Colors.textMuted,
     marginTop: 2,
@@ -82,6 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   dateText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     color: Colors.primaryDark,
     fontWeight: '600',

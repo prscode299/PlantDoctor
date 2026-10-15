@@ -217,6 +217,9 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: Colors.background,
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
   },
   container: {
     flex: 1,
@@ -245,6 +248,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
   },
   roomChipText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
     fontWeight: '600',
     color: Colors.textSecondary,
@@ -261,11 +265,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 17,
     fontWeight: '800',
     color: Colors.textPrimary,
   },
   plantCountBadge: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
     color: Colors.textMuted,
@@ -294,16 +300,18 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   emptyTitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 16,
     fontWeight: '800',
     color: Colors.textPrimary,
     marginBottom: 6,
   },
   emptyText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
     color: Colors.textMuted,
     textAlign: 'center',
-    lineHeight: 20,
+    lineHeight: 22,
     marginBottom: 18,
   },
   addFirstPlantBtn: {
@@ -315,6 +323,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   addFirstPlantText: {
+    fontFamily: 'IRANSansWeb',
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '700',
