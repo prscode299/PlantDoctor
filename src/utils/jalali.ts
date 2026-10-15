@@ -1,4 +1,4 @@
-import * as jalaali from 'jalaali-js';
+import { toJalaali, toGregorian, jalaaliMonthLength } from 'jalaali-js';
 
 export const JALALI_MONTH_NAMES = [
   'فروردین',
@@ -51,7 +51,7 @@ export function formatToJalali(dateInput: Date | string, includeYear = true): st
   const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
   if (isNaN(date.getTime())) return '';
 
-  const { jy, jm, jd } = jalaali.toJalaali(
+  const { jy, jm, jd } = toJalaali(
     date.getFullYear(),
     date.getMonth() + 1,
     date.getDate()
@@ -71,7 +71,7 @@ export function formatToJalaliShort(dateInput: Date | string): string {
   const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
   if (isNaN(date.getTime())) return '';
 
-  const { jy, jm, jd } = jalaali.toJalaali(
+  const { jy, jm, jd } = toJalaali(
     date.getFullYear(),
     date.getMonth() + 1,
     date.getDate()
@@ -86,7 +86,7 @@ export function formatToJalaliShort(dateInput: Date | string): string {
  */
 export function getCurrentJalali(): { jy: number; jm: number; jd: number } {
   const now = new Date();
-  return jalaali.toJalaali(now.getFullYear(), now.getMonth() + 1, now.getDate());
+  return toJalaali(now.getFullYear(), now.getMonth() + 1, now.getDate());
 }
 
 /**
@@ -172,7 +172,7 @@ export function getRelativeJalaliLabel(targetIsoDate: string): {
  * Convert Jalali (jy, jm, jd) to Gregorian ISO string YYYY-MM-DD
  */
 export function jalaliToIso(jy: number, jm: number, jd: number): string {
-  const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd);
+  const { gy, gm, gd } = toGregorian(jy, jm, jd);
   const m = String(gm).padStart(2, '0');
   const d = String(gd).padStart(2, '0');
   return `${gy}-${m}-${d}`;
@@ -192,14 +192,14 @@ export interface JalaliCalendarDay {
  * Generates month days grid for calendar view
  */
 export function getJalaliMonthDays(jy: number, jm: number): JalaliCalendarDay[] {
-  const monthLength = jalaali.jalaaliMonthLength(jy, jm);
+  const monthLength = jalaaliMonthLength(jy, jm);
   const todayIso = getTodayIso();
   const days: JalaliCalendarDay[] = [];
 
   // Determine starting weekday of 1st day of month
   // In JavaScript: Sunday is 0, Monday 1, ..., Saturday 6
   // In Iranian calendar: Saturday is 0, Sunday 1, ..., Friday 6
-  const firstDayGregorian = jalaali.toGregorian(jy, jm, 1);
+  const firstDayGregorian = toGregorian(jy, jm, 1);
   const gDate = new Date(firstDayGregorian.gy, firstDayGregorian.gm - 1, firstDayGregorian.gd);
   const gDay = gDate.getDay(); // 0 is Sunday, 6 is Saturday
   const persianStartOffset = (gDay + 1) % 7; // Shift so Saturday is 0
@@ -207,7 +207,7 @@ export function getJalaliMonthDays(jy: number, jm: number): JalaliCalendarDay[] 
   // Previous month padding days
   const prevMonth = jm === 1 ? 12 : jm - 1;
   const prevYear = jm === 1 ? jy - 1 : jy;
-  const prevMonthLength = jalaali.jalaaliMonthLength(prevYear, prevMonth);
+  const prevMonthLength = jalaaliMonthLength(prevYear, prevMonth);
 
   for (let i = persianStartOffset - 1; i >= 0; i--) {
     const jd = prevMonthLength - i;
