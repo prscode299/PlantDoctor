@@ -18,7 +18,7 @@ class NotificationService {
   private isConfigured = false;
 
   async setupChannels(): Promise<void> {
-    if (this.isConfigured) return;
+    if (this.isConfigured || Platform.OS === 'web') return;
 
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('plant-care', {
@@ -36,6 +36,9 @@ class NotificationService {
   }
 
   async requestPermissions(): Promise<boolean> {
+    if (Platform.OS === 'web') {
+      return true;
+    }
     try {
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
@@ -102,6 +105,7 @@ class NotificationService {
    * Reschedules all notifications for all plants
    */
   async syncAllPlantNotifications(plants: Plant[]): Promise<void> {
+    if (Platform.OS === 'web') return;
     try {
       const hasPermission = await this.requestPermissions();
       if (!hasPermission) return;
@@ -145,6 +149,18 @@ class NotificationService {
    * Test immediate notification (for Settings screen)
    */
   async sendTestNotification(): Promise<void> {
+    if (Platform.OS === 'web') {
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        const perm = await Notification.requestPermission();
+        if (perm === 'granted') {
+          new Notification('🌱 تست هشدار گیاه‌یار', {
+            body: 'سیستم یادآوری و هشدار به درستی فعال است!',
+          });
+        }
+      }
+      return;
+    }
+
     const hasPermission = await this.requestPermissions();
     if (!hasPermission) {
       throw new Error('دسترسی به اعلان‌ها داده نشده است.');
