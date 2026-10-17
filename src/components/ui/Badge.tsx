@@ -36,15 +36,15 @@ export const Badge: React.FC<BadgeProps> = ({
 
   return (
     <View style={[styles.container, { backgroundColor: bg }]}>
-      <Text style={[styles.text, { color: text }]}>{label}</Text>
       {icon && (
         <Ionicons
           name={icon}
-          size={12}
+          size={13}
           color={text}
           style={{ marginLeft: 4 }}
         />
       )}
+      <Text style={[styles.text, { color: text }]}>{label}</Text>
     </View>
   );
 };
@@ -53,14 +53,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: 9,
+    paddingVertical: 4.5,
     borderRadius: 10,
     alignSelf: 'flex-start',
   },
   text: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '700',
+    writingDirection: 'rtl',
   },
 });

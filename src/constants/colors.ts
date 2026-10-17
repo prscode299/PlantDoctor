@@ -1,55 +1,61 @@
 export const Colors = {
-  // Botanical Emerald & Sage Palette
-  primary: '#2D6A4F',
-  primaryDark: '#1B4332',
-  primaryLight: '#52B788',
+  // Botanical Garden & Forest Palette
+  primary: '#1E5E3A', // Rich lush forest green
+  primaryDark: '#123A24',
+  primaryMedium: '#2D6A4F',
+  primaryLight: '#40916C',
+  primaryMint: '#52B788',
   primarySubtle: '#D8F3DC',
-  primarySurface: '#E8F5E9',
+  primarySurface: '#EBF5EE', // Soft morning dew green
+  primaryGlow: 'rgba(30, 94, 58, 0.12)',
 
-  // Earth & Clay Accents
-  terracotta: '#D47355',
+  // Earth & Warm Terracotta Accents
+  terracotta: '#C85A32',
   terracottaLight: '#FDEAE4',
-  earthBrown: '#7F5539',
-  sand: '#DDBEA9',
-  warmCream: '#FAF8F5',
+  terracottaDark: '#9E3B1B',
+  earthBrown: '#6B4226',
+  sand: '#D8C5B2',
+  warmCream: '#FAF7F2',
 
-  // Water & Moisture Accents
-  waterBlue: '#0077B6',
+  // Water & Droplet Accents
+  waterBlue: '#0284C7',
   waterLight: '#E0F2FE',
-  waterDark: '#023E8A',
+  waterDark: '#0369A1',
 
-  // Fertilizer & Growth Accents
+  // Fertilizer & Sunlight Accents
   fertilizerAmber: '#D97706',
   fertilizerLight: '#FEF3C7',
   fertilizerDark: '#92400E',
+  sunYellow: '#F59E0B',
+  sunLight: '#FEF9C3',
 
-  // Backgrounds & Neutrals
-  background: '#F4F7F4',
+  // Backgrounds & Neutrals (Organic, non-sterile)
+  background: '#F2F7F2', // Crisp gentle garden mist
   surface: '#FFFFFF',
   surfaceSubtle: '#F8FAF8',
-  border: '#E2E8E2',
-  borderLight: '#EDF2ED',
+  border: '#DDE7DD',
+  borderLight: '#EAF0EA',
 
   // Typography
-  textPrimary: '#14261C',
-  textSecondary: '#4A5B51',
-  textMuted: '#7D8F84',
-  textLight: '#A3B3AA',
+  textPrimary: '#112218',
+  textSecondary: '#3C4F44',
+  textMuted: '#6B7E73',
+  textLight: '#9BB0A4',
   textInverse: '#FFFFFF',
 
   // Status & Feedback
-  success: '#2E7D32',
-  successLight: '#E8F5E9',
-  warning: '#F59E0B',
+  success: '#15803D',
+  successLight: '#DCFCE7',
+  warning: '#D97706',
   warningLight: '#FEF3C7',
-  danger: '#EF4444',
+  danger: '#DC2626',
   dangerLight: '#FEE2E2',
-  info: '#3B82F6',
-  infoLight: '#EFF6FF',
+  info: '#0284C7',
+  infoLight: '#E0F2FE',
 
-  // Shadows
-  shadow: 'rgba(27, 67, 50, 0.08)',
-  shadowHeavy: 'rgba(27, 67, 50, 0.16)',
+  // Shadows & Elevation
+  shadow: 'rgba(18, 58, 36, 0.08)',
+  shadowHeavy: 'rgba(18, 58, 36, 0.16)',
 };
 
 export default Colors;

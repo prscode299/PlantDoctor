@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,7 @@ import { Header } from '@/components/ui/Header';
 import { toPersianDigits } from '@/utils/jalali';
 
 export default function AiDoctorScreen() {
+  const doctorScrollRef = useRef<ScrollView>(null);
   const [plants, setPlants] = useState<Plant[]>([]);
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
   const [userNotes, setUserNotes] = useState('');
@@ -129,9 +130,13 @@ export default function AiDoctorScreen() {
         <View style={styles.card}>
           <Text style={styles.label}>کدام گیاه را می‌خواهید ویزیت کنید؟</Text>
           <ScrollView
+            ref={doctorScrollRef}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.plantChipsList}
+            onContentSizeChange={() => {
+              doctorScrollRef.current?.scrollToEnd({ animated: false });
+            }}
           >
             {plants.map((p) => {
               const isSelected = selectedPlant?.id === p.id;

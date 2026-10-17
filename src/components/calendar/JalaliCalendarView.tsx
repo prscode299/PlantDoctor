@@ -203,35 +203,39 @@ export const JalaliCalendarView: React.FC<JalaliCalendarViewProps> = ({
           <View style={styles.agendaTasksList}>
             {selectedDateEvents.watering.map((plant) => (
               <View key={`agenda_water_${plant.id}`} style={styles.agendaTaskRow}>
+                <View style={styles.agendaTaskInfo}>
+                  <Text style={styles.agendaPlantName}>{plant.name}</Text>
+                  <Text style={styles.agendaTaskTypeWater}>💧 نوبت آبیاری</Text>
+                </View>
+
                 <TouchableOpacity
                   style={styles.agendaActionBtnWater}
                   onPress={() => onWaterPlant(plant)}
                   activeOpacity={0.8}
                 >
+                  <Ionicons name="checkmark-circle" size={14} color="#FFFFFF" style={{ marginLeft: 3 }} />
                   <Text style={styles.agendaActionBtnText}>آب دادم</Text>
                 </TouchableOpacity>
-                <View style={styles.agendaTaskInfo}>
-                  <Text style={styles.agendaPlantName}>{plant.name}</Text>
-                  <Text style={styles.agendaTaskTypeWater}>💧 نوبت آبیاری</Text>
-                </View>
               </View>
             ))}
 
             {selectedDateEvents.fertilizing.map((plant) => (
               <View key={`agenda_fert_${plant.id}`} style={styles.agendaTaskRow}>
-                <TouchableOpacity
-                  style={styles.agendaActionBtnFert}
-                  onPress={() => onFertilizePlant(plant)}
-                  activeOpacity={0.8}
-                >
-                  <Text style={styles.agendaActionBtnText}>کود دادم</Text>
-                </TouchableOpacity>
                 <View style={styles.agendaTaskInfo}>
                   <Text style={styles.agendaPlantName}>{plant.name}</Text>
                   <Text style={styles.agendaTaskTypeFert}>
                     🌿 نوبت کوددهی ({plant.fertilizerType || 'کود'})
                   </Text>
                 </View>
+
+                <TouchableOpacity
+                  style={styles.agendaActionBtnFert}
+                  onPress={() => onFertilizePlant(plant)}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="checkmark-circle" size={14} color="#FFFFFF" style={{ marginLeft: 3 }} />
+                  <Text style={styles.agendaActionBtnText}>کود دادم</Text>
+                </TouchableOpacity>
               </View>
             ))}
           </View>
@@ -418,40 +422,48 @@ const styles = StyleSheet.create({
   },
   agendaPlantName: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 13,
-    fontWeight: '700',
+    fontSize: 14,
+    fontWeight: '800',
     color: Colors.textPrimary,
+    writingDirection: 'rtl',
   },
   agendaTaskTypeWater: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 11,
+    fontSize: 12,
     color: Colors.waterBlue,
     marginTop: 2,
     fontWeight: '600',
+    writingDirection: 'rtl',
   },
   agendaTaskTypeFert: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 11,
+    fontSize: 12,
     color: Colors.fertilizerDark,
     marginTop: 2,
     fontWeight: '600',
+    writingDirection: 'rtl',
   },
   agendaActionBtnWater: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
     backgroundColor: Colors.waterBlue,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 10,
   },
   agendaActionBtnFert: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
     backgroundColor: Colors.fertilizerAmber,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 10,
   },
   agendaActionBtnText: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 11,
+    fontSize: 12,
     color: '#FFFFFF',
     fontWeight: '700',
+    writingDirection: 'rtl',
   },
 });

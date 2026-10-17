@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -9,8 +9,9 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -23,6 +24,8 @@ import { POPULAR_PLANTS, DEFAULT_ROOMS } from '@/constants/presets';
 import { addDays, getTodayIso, toPersianDigits } from '@/utils/jalali';
 
 export default function AddPlantScreen() {
+  const insets = useSafeAreaInsets();
+  const presetsScrollRef = useRef<ScrollView>(null);
   const [name, setName] = useState('');
   const [scientificName, setScientificName] = useState('');
   const [room, setRoom] = useState(DEFAULT_ROOMS[0]);
@@ -172,7 +175,14 @@ export default function AddPlantScreen() {
         <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={[
+          styles.contentContainer,
+          { paddingBottom: Math.max(insets.bottom, 20) + 30 },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Magic AI Setup Banner */}
         <View style={styles.aiBanner}>
           <View style={styles.aiBannerHeader}>
@@ -240,11 +250,16 @@ export default function AddPlantScreen() {
 
         {/* Popular Presets Quick Selector */}
         <View style={styles.presetsWrapper}>
-          <Text style={styles.presetsTitle}>یا انتخاب سریع از گیاهان پرطرفدار خانگی:</Text>
+          <Text style={styles.presetsTitle}>🌱 انتخاب سریع از گیاهان پرطرفدار خانگی:</Text>
           <ScrollView
+            ref={presetsScrollRef}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.presetsList}
+            onContentSizeChange={() => {
+              // Scroll to start (right edge) on initial render for RTL
+              presetsScrollRef.current?.scrollToEnd({ animated: false });
+            }}
           >
             {POPULAR_PLANTS.map((preset, idx) => (
               <TouchableOpacity
@@ -254,7 +269,7 @@ export default function AddPlantScreen() {
                 activeOpacity={0.7}
               >
                 <Text style={styles.presetChipText}>{preset.name.split(' ')[0]}</Text>
-                <Ionicons name="leaf" size={13} color={Colors.primary} style={{ marginLeft: 4 }} />
+                <Ionicons name="leaf" size={14} color={Colors.primary} style={{ marginLeft: 6 }} />
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -288,14 +303,10 @@ export default function AddPlantScreen() {
             />
           </View>
 
-          {/* Room Selection */}
+          {/* Room Selection - Flex Wrap so all options are 100% visible and never cut off */}
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>محل قرارگیری در منزل</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.roomChipsRow}
-            >
+            <View style={styles.roomChipsGrid}>
               {DEFAULT_ROOMS.map((r) => {
                 const isSelected = room === r;
                 return (
@@ -303,7 +314,14 @@ export default function AddPlantScreen() {
                     key={`form_room_${r}`}
                     style={[styles.formRoomChip, isSelected && styles.formRoomChipSelected]}
                     onPress={() => setRoom(r)}
+                    activeOpacity={0.7}
                   >
+                    <Ionicons
+                      name={isSelected ? 'checkmark-circle' : 'location-outline'}
+                      size={14}
+                      color={isSelected ? '#FFFFFF' : Colors.primary}
+                      style={{ marginLeft: 4 }}
+                    />
                     <Text
                       style={[
                         styles.formRoomChipText,
@@ -315,7 +333,7 @@ export default function AddPlantScreen() {
                   </TouchableOpacity>
                 );
               })}
-            </ScrollView>
+            </View>
           </View>
 
           {/* Intervals: Water & Fertilizer */}
@@ -627,16 +645,20 @@ const styles = StyleSheet.create({
     minHeight: 70,
     textAlignVertical: 'top',
   },
-  roomChipsRow: {
+  roomChipsGrid: {
     flexDirection: 'row-reverse',
-    gap: 6,
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 4,
   },
   formRoomChip: {
-    backgroundColor: Colors.background,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    backgroundColor: Colors.surfaceSubtle,
     paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 10,
-    borderWidth: 1,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 1.5,
     borderColor: Colors.borderLight,
   },
   formRoomChipSelected: {
@@ -644,13 +666,15 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
   },
   formRoomChipText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'IRANSansWeb',
+    fontSize: 13,
+    fontWeight: '700',
     color: Colors.textSecondary,
+    writingDirection: 'rtl',
   },
   formRoomChipTextSelected: {
     color: '#FFFFFF',
-    fontWeight: '700',
+    fontWeight: '800',
   },
   intervalsRow: {
     flexDirection: 'row-reverse',

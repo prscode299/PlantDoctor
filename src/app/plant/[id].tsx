@@ -8,7 +8,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Plant, CareLog } from '@/types/plant';
@@ -19,6 +19,7 @@ import { formatToJalali, getRelativeJalaliLabel, toPersianDigits } from '@/utils
 import { Badge } from '@/components/ui/Badge';
 
 export default function PlantDetailScreen() {
+  const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [plant, setPlant] = useState<Plant | null>(null);
   const [logs, setLogs] = useState<CareLog[]>([]);
@@ -131,14 +132,21 @@ export default function PlantDetailScreen() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={[
+          styles.contentContainer,
+          { paddingBottom: Math.max(insets.bottom, 20) + 30 },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Plant Image / Banner */}
         <View style={styles.bannerContainer}>
           {plant.imageUri ? (
             <Image source={{ uri: plant.imageUri }} style={styles.bannerImage} />
           ) : (
             <View style={styles.bannerPlaceholder}>
-              <Ionicons name="leaf" size={60} color={Colors.primary} />
+              <Ionicons name="leaf" size={64} color={Colors.primary} />
             </View>
           )}
 
@@ -227,46 +235,49 @@ export default function PlantDetailScreen() {
           </View>
         </View>
 
-        {/* Environmental & Care Needs */}
+        {/* Environmental & Care Needs - Crystal Clear RTL Botanical Cards */}
         <View style={styles.sectionCard}>
           <Text style={styles.sectionCardTitle}>نیازمندی‌ها و شرایط نگهداری 🌿</Text>
 
-          {plant.lightRequirement && (
-            <View style={styles.infoRow}>
-              <Text style={styles.infoValue}>{plant.lightRequirement}</Text>
-              <View style={styles.infoLabelRow}>
-                <Text style={styles.infoLabel}>نور مورد نیاز</Text>
-                <Ionicons name="sunny-outline" size={16} color={Colors.warning} style={{ marginLeft: 6 }} />
+          {plant.lightRequirement ? (
+            <View style={styles.careNeedCard}>
+              <View style={styles.careNeedHeader}>
+                <Ionicons name="sunny" size={18} color={Colors.sunYellow} style={{ marginLeft: 6 }} />
+                <Text style={styles.careNeedTitle}>نور مورد نیاز</Text>
               </View>
+              <Text style={styles.careNeedText}>{plant.lightRequirement}</Text>
             </View>
-          )}
+          ) : null}
 
-          {plant.soilType && (
-            <View style={styles.infoRow}>
-              <Text style={styles.infoValue}>{plant.soilType}</Text>
-              <View style={styles.infoLabelRow}>
-                <Text style={styles.infoLabel}>بستر و خاک</Text>
-                <Ionicons name="earth-outline" size={16} color={Colors.earthBrown} style={{ marginLeft: 6 }} />
+          {plant.soilType ? (
+            <View style={styles.careNeedCard}>
+              <View style={styles.careNeedHeader}>
+                <Ionicons name="earth" size={18} color={Colors.earthBrown} style={{ marginLeft: 6 }} />
+                <Text style={styles.careNeedTitle}>بستر و ترکیب خاک</Text>
               </View>
+              <Text style={styles.careNeedText}>{plant.soilType}</Text>
             </View>
-          )}
+          ) : null}
 
-          {plant.toxicity && (
-            <View style={styles.infoRow}>
-              <Text style={styles.infoValue}>{plant.toxicity}</Text>
-              <View style={styles.infoLabelRow}>
-                <Text style={styles.infoLabel}>احتیاط سمیت</Text>
-                <Ionicons name="warning-outline" size={16} color={Colors.terracotta} style={{ marginLeft: 6 }} />
+          {plant.toxicity ? (
+            <View style={[styles.careNeedCard, styles.careNeedCardAlert]}>
+              <View style={styles.careNeedHeader}>
+                <Ionicons name="warning" size={18} color={Colors.terracotta} style={{ marginLeft: 6 }} />
+                <Text style={[styles.careNeedTitle, { color: Colors.terracotta }]}>احتیاط سمیت و حساسیت</Text>
               </View>
+              <Text style={styles.careNeedText}>{plant.toxicity}</Text>
             </View>
-          )}
+          ) : null}
 
-          {plant.careTips && (
+          {plant.careTips ? (
             <View style={styles.tipsBox}>
-              <Ionicons name="bulb-outline" size={18} color={Colors.primary} style={{ marginLeft: 6 }} />
-              <Text style={styles.tipsText}>{plant.careTips}</Text>
+              <Ionicons name="bulb" size={20} color={Colors.primary} style={{ marginLeft: 8 }} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.tipsHeaderTitle}>نکات طلایی مراقبت و شادابی:</Text>
+                <Text style={styles.tipsText}>{plant.careTips}</Text>
+              </View>
             </View>
-          )}
+          ) : null}
         </View>
 
         {/* Care History Log */}
@@ -486,44 +497,64 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.borderLight,
     marginVertical: 12,
   },
-  infoRow: {
+  careNeedCard: {
+    backgroundColor: Colors.surfaceSubtle,
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: Colors.borderLight,
+  },
+  careNeedCardAlert: {
+    backgroundColor: Colors.terracottaLight,
+    borderColor: '#FDBA74',
+  },
+  careNeedHeader: {
     flexDirection: 'row-reverse',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.borderLight,
+    marginBottom: 6,
   },
-  infoLabelRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-  },
-  infoLabel: {
-    fontSize: 12,
-    color: Colors.textMuted,
-    fontWeight: '600',
-  },
-  infoValue: {
-    fontSize: 12,
+  careNeedTitle: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 14,
+    fontWeight: '800',
     color: Colors.textPrimary,
-    fontWeight: '700',
-    flex: 1,
-    textAlign: 'left',
+    writingDirection: 'rtl',
+  },
+  careNeedText: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 13.5,
+    color: Colors.textSecondary,
+    lineHeight: 22,
+    textAlign: 'right',
+    writingDirection: 'rtl',
   },
   tipsBox: {
     flexDirection: 'row-reverse',
-    backgroundColor: Colors.primarySubtle,
-    borderRadius: 14,
-    padding: 12,
-    marginTop: 12,
+    backgroundColor: Colors.primarySurface,
+    borderRadius: 16,
+    padding: 14,
+    marginTop: 6,
     alignItems: 'flex-start',
+    borderWidth: 1.5,
+    borderColor: Colors.primarySubtle,
+  },
+  tipsHeaderTitle: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 13.5,
+    fontWeight: '800',
+    color: Colors.primaryDark,
+    textAlign: 'right',
+    writingDirection: 'rtl',
+    marginBottom: 4,
   },
   tipsText: {
-    fontSize: 12,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 13,
     color: Colors.primaryDark,
-    lineHeight: 18,
-    flex: 1,
+    lineHeight: 22,
     textAlign: 'right',
+    writingDirection: 'rtl',
   },
   emptyLogText: {
     fontSize: 12,

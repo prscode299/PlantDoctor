@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,7 @@ import { TodayTaskCard } from '@/components/plant/TodayTaskCard';
 import { getDaysDiffFromToday, getTodayIso, toPersianDigits } from '@/utils/jalali';
 
 export default function HomeScreen() {
+  const roomScrollRef = useRef<ScrollView>(null);
   const [plants, setPlants] = useState<Plant[]>([]);
   const [rooms, setRooms] = useState<string[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<string>('همه');
@@ -132,9 +133,13 @@ export default function HomeScreen() {
         {/* Room Filter Chips */}
         <View style={styles.roomFilterWrapper}>
           <ScrollView
+            ref={roomScrollRef}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.roomFilterContent}
+            onContentSizeChange={() => {
+              roomScrollRef.current?.scrollToEnd({ animated: false });
+            }}
           >
             {['همه', ...rooms].map((room) => {
               const isSelected = selectedRoom === room;
