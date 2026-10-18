@@ -4,16 +4,18 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Platform, View, StyleSheet, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
 import { db } from '@/services/storage/database';
 import { notificationService } from '@/services/notifications/notificationService';
 import Colors from '@/constants/colors';
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     'IRANSansWeb': require('../../assets/fonts/IRANSansWeb.ttf'),
     'IRANSansWeb-Bold': require('../../assets/fonts/IRANSansWeb_Bold.ttf'),
     'IRANSansWeb-Medium': require('../../assets/fonts/IRANSansWeb_Medium.ttf'),
     'IRANSansWeb-Light': require('../../assets/fonts/IRANSansWeb_Light.ttf'),
+    ...Ionicons.font,
   });
 
   useEffect(() => {
@@ -53,27 +55,66 @@ export default function RootLayout() {
             font-style: normal;
           }
           * {
-            font-family: 'IRANSansWeb', system-ui, -apple-system, sans-serif !important;
-            direction: rtl;
             box-sizing: border-box;
           }
-          html, body {
-            background-color: #DFE8E1 !important;
+          html {
+            height: 100%;
+            width: 100%;
+            direction: rtl;
+          }
+          body {
+            font-family: 'IRANSansWeb', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            direction: rtl;
+            background: linear-gradient(135deg, #CBD9CE 0%, #B8CBBF 100%) !important;
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow-x: hidden;
+            width: 100%;
             display: flex;
             justify-content: center;
+            align-items: center;
+            overflow: hidden;
           }
           #root {
-            width: 100%;
-            max-width: 480px;
-            min-height: 100vh;
-            background-color: #F4F7F4;
-            box-shadow: 0 0 50px rgba(27, 67, 50, 0.15);
-            position: relative;
-            margin: 0 auto;
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            max-width: 440px !important;
+            height: 100% !important;
+            max-height: 94vh !important;
+            background-color: #F4F7F4 !important;
+            border-radius: 32px !important;
+            border: 6px solid #1B4332 !important;
+            box-shadow: 0 20px 60px rgba(18, 48, 38, 0.3) !important;
+            position: relative !important;
+            overflow: hidden !important;
+          }
+          @media (max-width: 500px) {
+            body {
+              background: #F4F7F4 !important;
+            }
+            #root {
+              max-width: 100% !important;
+              max-height: 100% !important;
+              border-radius: 0 !important;
+              border: none !important;
+              box-shadow: none !important;
+            }
+          }
+          /* Custom scrollbar for web preview */
+          ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+          }
+          ::-webkit-scrollbar-track {
+            background: transparent;
+          }
+          ::-webkit-scrollbar-thumb {
+            background: rgba(45, 106, 79, 0.25);
+            border-radius: 4px;
+          }
+          ::-webkit-scrollbar-thumb:hover {
+            background: rgba(45, 106, 79, 0.45);
           }
         `;
         document.head.appendChild(style);
@@ -81,7 +122,7 @@ export default function RootLayout() {
     }
   }, []);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontError && Platform.OS !== 'web') {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={Colors.primary} />
@@ -132,8 +173,6 @@ const styles = StyleSheet.create({
   webContainer: {
     flex: 1,
     width: '100%',
-    maxWidth: Platform.OS === 'web' ? 480 : undefined,
-    alignSelf: 'center',
     backgroundColor: Colors.background,
   },
 });

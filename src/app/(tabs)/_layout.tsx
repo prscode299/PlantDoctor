@@ -7,9 +7,9 @@ import Colors from '@/constants/colors';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  // Ensure enough bottom clearance on Android (especially devices with 3-button system bars)
-  const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 12 : 8);
-  const tabHeight = 60 + bottomPadding;
+  // Ensure enough bottom clearance on Android (especially devices with 3-button system bars) and web
+  const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 14 : Platform.OS === 'web' ? 10 : 8);
+  const tabHeight = 66 + bottomPadding;
 
   return (
     <Tabs
