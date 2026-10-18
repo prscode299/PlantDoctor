@@ -15,7 +15,8 @@
           "icon": "./assets/icon.png",
           "color": "#2D6A4F"
         }
-      ]
+      ],
+      "./plugins/withAndroidNavigationBar"
     ],
     "ios": {
       "supportsTablet": true
