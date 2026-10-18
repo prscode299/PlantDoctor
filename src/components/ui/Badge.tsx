@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import Colors from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 
 interface BadgeProps {
   label: string;
@@ -14,21 +14,23 @@ export const Badge: React.FC<BadgeProps> = ({
   icon,
   variant = 'primary',
 }) => {
+  const { colors } = useTheme();
+
   const getColors = () => {
     switch (variant) {
       case 'water':
-        return { bg: Colors.waterLight, text: Colors.waterBlue };
+        return { bg: colors.waterLight, text: colors.waterDark };
       case 'fertilizer':
-        return { bg: Colors.fertilizerLight, text: Colors.fertilizerDark };
+        return { bg: colors.fertilizerLight, text: colors.fertilizerDark };
       case 'danger':
-        return { bg: Colors.dangerLight, text: Colors.danger };
+        return { bg: colors.dangerLight, text: colors.danger };
       case 'warning':
-        return { bg: Colors.warningLight, text: Colors.warning };
+        return { bg: colors.warningLight, text: colors.warning };
       case 'neutral':
-        return { bg: Colors.surfaceSubtle, text: Colors.textMuted };
+        return { bg: colors.surfaceSubtle, text: colors.textMuted };
       case 'primary':
       default:
-        return { bg: Colors.primarySubtle, text: Colors.primaryDark };
+        return { bg: colors.primarySubtle, text: colors.primaryDark };
     }
   };
 

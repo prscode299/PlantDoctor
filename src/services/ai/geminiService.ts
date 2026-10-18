@@ -3,7 +3,95 @@ import { Plant } from '@/types/plant';
 import { getCurrentJalali, JALALI_MONTH_NAMES } from '@/utils/jalali';
 import { db } from '../storage/database';
 
+function sanitizeApiKey(raw?: string): string {
+  if (!raw) return '';
+  return raw.trim().replace(/^["']|["']$/g, '');
+}
+
+function sanitizeBase64(raw?: string): { clean: string; mimeType: string } | null {
+  if (!raw) return null;
+  let mimeType = 'image/jpeg';
+  let clean = raw.trim();
+  const match = clean.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,(.+)$/s);
+  if (match) {
+    mimeType = match[1];
+    clean = match[2];
+  }
+  // Strip out spaces and newlines if any
+  clean = clean.replace(/\s+/g, '');
+  if (!clean) return null;
+  return { clean, mimeType };
+}
+
+function parseGeminiError(status: number, errText: string): Error {
+  try {
+    const json = JSON.parse(errText);
+    const message = json.error?.message || errText;
+    const reason = json.error?.details?.[0]?.reason || '';
+
+    if (reason === 'API_KEY_INVALID' || message.includes('API key not valid') || message.includes('API_KEY_INVALID')) {
+      return new Error('کلید هوش مصنوعی نامعتبر است. لطفاً کلید معتبر را از Google AI Studio دریافت و بدون فاصله اضافی کپی کنید.');
+    }
+    if (message.includes('User location is not supported') || message.includes('location')) {
+      return new Error('گوگل دسترسی از آی‌پی ایران را به هوش مصنوعی محدود کرده است. لطفاً فیلترشکن (VPN) خود را روشن کرده و مجدداً تلاش کنید.');
+    }
+    if (status === 404 || message.includes('models/')) {
+      return new Error('مدل انتخابی در دسترس نیست. لطفاً اتصال اینترنت خود را بررسی کنید.');
+    }
+    if (status === 429 || message.includes('RESOURCE_EXHAUSTED')) {
+      return new Error('سقف درخواست‌های مجاز موقتاً پر شده است. لطفاً چند لحظه بعد مجدداً امتحان کنید.');
+    }
+    if (status === 503 || message.includes('high demand') || message.includes('UNAVAILABLE')) {
+      return new Error('سرورهای گوگل به علت ترافیک بالا موقتاً شلوغ هستند. لطفاً چند لحظه دیگر امتحان کنید.');
+    }
+    return new Error(`خطای هوش مصنوعی (${status}): ${message}`);
+  } catch {
+    return new Error(`خطا در ارتباط با هوش مصنوعی (${status}): ${errText}`);
+  }
+}
+
 class GeminiAiService {
+  /**
+   * Quick connection test to verify API key validity and network reach
+   */
+  async testConnection(apiKey?: string): Promise<{ success: boolean; message: string }> {
+    const key = sanitizeApiKey(apiKey || (await db.getAiSettings()).apiKey);
+    if (!key) {
+      throw new Error('کلید API وارد نشده است. لطفاً ابتدا کلید را وارد کنید.');
+    }
+    if (key.startsWith('sk-')) {
+      throw new Error('این کلید مربوط به OpenAI است. لطفاً کلید معتبر Google Gemini را وارد کنید.');
+    }
+
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${encodeURIComponent(key)}`;
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': key,
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: 'پاسخ خیلی کوتاه بده: سلام گیاه‌یار' }],
+          },
+        ],
+        generationConfig: {
+          maxOutputTokens: 25,
+          temperature: 0.1,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw parseGeminiError(response.status, err);
+    }
+
+    return { success: true, message: 'اتصال به هوش مصنوعی با موفقیت برقرار شد! ✨ آماده شناسایی گیاهان است.' };
+  }
+
   /**
    * Auto-fill plant care profile based on name or photo
    */
@@ -12,9 +100,10 @@ class GeminiAiService {
     imageBase64?: string;
   }): Promise<AiAutoFillResponse> {
     const settings = await db.getAiSettings();
-    if (!settings.apiKey) {
+    const apiKey = sanitizeApiKey(settings.apiKey);
+    if (!apiKey) {
       throw new Error(
-        'لطفاً ابتدا در بخش تنظیمات، کلید API (مثلاً Google Gemini API Key) خود را وارد کنید.'
+        'لطفاً ابتدا در بخش تنظیمات، کلید API (گوگل جِمینای) خود را وارد کنید.'
       );
     }
 
@@ -46,24 +135,28 @@ class GeminiAiService {
       }`,
     });
 
-    if (params.imageBase64) {
+    const imgObj = sanitizeBase64(params.imageBase64);
+    if (imgObj) {
       parts.push({
-        inline_data: {
-          mime_type: 'image/jpeg',
-          data: params.imageBase64,
+        inlineData: {
+          mimeType: imgObj.mimeType,
+          data: imgObj.clean,
         },
       });
     }
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${settings.apiKey.trim()}`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
+      },
       body: JSON.stringify({
-        contents: [{ parts }],
+        contents: [{ role: 'user', parts }],
         generationConfig: {
-          response_mime_type: 'application/json',
+          responseMimeType: 'application/json',
           temperature: 0.2,
         },
       }),
@@ -71,7 +164,7 @@ class GeminiAiService {
 
     if (!response.ok) {
       const err = await response.text();
-      throw new Error(`خطا در ارتباط با هوش مصنوعی (${response.status}): ${err}`);
+      throw parseGeminiError(response.status, err);
     }
 
     const data = await response.json();
@@ -91,7 +184,8 @@ class GeminiAiService {
     imageBase64?: string
   ): Promise<AiDiagnosisResponse> {
     const settings = await db.getAiSettings();
-    if (!settings.apiKey) {
+    const apiKey = sanitizeApiKey(settings.apiKey);
+    if (!apiKey) {
       throw new Error(
         'لطفاً ابتدا در بخش تنظیمات، کلید API خود را وارد کنید.'
       );
@@ -130,24 +224,28 @@ class GeminiAiService {
 
     const parts: any[] = [{ text: promptText }];
 
-    if (imageBase64) {
+    const imgObj = sanitizeBase64(imageBase64);
+    if (imgObj) {
       parts.push({
-        inline_data: {
-          mime_type: 'image/jpeg',
-          data: imageBase64,
+        inlineData: {
+          mimeType: imgObj.mimeType,
+          data: imgObj.clean,
         },
       });
     }
 
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${settings.apiKey.trim()}`;
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${encodeURIComponent(apiKey)}`;
 
     const response = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
+      },
       body: JSON.stringify({
-        contents: [{ parts }],
+        contents: [{ role: 'user', parts }],
         generationConfig: {
-          response_mime_type: 'application/json',
+          responseMimeType: 'application/json',
           temperature: 0.3,
         },
       }),
@@ -155,7 +253,7 @@ class GeminiAiService {
 
     if (!response.ok) {
       const err = await response.text();
-      throw new Error(`خطا در ارتباط با هوش مصنوعی (${response.status}): ${err}`);
+      throw parseGeminiError(response.status, err);
     }
 
     const data = await response.json();

@@ -1,7 +1,5 @@
 import React, { useState, useCallback } from 'react';
 import {
-  View,
-  Text,
   StyleSheet,
   ScrollView,
   RefreshControl,
@@ -12,11 +10,12 @@ import { useFocusEffect } from 'expo-router';
 import { Plant } from '@/types/plant';
 import { db } from '@/services/storage/database';
 import { notificationService } from '@/services/notifications/notificationService';
-import Colors from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 import { Header } from '@/components/ui/Header';
 import { JalaliCalendarView } from '@/components/calendar/JalaliCalendarView';
 
 export default function CalendarScreen() {
+  const { colors } = useTheme();
   const [plants, setPlants] = useState<Plant[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -66,7 +65,7 @@ export default function CalendarScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top']}>
       <Header
         title="تقویم شمسی گیاهان 🗓️"
         subtitle="برنامه زمان‌بندی آبدهی و کوددهی به تاریخ جلالی"
@@ -76,7 +75,7 @@ export default function CalendarScreen() {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Colors.primary} />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
         }
       >
         <JalaliCalendarView
@@ -92,7 +91,6 @@ export default function CalendarScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.background,
   },
   container: {
     flex: 1,

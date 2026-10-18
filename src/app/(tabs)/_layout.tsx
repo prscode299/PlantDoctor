@@ -4,12 +4,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { Platform, StyleSheet, View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Colors from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 
-const TabLabel = ({ title, focused }: { title: string; focused: boolean }) => (
+const TabLabel = ({ title, focused, color }: { title: string; focused: boolean; color: any }) => (
   <Text
     style={[
       styles.tabBarLabel,
-      { color: focused ? Colors.primary : Colors.textMuted },
+      { color },
     ]}
     numberOfLines={1}
   >
@@ -19,6 +20,7 @@ const TabLabel = ({ title, focused }: { title: string; focused: boolean }) => (
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
+  const { colors, isDark } = useTheme();
   // Ensure enough bottom clearance on Android and Web inside the phone frame
   const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 14 : Platform.OS === 'web' ? 14 : 10);
   const tabHeight = 68 + bottomPadding;
@@ -27,11 +29,13 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.textMuted,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: [
           styles.tabBar,
           {
+            backgroundColor: colors.surface,
+            borderTopColor: colors.borderLight,
             height: tabHeight,
             paddingBottom: bottomPadding,
           },
@@ -44,13 +48,13 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'گیاهان من',
-          tabBarLabel: ({ focused }) => <TabLabel title="گیاهان من" focused={focused} />,
+          tabBarLabel: ({ focused, color }) => <TabLabel title="گیاهان من" focused={focused} color={color} />,
           tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
+            <View style={[styles.iconWrapper, focused && { backgroundColor: colors.primarySubtle }]}>
               <Ionicons
                 name={focused ? 'leaf' : 'leaf-outline'}
                 size={22}
-                color={focused ? Colors.primary : color}
+                color={focused ? colors.primary : color}
               />
             </View>
           ),
@@ -60,13 +64,13 @@ export default function TabLayout() {
         name="calendar"
         options={{
           title: 'تقویم شمسی',
-          tabBarLabel: ({ focused }) => <TabLabel title="تقویم شمسی" focused={focused} />,
+          tabBarLabel: ({ focused, color }) => <TabLabel title="تقویم شمسی" focused={focused} color={color} />,
           tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
+            <View style={[styles.iconWrapper, focused && { backgroundColor: colors.primarySubtle }]}>
               <Ionicons
                 name={focused ? 'calendar' : 'calendar-outline'}
                 size={22}
-                color={focused ? Colors.primary : color}
+                color={focused ? colors.primary : color}
               />
             </View>
           ),
@@ -76,13 +80,13 @@ export default function TabLayout() {
         name="ai-doctor"
         options={{
           title: 'دکتر گیاه ✨',
-          tabBarLabel: ({ focused }) => <TabLabel title="دکتر گیاه ✨" focused={focused} />,
+          tabBarLabel: ({ focused, color }) => <TabLabel title="دکتر گیاه ✨" focused={focused} color={color} />,
           tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
+            <View style={[styles.iconWrapper, focused && { backgroundColor: colors.primarySubtle }]}>
               <Ionicons
                 name={focused ? 'sparkles' : 'sparkles-outline'}
                 size={22}
-                color={focused ? Colors.primary : color}
+                color={focused ? colors.primary : color}
               />
             </View>
           ),
@@ -92,13 +96,13 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: 'تنظیمات',
-          tabBarLabel: ({ focused }) => <TabLabel title="تنظیمات" focused={focused} />,
+          tabBarLabel: ({ focused, color }) => <TabLabel title="تنظیمات" focused={focused} color={color} />,
           tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
+            <View style={[styles.iconWrapper, focused && { backgroundColor: colors.primarySubtle }]}>
               <Ionicons
                 name={focused ? 'settings' : 'settings-outline'}
                 size={22}
-                color={focused ? Colors.primary : color}
+                color={focused ? colors.primary : color}
               />
             </View>
           ),

@@ -20,11 +20,13 @@ import { db } from '@/services/storage/database';
 import { aiService } from '@/services/ai/geminiService';
 import { notificationService } from '@/services/notifications/notificationService';
 import Colors from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 import { POPULAR_PLANTS, DEFAULT_ROOMS } from '@/constants/presets';
 import { addDays, getTodayIso, toPersianDigits } from '@/utils/jalali';
 
 export default function AddPlantScreen() {
   const insets = useSafeAreaInsets();
+  const { colors, isDark } = useTheme();
   const presetsScrollRef = useRef<ScrollView>(null);
   const [name, setName] = useState('');
   const [scientificName, setScientificName] = useState('');
@@ -165,13 +167,13 @@ export default function AddPlantScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       {/* Navigation Header */}
-      <View style={styles.topBar}>
+      <View style={[styles.topBar, { borderBottomColor: colors.borderLight }]}>
         <TouchableOpacity style={styles.closeBtn} onPress={() => router.back()}>
-          <Ionicons name="close" size={24} color={Colors.textPrimary} />
+          <Ionicons name="close" size={24} color={colors.textPrimary} />
         </TouchableOpacity>
-        <Text style={styles.topBarTitle}>افزودن گیاه جدید 🌱</Text>
+        <Text style={[styles.topBarTitle, { color: colors.textPrimary }]}>افزودن گیاه جدید 🌱</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -276,14 +278,14 @@ export default function AddPlantScreen() {
         </View>
 
         {/* Form Inputs */}
-        <View style={styles.formCard}>
+        <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}>
           {/* Plant Name */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>نام گیاه (فارسی / دلخواه) *</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نام گیاه (فارسی / دلخواه) *</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: colors.background, borderColor: colors.borderLight, color: colors.textPrimary }]}
               placeholder="مثلاً: پوتوس ابلق من"
-              placeholderTextColor={Colors.textMuted}
+              placeholderTextColor={colors.textMuted}
               value={name}
               onChangeText={setName}
               textAlign="right"
@@ -292,11 +294,11 @@ export default function AddPlantScreen() {
 
           {/* Scientific Name */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>نام علمی (لاتین)</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نام علمی (لاتین)</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: colors.background, borderColor: colors.borderLight, color: colors.textPrimary }]}
               placeholder="مثلاً: Epipremnum aureum"
-              placeholderTextColor={Colors.textMuted}
+              placeholderTextColor={colors.textMuted}
               value={scientificName}
               onChangeText={setScientificName}
               textAlign="right"
@@ -305,27 +307,34 @@ export default function AddPlantScreen() {
 
           {/* Room Selection - Flex Wrap so all options are 100% visible and never cut off */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>محل قرارگیری در منزل</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>محل قرارگیری در منزل</Text>
             <View style={styles.roomChipsGrid}>
               {DEFAULT_ROOMS.map((r) => {
                 const isSelected = room === r;
                 return (
                   <TouchableOpacity
                     key={`form_room_${r}`}
-                    style={[styles.formRoomChip, isSelected && styles.formRoomChipSelected]}
+                    style={[
+                      styles.formRoomChip,
+                      {
+                        backgroundColor: isSelected ? colors.primary : colors.surfaceSubtle,
+                        borderColor: isSelected ? colors.primary : colors.borderLight,
+                      },
+                    ]}
                     onPress={() => setRoom(r)}
                     activeOpacity={0.7}
                   >
                     <Ionicons
                       name={isSelected ? 'checkmark-circle' : 'location-outline'}
                       size={14}
-                      color={isSelected ? '#FFFFFF' : Colors.primary}
+                      color={isSelected ? '#FFFFFF' : colors.primary}
                       style={{ marginLeft: 4 }}
                     />
                     <Text
                       style={[
                         styles.formRoomChipText,
-                        isSelected && styles.formRoomChipTextSelected,
+                        { color: isSelected ? '#FFFFFF' : colors.textSecondary },
+                        isSelected && { fontWeight: '800' },
                       ]}
                     >
                       {r}
@@ -340,64 +349,64 @@ export default function AddPlantScreen() {
           <View style={styles.intervalsRow}>
             {/* Fertilizing interval */}
             <View style={styles.intervalBox}>
-              <Text style={styles.intervalLabel}>کوددهی (هر چند روز)</Text>
-              <View style={styles.stepperRow}>
+              <Text style={[styles.intervalLabel, { color: colors.textPrimary }]}>کوددهی (هر چند روز)</Text>
+              <View style={[styles.stepperRow, { backgroundColor: colors.background, borderColor: colors.borderLight }]}>
                 <TouchableOpacity
-                  style={styles.stepBtn}
+                  style={[styles.stepBtn, { backgroundColor: colors.surfaceSubtle }]}
                   onPress={() => {
                     const v = Math.max(7, (parseInt(fertilizingDays, 10) || 30) - 5);
                     setFertilizingDays(String(v));
                   }}
                 >
-                  <Text style={styles.stepBtnText}>-</Text>
+                  <Text style={[styles.stepBtnText, { color: colors.primary }]}>-</Text>
                 </TouchableOpacity>
                 <TextInput
-                  style={styles.intervalInput}
+                  style={[styles.intervalInput, { color: colors.textPrimary }]}
                   value={fertilizingDays}
                   onChangeText={setFertilizingDays}
                   keyboardType="numeric"
                   textAlign="center"
                 />
                 <TouchableOpacity
-                  style={styles.stepBtn}
+                  style={[styles.stepBtn, { backgroundColor: colors.surfaceSubtle }]}
                   onPress={() => {
                     const v = (parseInt(fertilizingDays, 10) || 30) + 5;
                     setFertilizingDays(String(v));
                   }}
                 >
-                  <Text style={styles.stepBtnText}>+</Text>
+                  <Text style={[styles.stepBtnText, { color: colors.primary }]}>+</Text>
                 </TouchableOpacity>
               </View>
             </View>
 
             {/* Watering interval */}
             <View style={styles.intervalBox}>
-              <Text style={styles.intervalLabel}>آبیاری (هر چند روز)</Text>
-              <View style={styles.stepperRow}>
+              <Text style={[styles.intervalLabel, { color: colors.textPrimary }]}>آبیاری (هر چند روز)</Text>
+              <View style={[styles.stepperRow, { backgroundColor: colors.background, borderColor: colors.borderLight }]}>
                 <TouchableOpacity
-                  style={styles.stepBtn}
+                  style={[styles.stepBtn, { backgroundColor: colors.surfaceSubtle }]}
                   onPress={() => {
                     const v = Math.max(1, (parseInt(wateringDays, 10) || 7) - 1);
                     setWateringDays(String(v));
                   }}
                 >
-                  <Text style={styles.stepBtnText}>-</Text>
+                  <Text style={[styles.stepBtnText, { color: colors.primary }]}>-</Text>
                 </TouchableOpacity>
                 <TextInput
-                  style={styles.intervalInput}
+                  style={[styles.intervalInput, { color: colors.textPrimary }]}
                   value={wateringDays}
                   onChangeText={setWateringDays}
                   keyboardType="numeric"
                   textAlign="center"
                 />
                 <TouchableOpacity
-                  style={styles.stepBtn}
+                  style={[styles.stepBtn, { backgroundColor: colors.surfaceSubtle }]}
                   onPress={() => {
                     const v = (parseInt(wateringDays, 10) || 7) + 1;
                     setWateringDays(String(v));
                   }}
                 >
-                  <Text style={styles.stepBtnText}>+</Text>
+                  <Text style={[styles.stepBtnText, { color: colors.primary }]}>+</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -405,11 +414,11 @@ export default function AddPlantScreen() {
 
           {/* Fertilizer Type */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>نوع کود پیشنهادی</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نوع کود پیشنهادی</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: colors.background, borderColor: colors.borderLight, color: colors.textPrimary }]}
               placeholder="مثلاً: کود ۲۰-۲۰-۲۰ یا آهن"
-              placeholderTextColor={Colors.textMuted}
+              placeholderTextColor={colors.textMuted}
               value={fertilizerType}
               onChangeText={setFertilizerType}
               textAlign="right"
@@ -418,11 +427,11 @@ export default function AddPlantScreen() {
 
           {/* Care Tips */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>نکات طلایی مراقبت</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نکات طلایی مراقبت</Text>
             <TextInput
-              style={[styles.input, styles.textArea]}
+              style={[styles.input, styles.textArea, { backgroundColor: colors.background, borderColor: colors.borderLight, color: colors.textPrimary }]}
               placeholder="نکاتی درباره رطوبت، زهکشی خاک و غبارپاشی..."
-              placeholderTextColor={Colors.textMuted}
+              placeholderTextColor={colors.textMuted}
               value={careTips}
               onChangeText={setCareTips}
               multiline
@@ -434,7 +443,7 @@ export default function AddPlantScreen() {
 
         {/* Submit Button */}
         <TouchableOpacity
-          style={[styles.saveBtn, saving && styles.btnDisabled]}
+          style={[styles.saveBtn, { backgroundColor: colors.primary }, saving && styles.btnDisabled]}
           onPress={handleSave}
           disabled={saving}
           activeOpacity={0.8}
@@ -648,15 +657,18 @@ const styles = StyleSheet.create({
   roomChipsGrid: {
     flexDirection: 'row-reverse',
     flexWrap: 'wrap',
+    justifyContent: 'space-between',
     gap: 8,
-    marginTop: 4,
+    marginTop: 6,
   },
   formRoomChip: {
+    width: '31.5%',
     flexDirection: 'row-reverse',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: Colors.surfaceSubtle,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 4,
+    paddingVertical: 10,
     borderRadius: 12,
     borderWidth: 1.5,
     borderColor: Colors.borderLight,
@@ -667,10 +679,11 @@ const styles = StyleSheet.create({
   },
   formRoomChipText: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 13,
+    fontSize: 11.5,
     fontWeight: '700',
     color: Colors.textSecondary,
     writingDirection: 'rtl',
+    textAlign: 'center',
   },
   formRoomChipTextSelected: {
     color: '#FFFFFF',

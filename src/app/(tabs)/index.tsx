@@ -14,13 +14,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { Plant } from '@/types/plant';
 import { db } from '@/services/storage/database';
 import { notificationService } from '@/services/notifications/notificationService';
-import Colors from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 import { Header } from '@/components/ui/Header';
 import { PlantCard } from '@/components/plant/PlantCard';
 import { TodayTaskCard } from '@/components/plant/TodayTaskCard';
-import { getDaysDiffFromToday, getTodayIso, toPersianDigits } from '@/utils/jalali';
+import { getDaysDiffFromToday, toPersianDigits } from '@/utils/jalali';
 
 export default function HomeScreen() {
+  const { colors, isDark } = useTheme();
   const roomScrollRef = useRef<ScrollView>(null);
   const [plants, setPlants] = useState<Plant[]>([]);
   const [rooms, setRooms] = useState<string[]>([]);
@@ -67,7 +68,7 @@ export default function HomeScreen() {
       await loadData();
       const updated = await db.getPlants();
       await notificationService.syncAllPlantNotifications(updated);
-    } catch (e) {
+    } catch {
       Alert.alert('خطا', 'ثبت آبیاری با مشکل مواجه شد.');
     }
   };
@@ -78,7 +79,7 @@ export default function HomeScreen() {
       await loadData();
       const updated = await db.getPlants();
       await notificationService.syncAllPlantNotifications(updated);
-    } catch (e) {
+    } catch {
       Alert.alert('خطا', 'ثبت کوددهی با مشکل مواجه شد.');
     }
   };
@@ -92,7 +93,7 @@ export default function HomeScreen() {
       const updated = await db.getPlants();
       await notificationService.syncAllPlantNotifications(updated);
       Alert.alert('عالی شد! 🌱', 'تمامی گیاهان تشنه سیراب شدند و تاریخ بعدی ثبت شد.');
-    } catch (e) {
+    } catch {
       Alert.alert('خطا', 'آبیاری گروهی با مشکل مواجه شد.');
     }
   };
@@ -103,7 +104,7 @@ export default function HomeScreen() {
     : plants.filter((p) => p.room === selectedRoom);
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top']}>
       {/* Top Header */}
       <Header
         title="باغچه من 🌿"
@@ -118,7 +119,7 @@ export default function HomeScreen() {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Colors.primary} />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
         }
       >
         {/* Today's Due Tasks Section */}
@@ -148,7 +149,10 @@ export default function HomeScreen() {
                   key={`room_chip_${room}`}
                   style={[
                     styles.roomChip,
-                    isSelected && styles.roomChipSelected,
+                    {
+                      backgroundColor: isSelected ? colors.primary : colors.surface,
+                      borderColor: isSelected ? colors.primary : colors.borderLight,
+                    },
                   ]}
                   onPress={() => setSelectedRoom(room)}
                   activeOpacity={0.7}
@@ -156,7 +160,8 @@ export default function HomeScreen() {
                   <Text
                     style={[
                       styles.roomChipText,
-                      isSelected && styles.roomChipTextSelected,
+                      { color: isSelected ? '#FFFFFF' : colors.textSecondary },
+                      isSelected && { fontWeight: '800' },
                     ]}
                   >
                     {room}
@@ -169,24 +174,24 @@ export default function HomeScreen() {
 
         {/* Plants List Section Header */}
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>لیست گیاهان</Text>
-          <Text style={styles.plantCountBadge}>
+          <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>لیست گیاهان</Text>
+          <Text style={[styles.plantCountBadge, { backgroundColor: colors.surface, color: colors.textMuted }]}>
             {toPersianDigits(filteredPlants.length)} گلدان
           </Text>
         </View>
 
         {/* Plant Cards */}
         {filteredPlants.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <View style={styles.emptyIconCircle}>
-              <Ionicons name="leaf-outline" size={36} color={Colors.primary} />
+          <View style={[styles.emptyContainer, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}>
+            <View style={[styles.emptyIconCircle, { backgroundColor: colors.primarySubtle }]}>
+              <Ionicons name="leaf-outline" size={36} color={colors.primary} />
             </View>
-            <Text style={styles.emptyTitle}>هنوز گیاهی در این بخش نیست!</Text>
-            <Text style={styles.emptyText}>
+            <Text style={[styles.emptyTitle, { color: colors.textPrimary }]}>هنوز گیاهی در این بخش نیست!</Text>
+            <Text style={[styles.emptyText, { color: colors.textMuted }]}>
               می‌توانید با زدن دکمه زیر یا علامت + در بالا، اولین گیاه خود را با هوش مصنوعی یا به صورت دستی ثبت کنید.
             </Text>
             <TouchableOpacity
-              style={styles.addFirstPlantBtn}
+              style={[styles.addFirstPlantBtn, { backgroundColor: colors.primary }]}
               onPress={() => router.push('/plant/add')}
               activeOpacity={0.8}
             >
@@ -208,7 +213,7 @@ export default function HomeScreen() {
 
       {/* Floating Action Button (FAB) */}
       <TouchableOpacity
-        style={styles.fab}
+        style={[styles.fab, { backgroundColor: colors.primary }]}
         onPress={() => router.push('/plant/add')}
         activeOpacity={0.85}
       >
@@ -221,7 +226,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.background,
     width: '100%',
     maxWidth: 480,
     alignSelf: 'center',
@@ -241,26 +245,15 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   roomChip: {
-    backgroundColor: Colors.surface,
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: Colors.borderLight,
-  },
-  roomChipSelected: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1.5,
   },
   roomChipText: {
     fontFamily: 'IRANSansWeb',
     fontSize: 13,
     fontWeight: '600',
-    color: Colors.textSecondary,
-  },
-  roomChipTextSelected: {
-    color: '#FFFFFF',
-    fontWeight: '700',
   },
   sectionHeader: {
     flexDirection: 'row-reverse',
@@ -273,33 +266,27 @@ const styles = StyleSheet.create({
     fontFamily: 'IRANSansWeb',
     fontSize: 17,
     fontWeight: '800',
-    color: Colors.textPrimary,
   },
   plantCountBadge: {
     fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
-    color: Colors.textMuted,
-    backgroundColor: Colors.surface,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
   },
   emptyContainer: {
-    backgroundColor: Colors.surface,
     borderRadius: 24,
     marginHorizontal: 20,
     padding: 24,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: Colors.borderLight,
     marginTop: 10,
   },
   emptyIconCircle: {
     width: 68,
     height: 68,
     borderRadius: 34,
-    backgroundColor: Colors.primarySubtle,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 14,
@@ -308,13 +295,11 @@ const styles = StyleSheet.create({
     fontFamily: 'IRANSansWeb',
     fontSize: 16,
     fontWeight: '800',
-    color: Colors.textPrimary,
     marginBottom: 6,
   },
   emptyText: {
     fontFamily: 'IRANSansWeb',
     fontSize: 13,
-    color: Colors.textMuted,
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: 18,
@@ -322,7 +307,6 @@ const styles = StyleSheet.create({
   addFirstPlantBtn: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    backgroundColor: Colors.primary,
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 16,
@@ -336,14 +320,12 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     bottom: 24,
-    left: 20, // In RTL layouts, left side is natural for thumb
+    left: 20,
     width: 58,
     height: 58,
     borderRadius: 29,
-    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: Colors.shadowHeavy,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.25,
     shadowRadius: 10,

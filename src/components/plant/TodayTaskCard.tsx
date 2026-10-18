@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Plant } from '@/types/plant';
-import Colors from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 import { toPersianDigits } from '@/utils/jalali';
 
 interface TodayTaskCardProps {
@@ -20,17 +20,26 @@ export const TodayTaskCard: React.FC<TodayTaskCardProps> = ({
   onFertilizePlant,
   onWaterAll,
 }) => {
+  const { colors, isDark } = useTheme();
   const totalTasks = dueWateringPlants.length + dueFertilizingPlants.length;
 
   if (totalTasks === 0) {
     return (
-      <View style={styles.emptyContainer}>
-        <View style={styles.emptyIconContainer}>
-          <Ionicons name="sparkles" size={24} color={Colors.primary} />
+      <View
+        style={[
+          styles.emptyContainer,
+          {
+            backgroundColor: colors.surface,
+            borderColor: colors.borderLight,
+          },
+        ]}
+      >
+        <View style={[styles.emptyIconContainer, { backgroundColor: colors.primarySubtle }]}>
+          <Ionicons name="sparkles" size={24} color={colors.primary} />
         </View>
         <View style={styles.emptyTextContainer}>
-          <Text style={styles.emptyTitle}>باغچه شما آرام و سیراب است! 🌿</Text>
-          <Text style={styles.emptySubtitle}>
+          <Text style={[styles.emptyTitle, { color: colors.primaryDark }]}>باغچه شما آرام و سیراب است! 🌿</Text>
+          <Text style={[styles.emptySubtitle, { color: colors.textMuted }]}>
             برای امروز هیچ آبیاری یا کوددهی معوقه‌ای باقی نمانده است.
           </Text>
         </View>
@@ -39,19 +48,27 @@ export const TodayTaskCard: React.FC<TodayTaskCardProps> = ({
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.surface,
+          borderColor: colors.borderLight,
+        },
+      ]}
+    >
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.titleRow}>
-          <Text style={styles.title}>وظایف امروز شما</Text>
-          <View style={styles.counterBadge}>
+          <Text style={[styles.title, { color: colors.textPrimary }]}>وظایف امروز شما</Text>
+          <View style={[styles.counterBadge, { backgroundColor: colors.terracotta }]}>
             <Text style={styles.counterText}>{toPersianDigits(totalTasks)}</Text>
           </View>
         </View>
 
         {dueWateringPlants.length > 1 && (
           <TouchableOpacity
-            style={styles.waterAllButton}
+            style={[styles.waterAllButton, { backgroundColor: colors.waterBlue }]}
             onPress={onWaterAll}
             activeOpacity={0.8}
           >
@@ -67,23 +84,32 @@ export const TodayTaskCard: React.FC<TodayTaskCardProps> = ({
       <View style={styles.list}>
         {/* Watering tasks */}
         {dueWateringPlants.map((plant) => (
-          <View key={`water_${plant.id}`} style={[styles.taskItem, styles.taskItemWater]}>
+          <View
+            key={`water_${plant.id}`}
+            style={[
+              styles.taskItem,
+              {
+                backgroundColor: isDark ? '#082F49' : '#F0F9FF',
+                borderColor: isDark ? '#0369A1' : '#BAE6FD',
+              },
+            ]}
+          >
             {/* Right side: Icon + Plant Information */}
             <View style={styles.plantInfoRow}>
-              <View style={styles.taskIconCircleWater}>
-                <Ionicons name="water" size={18} color={Colors.waterBlue} />
+              <View style={[styles.taskIconCircleWater, { backgroundColor: colors.waterLight }]}>
+                <Ionicons name="water" size={18} color={colors.waterBlue} />
               </View>
               <View style={styles.plantInfo}>
-                <Text style={styles.plantName} numberOfLines={1}>
+                <Text style={[styles.plantName, { color: colors.textPrimary }]} numberOfLines={1}>
                   {plant.name}
                 </Text>
-                <Text style={styles.taskTypeWater}>💧 موعد آبیاری گیاه</Text>
+                <Text style={[styles.taskTypeWater, { color: colors.waterDark }]}>💧 موعد آبیاری گیاه</Text>
               </View>
             </View>
 
             {/* Left side: Action Button */}
             <TouchableOpacity
-              style={styles.actionButtonWater}
+              style={[styles.actionButtonWater, { backgroundColor: colors.waterBlue }]}
               onPress={() => onWaterPlant(plant)}
               activeOpacity={0.85}
             >
@@ -95,17 +121,26 @@ export const TodayTaskCard: React.FC<TodayTaskCardProps> = ({
 
         {/* Fertilizing tasks */}
         {dueFertilizingPlants.map((plant) => (
-          <View key={`fert_${plant.id}`} style={[styles.taskItem, styles.taskItemFert]}>
+          <View
+            key={`fert_${plant.id}`}
+            style={[
+              styles.taskItem,
+              {
+                backgroundColor: isDark ? '#451A03' : '#FFFBEB',
+                borderColor: isDark ? '#92400E' : '#FDE68A',
+              },
+            ]}
+          >
             {/* Right side: Icon + Plant Information */}
             <View style={styles.plantInfoRow}>
-              <View style={styles.taskIconCircleFert}>
-                <Ionicons name="sparkles" size={18} color={Colors.fertilizerAmber} />
+              <View style={[styles.taskIconCircleFert, { backgroundColor: colors.fertilizerLight }]}>
+                <Ionicons name="sparkles" size={18} color={colors.fertilizerAmber} />
               </View>
               <View style={styles.plantInfo}>
-                <Text style={styles.plantName} numberOfLines={1}>
+                <Text style={[styles.plantName, { color: colors.textPrimary }]} numberOfLines={1}>
                   {plant.name}
                 </Text>
-                <Text style={styles.taskTypeFert} numberOfLines={1}>
+                <Text style={[styles.taskTypeFert, { color: colors.fertilizerDark }]} numberOfLines={1}>
                   🌾 موعد تغذیه ({plant.fertilizerType || 'کود کامل'})
                 </Text>
               </View>
@@ -113,7 +148,7 @@ export const TodayTaskCard: React.FC<TodayTaskCardProps> = ({
 
             {/* Left side: Action Button */}
             <TouchableOpacity
-              style={styles.actionButtonFert}
+              style={[styles.actionButtonFert, { backgroundColor: colors.fertilizerAmber }]}
               onPress={() => onFertilizePlant(plant)}
               activeOpacity={0.85}
             >
@@ -129,14 +164,11 @@ export const TodayTaskCard: React.FC<TodayTaskCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 24,
     padding: 16,
     marginHorizontal: 18,
     marginBottom: 16,
     borderWidth: 1.5,
-    borderColor: Colors.borderLight,
-    shadowColor: Colors.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
@@ -156,11 +188,9 @@ const styles = StyleSheet.create({
     fontFamily: 'IRANSansWeb',
     fontSize: 16,
     fontWeight: '800',
-    color: Colors.textPrimary,
     writingDirection: 'rtl',
   },
   counterBadge: {
-    backgroundColor: Colors.terracotta,
     minWidth: 24,
     height: 24,
     borderRadius: 12,
@@ -178,7 +208,6 @@ const styles = StyleSheet.create({
   waterAllButton: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    backgroundColor: Colors.waterBlue,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
@@ -202,14 +231,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     borderWidth: 1,
   },
-  taskItemWater: {
-    backgroundColor: '#F0F9FF',
-    borderColor: '#BAE6FD',
-  },
-  taskItemFert: {
-    backgroundColor: '#FFFBEB',
-    borderColor: '#FDE68A',
-  },
   plantInfoRow: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
@@ -220,7 +241,6 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: '#E0F2FE',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 10,
@@ -229,7 +249,6 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: '#FEF3C7',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 10,
@@ -242,14 +261,12 @@ const styles = StyleSheet.create({
     fontFamily: 'IRANSansWeb',
     fontSize: 15,
     fontWeight: '800',
-    color: Colors.textPrimary,
     textAlign: 'right',
     writingDirection: 'rtl',
   },
   taskTypeWater: {
     fontFamily: 'IRANSansWeb',
     fontSize: 12,
-    color: Colors.waterDark,
     fontWeight: '600',
     marginTop: 3,
     textAlign: 'right',
@@ -258,7 +275,6 @@ const styles = StyleSheet.create({
   taskTypeFert: {
     fontFamily: 'IRANSansWeb',
     fontSize: 12,
-    color: Colors.fertilizerDark,
     fontWeight: '600',
     marginTop: 3,
     textAlign: 'right',
@@ -267,27 +283,17 @@ const styles = StyleSheet.create({
   actionButtonWater: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    backgroundColor: Colors.waterBlue,
     paddingHorizontal: 14,
     paddingVertical: 9,
     borderRadius: 14,
-    shadowColor: Colors.waterBlue,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
     elevation: 2,
   },
   actionButtonFert: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    backgroundColor: Colors.fertilizerAmber,
     paddingHorizontal: 14,
     paddingVertical: 9,
     borderRadius: 14,
-    shadowColor: Colors.fertilizerAmber,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
     elevation: 2,
   },
   actionButtonText: {
@@ -300,27 +306,19 @@ const styles = StyleSheet.create({
   emptyContainer: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    backgroundColor: Colors.primarySurface,
     borderRadius: 22,
     padding: 16,
     marginHorizontal: 18,
     marginBottom: 16,
     borderWidth: 1.5,
-    borderColor: Colors.primarySubtle,
   },
   emptyIconContainer: {
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 12,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 4,
-    elevation: 2,
   },
   emptyTextContainer: {
     flex: 1,
@@ -330,14 +328,12 @@ const styles = StyleSheet.create({
     fontFamily: 'IRANSansWeb',
     fontSize: 15,
     fontWeight: '800',
-    color: Colors.primaryDark,
     textAlign: 'right',
     writingDirection: 'rtl',
   },
   emptySubtitle: {
     fontFamily: 'IRANSansWeb',
     fontSize: 12,
-    color: Colors.textMuted,
     marginTop: 4,
     textAlign: 'right',
     writingDirection: 'rtl',

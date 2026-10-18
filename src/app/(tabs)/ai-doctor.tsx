@@ -18,11 +18,12 @@ import { AiDiagnosisResponse } from '@/types/ai';
 import { db } from '@/services/storage/database';
 import { aiService } from '@/services/ai/geminiService';
 import { notificationService } from '@/services/notifications/notificationService';
-import Colors from '@/constants/colors';
+import { useTheme } from '@/context/ThemeContext';
 import { Header } from '@/components/ui/Header';
 import { toPersianDigits } from '@/utils/jalali';
 
 export default function AiDoctorScreen() {
+  const { colors, isDark } = useTheme();
   const doctorScrollRef = useRef<ScrollView>(null);
   const [plants, setPlants] = useState<Plant[]>([]);
   const [selectedPlant, setSelectedPlant] = useState<Plant | null>(null);
@@ -60,7 +61,7 @@ export default function AiDoctorScreen() {
         setImageUri(result.assets[0].uri);
         setImageBase64(result.assets[0].base64 || null);
       }
-    } catch (e) {
+    } catch {
       Alert.alert('خطا', 'امکان دریافت تصویر وجود نداشت.');
     }
   };
@@ -99,27 +100,32 @@ export default function AiDoctorScreen() {
       const updated: Plant = {
         ...selectedPlant,
         wateringIntervalDays:
-          changes.wateringIntervalDays ?? selectedPlant.wateringIntervalDays,
+          changes.wateringIntervalDays !== null && changes.wateringIntervalDays !== undefined
+            ? changes.wateringIntervalDays
+            : selectedPlant.wateringIntervalDays,
         fertilizingIntervalDays:
-          changes.fertilizingIntervalDays ?? selectedPlant.fertilizingIntervalDays,
+          changes.fertilizingIntervalDays !== null && changes.fertilizingIntervalDays !== undefined
+            ? changes.fertilizingIntervalDays
+            : selectedPlant.fertilizingIntervalDays,
       };
 
       await db.savePlant(updated);
       setSelectedPlant(updated);
-      const allPlants = await db.getPlants();
-      await notificationService.syncAllPlantNotifications(allPlants);
+
+      const all = await db.getPlants();
+      await notificationService.syncAllPlantNotifications(all);
 
       Alert.alert(
-        'تنظیمات اعمال شد! ✨',
-        'دوره‌های آبیاری و کوددهی گیاه با توجه به پیشنهاد هوش مصنوعی اصلاح شدند و هشدارهای جدید ثبت گردیدند.'
+        'تغییرات اعمال شد! ✨',
+        'دوره آبیاری و کوددهی پیشنهادی دکتر هوش مصنوعی در پروفایل گیاه ذخیره و زمان‌بندی هشدارها بروزرسانی شد.'
       );
-    } catch (e) {
-      Alert.alert('خطا', 'ثبت تغییرات با مشکل مواجه شد.');
+    } catch {
+      Alert.alert('خطا', 'اعمال تغییرات دوره با مشکل روبرو شد.');
     }
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top']}>
       <Header
         title="دکتر گیاه هوشمند 🩺"
         subtitle="تشخیص بیماری، تحلیل علائم ظاهری و تنظیم دوره‌ها"
@@ -127,8 +133,8 @@ export default function AiDoctorScreen() {
 
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         {/* Plant Selection Section */}
-        <View style={styles.card}>
-          <Text style={styles.label}>کدام گیاه را می‌خواهید ویزیت کنید؟</Text>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}>
+          <Text style={[styles.label, { color: colors.textPrimary }]}>کدام گیاه را می‌خواهید ویزیت کنید؟</Text>
           <ScrollView
             ref={doctorScrollRef}
             horizontal
@@ -143,20 +149,32 @@ export default function AiDoctorScreen() {
               return (
                 <TouchableOpacity
                   key={`plant_sel_${p.id}`}
-                  style={[styles.plantChip, isSelected && styles.plantChipActive]}
+                  style={[
+                    styles.plantChip,
+                    {
+                      backgroundColor: isSelected ? colors.primary : colors.surfaceSubtle,
+                      borderColor: isSelected ? colors.primary : colors.borderLight,
+                    },
+                  ]}
                   onPress={() => {
                     setSelectedPlant(p);
                     setDiagnosis(null);
                   }}
                   activeOpacity={0.7}
                 >
-                  <Text style={[styles.plantChipText, isSelected && styles.plantChipTextActive]}>
+                  <Text
+                    style={[
+                      styles.plantChipText,
+                      { color: isSelected ? '#FFFFFF' : colors.textSecondary },
+                      isSelected && { fontWeight: '800' },
+                    ]}
+                  >
                     {p.name}
                   </Text>
                   <Ionicons
                     name="leaf"
                     size={14}
-                    color={isSelected ? '#FFFFFF' : Colors.primary}
+                    color={isSelected ? '#FFFFFF' : colors.primary}
                     style={{ marginLeft: 4 }}
                   />
                 </TouchableOpacity>
@@ -165,8 +183,8 @@ export default function AiDoctorScreen() {
           </ScrollView>
 
           {selectedPlant && (
-            <View style={styles.plantSummaryBanner}>
-              <Text style={styles.plantSummaryText}>
+            <View style={[styles.plantSummaryBanner, { backgroundColor: colors.surfaceSubtle }]}>
+              <Text style={[styles.plantSummaryText, { color: colors.textSecondary }]}>
                 دوره فعلی: هر {toPersianDigits(selectedPlant.wateringIntervalDays)} روز آبدهی | هر{' '}
                 {toPersianDigits(selectedPlant.fertilizingIntervalDays)} روز کوددهی
               </Text>
@@ -175,25 +193,27 @@ export default function AiDoctorScreen() {
         </View>
 
         {/* Image Attachment & Symptom Input */}
-        <View style={styles.card}>
-          <Text style={styles.label}>تصویر برگ یا علائم بیماری (اختیاری ولی توصیه می‌شود)</Text>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}>
+          <Text style={[styles.label, { color: colors.textPrimary }]}>
+            تصویر برگ یا علائم بیماری (اختیاری ولی توصیه می‌شود)
+          </Text>
           <View style={styles.imageActionRow}>
             <TouchableOpacity
-              style={styles.imageButton}
+              style={[styles.imageButton, { backgroundColor: colors.primarySubtle }]}
               onPress={() => handlePickImage(true)}
               activeOpacity={0.7}
             >
-              <Ionicons name="camera" size={20} color={Colors.primary} />
-              <Text style={styles.imageButtonText}>عکاسی با دوربین</Text>
+              <Ionicons name="camera" size={20} color={colors.primary} />
+              <Text style={[styles.imageButtonText, { color: colors.primaryDark }]}>عکاسی با دوربین</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.imageButton}
+              style={[styles.imageButton, { backgroundColor: colors.primarySubtle }]}
               onPress={() => handlePickImage(false)}
               activeOpacity={0.7}
             >
-              <Ionicons name="images" size={20} color={Colors.primary} />
-              <Text style={styles.imageButtonText}>انتخاب از گالری</Text>
+              <Ionicons name="images" size={20} color={colors.primary} />
+              <Text style={[styles.imageButtonText, { color: colors.primaryDark }]}>انتخاب از گالری</Text>
             </TouchableOpacity>
           </View>
 
@@ -212,13 +232,20 @@ export default function AiDoctorScreen() {
             </View>
           )}
 
-          <Text style={[styles.label, { marginTop: 14 }]}>
+          <Text style={[styles.label, { marginTop: 14, color: colors.textPrimary }]}>
             شرح علائم و شرایط (مثلاً: زرد شدن نوک برگ‌ها، لکه سفید، پژمردگی...)
           </Text>
           <TextInput
-            style={styles.notesInput}
+            style={[
+              styles.notesInput,
+              {
+                backgroundColor: colors.background,
+                color: colors.textPrimary,
+                borderColor: colors.borderLight,
+              },
+            ]}
             placeholder="علائمی که مشاهده کردید را بنویسید..."
-            placeholderTextColor={Colors.textMuted}
+            placeholderTextColor={colors.textMuted}
             value={userNotes}
             onChangeText={setUserNotes}
             multiline
@@ -227,17 +254,21 @@ export default function AiDoctorScreen() {
           />
 
           <TouchableOpacity
-            style={[styles.diagnoseBtn, loading && styles.btnDisabled]}
+            style={[
+              styles.diagnoseBtn,
+              { backgroundColor: colors.primary },
+              (!selectedPlant || loading) && styles.btnDisabled,
+            ]}
             onPress={handleDiagnose}
-            disabled={loading}
+            disabled={!selectedPlant || loading}
             activeOpacity={0.8}
           >
             {loading ? (
-              <ActivityIndicator color="#FFFFFF" size="small" />
+              <ActivityIndicator color="#FFFFFF" />
             ) : (
               <>
-                <Text style={styles.diagnoseBtnText}>ویزیت و تحلیل هوشمند ✨</Text>
                 <Ionicons name="sparkles" size={18} color="#FFFFFF" style={{ marginLeft: 6 }} />
+                <Text style={styles.diagnoseBtnText}>شروع ویزیت و تحلیل سلامت با هوش مصنوعی</Text>
               </>
             )}
           </TouchableOpacity>
@@ -245,38 +276,36 @@ export default function AiDoctorScreen() {
 
         {/* Diagnosis Results Card */}
         {diagnosis && (
-          <View style={styles.resultCard}>
+          <View style={[styles.resultCard, { backgroundColor: colors.surface, borderColor: colors.primarySubtle }]}>
             <View style={styles.resultHeader}>
+              <Text style={[styles.resultTitle, { color: colors.textPrimary }]}>نتایج تشخیص دکتر گیاه 🩺</Text>
               <View
                 style={[
                   styles.statusBadge,
-                  diagnosis.status === 'عالی' || diagnosis.status === 'خوب'
-                    ? styles.statusBadgeGood
-                    : styles.statusBadgeWarn,
+                  diagnosis.healthScore >= 70 ? styles.statusBadgeGood : styles.statusBadgeWarn,
                 ]}
               >
-                <Text style={styles.statusBadgeText}>وضعیت: {diagnosis.status}</Text>
+                <Text style={styles.statusBadgeText}>{diagnosis.status}</Text>
               </View>
-              <Text style={styles.resultTitle}>گزارش کلینیکی گیاه‌پزشک 🩺</Text>
             </View>
 
-            {/* Health Score */}
+            {/* Score */}
             <View style={styles.scoreRow}>
-              <Text style={styles.scoreNumber}>{toPersianDigits(diagnosis.healthScore)} / ۱۰۰</Text>
-              <Text style={styles.scoreLabel}>امتیاز شادابی و سلامت:</Text>
+              <Text style={[styles.scoreLabel, { color: colors.textMuted }]}>امتیاز شادابی گیاه:</Text>
+              <Text style={[styles.scoreNumber, { color: colors.primary }]}>{toPersianDigits(diagnosis.healthScore)} از ۱۰۰</Text>
             </View>
 
-            {/* Diagnosis Summary */}
-            <Text style={styles.summaryText}>{diagnosis.diagnosisSummary}</Text>
+            {/* Summary */}
+            <Text style={[styles.summaryText, { color: colors.textPrimary }]}>{diagnosis.diagnosisSummary}</Text>
 
             {/* Possible Issues */}
             {diagnosis.possibleIssues?.length > 0 && (
               <View style={styles.sectionBlock}>
-                <Text style={styles.subHeading}>⚠️ مشکلات و تنش‌های احتمالی:</Text>
-                {diagnosis.possibleIssues.map((issue, idx) => (
-                  <View key={`issue_${idx}`} style={styles.bulletRow}>
-                    <Text style={styles.bulletText}>{issue}</Text>
-                    <Ionicons name="alert-circle-outline" size={14} color={Colors.terracotta} style={{ marginLeft: 4 }} />
+                <Text style={[styles.subHeading, { color: colors.textPrimary }]}>علل احتمالی مشکل:</Text>
+                {diagnosis.possibleIssues.map((issue, i) => (
+                  <View key={`issue_${i}`} style={styles.bulletRow}>
+                    <Ionicons name="alert-circle-outline" size={15} color={colors.terracotta} style={{ marginLeft: 6 }} />
+                    <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{issue}</Text>
                   </View>
                 ))}
               </View>
@@ -285,40 +314,45 @@ export default function AiDoctorScreen() {
             {/* Treatment Steps */}
             {diagnosis.treatmentSteps?.length > 0 && (
               <View style={styles.sectionBlock}>
-                <Text style={styles.subHeading}>💊 اقدامات و درمان پیشنهادی:</Text>
-                {diagnosis.treatmentSteps.map((step, idx) => (
-                  <View key={`step_${idx}`} style={styles.bulletRow}>
-                    <Text style={styles.bulletText}>{step}</Text>
-                    <Ionicons name="checkmark-done" size={14} color={Colors.primary} style={{ marginLeft: 4 }} />
+                <Text style={[styles.subHeading, { color: colors.textPrimary }]}>برنامه درمانی و مراقبتی:</Text>
+                {diagnosis.treatmentSteps.map((step, i) => (
+                  <View key={`step_${i}`} style={styles.bulletRow}>
+                    <Ionicons name="checkmark-circle-outline" size={15} color={colors.primary} style={{ marginLeft: 6 }} />
+                    <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{step}</Text>
                   </View>
                 ))}
               </View>
             )}
 
-            {/* Schedule Changes Suggestion */}
+            {/* Suggested Schedule Changes */}
             {diagnosis.suggestedScheduleChanges && (
-              <View style={styles.scheduleSuggestionCard}>
-                <Text style={styles.scheduleSuggestionTitle}>
-                  💡 پیشنهاد اصلاح دوره‌ها متناسب با فصل و شرایط:
+              <View style={[styles.scheduleSuggestionCard, { backgroundColor: colors.surfaceSubtle, borderColor: colors.borderLight }]}>
+                <Text style={[styles.scheduleSuggestionTitle, { color: colors.primaryDark }]}>
+                  💡 پیشنهاد تغییر دوره آبدهی یا کوددهی:
                 </Text>
-                <Text style={styles.scheduleSuggestionReason}>
+                <Text style={[styles.scheduleSuggestionReason, { color: colors.textMuted }]}>
                   {diagnosis.suggestedScheduleChanges.reason}
                 </Text>
 
                 {diagnosis.suggestedScheduleChanges.wateringIntervalDays && (
-                  <Text style={styles.scheduleSuggestionItem}>
-                    💧 دوره جدید آبیاری: هر{' '}
-                    {toPersianDigits(diagnosis.suggestedScheduleChanges.wateringIntervalDays)} روز یک‌بار
+                  <Text style={[styles.scheduleSuggestionItem, { color: colors.waterBlue }]}>
+                    • فاصله آبیاری جدید: هر {toPersianDigits(diagnosis.suggestedScheduleChanges.wateringIntervalDays)} روز
+                  </Text>
+                )}
+
+                {diagnosis.suggestedScheduleChanges.fertilizingIntervalDays && (
+                  <Text style={[styles.scheduleSuggestionItem, { color: colors.waterBlue }]}>
+                    • فاصله کوددهی جدید: هر {toPersianDigits(diagnosis.suggestedScheduleChanges.fertilizingIntervalDays)} روز
                   </Text>
                 )}
 
                 <TouchableOpacity
-                  style={styles.applyBtn}
+                  style={[styles.applyBtn, { backgroundColor: colors.primary }]}
                   onPress={handleApplyScheduleChanges}
                   activeOpacity={0.8}
                 >
-                  <Text style={styles.applyBtnText}>اعمال پیشنهاد روی تنظیمات گیاه</Text>
-                  <Ionicons name="refresh-circle" size={18} color="#FFFFFF" style={{ marginLeft: 6 }} />
+                  <Ionicons name="sync" size={16} color="#FFFFFF" style={{ marginLeft: 6 }} />
+                  <Text style={styles.applyBtnText}>اعمال دوره‌های جدید روی گیاه</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -332,7 +366,9 @@ export default function AiDoctorScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.background,
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
   },
   container: {
     flex: 1,
@@ -343,62 +379,47 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   card: {
-    backgroundColor: Colors.surface,
     borderRadius: 22,
     padding: 16,
-    borderWidth: 1,
-    borderColor: Colors.borderLight,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 2,
+    borderWidth: 1.5,
   },
   label: {
-    fontSize: 13,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 13.5,
     fontWeight: '700',
-    color: Colors.textPrimary,
-    textAlign: 'right',
     marginBottom: 10,
+    textAlign: 'right',
+    writingDirection: 'rtl',
   },
   plantChipsList: {
     flexDirection: 'row-reverse',
     gap: 8,
-    paddingBottom: 4,
+    paddingVertical: 4,
   },
   plantChip: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    backgroundColor: Colors.surfaceSubtle,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Colors.borderLight,
-  },
-  plantChipActive: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 16,
+    borderWidth: 1.5,
   },
   plantChipText: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: Colors.textSecondary,
-  },
-  plantChipTextActive: {
-    color: '#FFFFFF',
+    fontFamily: 'IRANSansWeb',
+    fontSize: 13,
+    fontWeight: '600',
   },
   plantSummaryBanner: {
-    backgroundColor: Colors.primarySubtle,
-    borderRadius: 10,
-    padding: 8,
-    marginTop: 10,
+    marginTop: 12,
+    padding: 10,
+    borderRadius: 12,
   },
   plantSummaryText: {
-    fontSize: 11,
-    color: Colors.primaryDark,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 12,
     textAlign: 'right',
     fontWeight: '600',
+    writingDirection: 'rtl',
   },
   imageActionRow: {
     flexDirection: 'row-reverse',
@@ -409,15 +430,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primarySubtle,
     paddingVertical: 10,
     borderRadius: 14,
     gap: 6,
   },
   imageButtonText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
-    color: Colors.primaryDark,
+    writingDirection: 'rtl',
   },
   previewContainer: {
     marginTop: 10,
@@ -439,21 +460,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   notesInput: {
-    backgroundColor: Colors.background,
+    fontFamily: 'IRANSansWeb',
     borderRadius: 14,
     padding: 12,
     fontSize: 13,
-    color: Colors.textPrimary,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
     textAlignVertical: 'top',
     minHeight: 75,
+    writingDirection: 'rtl',
   },
   diagnoseBtn: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primary,
     paddingVertical: 14,
     borderRadius: 16,
     marginTop: 14,
@@ -462,16 +481,16 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   diagnoseBtnText: {
+    fontFamily: 'IRANSansWeb',
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '800',
+    writingDirection: 'rtl',
   },
   resultCard: {
-    backgroundColor: Colors.surface,
     borderRadius: 22,
     padding: 18,
     borderWidth: 1.5,
-    borderColor: Colors.primarySubtle,
   },
   resultHeader: {
     flexDirection: 'row-reverse',
@@ -480,9 +499,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   resultTitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 15,
     fontWeight: '800',
-    color: Colors.textPrimary,
+    writingDirection: 'rtl',
   },
   statusBadge: {
     paddingHorizontal: 10,
@@ -490,15 +510,16 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   statusBadgeGood: {
-    backgroundColor: Colors.primarySubtle,
+    backgroundColor: 'rgba(16, 185, 129, 0.15)',
   },
   statusBadgeWarn: {
-    backgroundColor: Colors.terracottaLight,
+    backgroundColor: 'rgba(248, 113, 113, 0.15)',
   },
   statusBadgeText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
     fontWeight: '700',
-    color: Colors.primaryDark,
+    color: '#10B981',
   },
   scoreRow: {
     flexDirection: 'row-reverse',
@@ -508,30 +529,33 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   scoreLabel: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
-    color: Colors.textMuted,
+    writingDirection: 'rtl',
   },
   scoreNumber: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 16,
     fontWeight: '900',
-    color: Colors.primary,
   },
   summaryText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
-    color: Colors.textPrimary,
     lineHeight: 22,
     textAlign: 'right',
     marginBottom: 14,
+    writingDirection: 'rtl',
   },
   sectionBlock: {
     marginBottom: 14,
   },
   subHeading: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 13,
     fontWeight: '700',
-    color: Colors.textPrimary,
     textAlign: 'right',
     marginBottom: 6,
+    writingDirection: 'rtl',
   },
   bulletRow: {
     flexDirection: 'row-reverse',
@@ -539,51 +563,54 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   bulletText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
-    color: Colors.textSecondary,
     textAlign: 'right',
     flex: 1,
     lineHeight: 18,
+    writingDirection: 'rtl',
   },
   scheduleSuggestionCard: {
-    backgroundColor: Colors.surfaceSubtle,
     borderRadius: 14,
     padding: 12,
     marginTop: 8,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
   },
   scheduleSuggestionTitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '800',
-    color: Colors.primaryDark,
     textAlign: 'right',
+    writingDirection: 'rtl',
   },
   scheduleSuggestionReason: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 11,
-    color: Colors.textMuted,
     textAlign: 'right',
     marginVertical: 4,
+    writingDirection: 'rtl',
   },
   scheduleSuggestionItem: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
-    color: Colors.waterBlue,
     textAlign: 'right',
     marginVertical: 6,
+    writingDirection: 'rtl',
   },
   applyBtn: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primary,
     paddingVertical: 10,
     borderRadius: 12,
     marginTop: 8,
   },
   applyBtnText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '800',
     color: '#FFFFFF',
+    writingDirection: 'rtl',
   },
 });

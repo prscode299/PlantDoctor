@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '@/constants/colors';
 import { formatToJalali, getTodayIso } from '@/utils/jalali';
+import { useTheme } from '@/context/ThemeContext';
 
 interface HeaderProps {
   title: string;
@@ -20,27 +21,29 @@ export const Header: React.FC<HeaderProps> = ({
   showDate = false,
   rightAction,
 }) => {
+  const { colors } = useTheme();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.textContainer}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title, { color: colors.textPrimary }]}>{title}</Text>
         {subtitle ? (
-          <Text style={styles.subtitle}>{subtitle}</Text>
+          <Text style={[styles.subtitle, { color: colors.textMuted }]}>{subtitle}</Text>
         ) : showDate ? (
-          <View style={styles.dateBadge}>
-            <Ionicons name="calendar-outline" size={13} color={Colors.primary} style={{ marginLeft: 4 }} />
-            <Text style={styles.dateText}>{formatToJalali(getTodayIso())}</Text>
+          <View style={[styles.dateBadge, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}>
+            <Ionicons name="calendar-outline" size={13} color={colors.primary} style={{ marginLeft: 4 }} />
+            <Text style={[styles.dateText, { color: colors.primary }]}>{formatToJalali(getTodayIso())}</Text>
           </View>
         ) : null}
       </View>
 
       {rightAction && (
         <TouchableOpacity
-          style={styles.iconButton}
+          style={[styles.iconButton, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}
           onPress={rightAction.onPress}
           activeOpacity={0.7}
         >
-          <Ionicons name={rightAction.icon} size={22} color={Colors.primaryDark} />
+          <Ionicons name={rightAction.icon} size={22} color={colors.primary} />
         </TouchableOpacity>
       )}
     </View>
