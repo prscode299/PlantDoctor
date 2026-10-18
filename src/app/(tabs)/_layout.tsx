@@ -1,15 +1,27 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Colors from '@/constants/colors';
 
+const TabLabel = ({ title, focused }: { title: string; focused: boolean }) => (
+  <Text
+    style={[
+      styles.tabBarLabel,
+      { color: focused ? Colors.primary : Colors.textMuted },
+    ]}
+    numberOfLines={1}
+  >
+    {title}
+  </Text>
+);
+
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  // Ensure enough bottom clearance on Android (especially devices with 3-button system bars) and web
-  const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 14 : Platform.OS === 'web' ? 10 : 8);
-  const tabHeight = 66 + bottomPadding;
+  // Ensure enough bottom clearance on Android and Web inside the phone frame
+  const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 14 : Platform.OS === 'web' ? 14 : 10);
+  const tabHeight = 68 + bottomPadding;
 
   return (
     <Tabs
@@ -32,6 +44,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'گیاهان من',
+          tabBarLabel: ({ focused }) => <TabLabel title="گیاهان من" focused={focused} />,
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
               <Ionicons
@@ -47,6 +60,7 @@ export default function TabLayout() {
         name="calendar"
         options={{
           title: 'تقویم شمسی',
+          tabBarLabel: ({ focused }) => <TabLabel title="تقویم شمسی" focused={focused} />,
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
               <Ionicons
@@ -62,6 +76,7 @@ export default function TabLayout() {
         name="ai-doctor"
         options={{
           title: 'دکتر گیاه ✨',
+          tabBarLabel: ({ focused }) => <TabLabel title="دکتر گیاه ✨" focused={focused} />,
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
               <Ionicons
@@ -77,6 +92,7 @@ export default function TabLayout() {
         name="settings"
         options={{
           title: 'تنظیمات',
+          tabBarLabel: ({ focused }) => <TabLabel title="تنظیمات" focused={focused} />,
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.iconWrapperActive]}>
               <Ionicons
@@ -106,6 +122,8 @@ const styles = StyleSheet.create({
   },
   tabBarItem: {
     paddingVertical: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   iconWrapper: {
     width: 36,
@@ -119,8 +137,12 @@ const styles = StyleSheet.create({
   },
   tabBarLabel: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 12,
+    fontSize: 11.5,
     fontWeight: '700',
-    marginTop: 2,
+    marginTop: 3,
+    marginBottom: 2,
+    lineHeight: 18,
+    textAlign: 'center',
+    writingDirection: 'rtl',
   },
 });

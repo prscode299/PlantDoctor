@@ -60,11 +60,9 @@ export default function RootLayout() {
           html {
             height: 100%;
             width: 100%;
-            direction: rtl;
           }
           body {
             font-family: 'IRANSansWeb', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            direction: rtl;
             background: linear-gradient(135deg, #CBD9CE 0%, #B8CBBF 100%) !important;
             margin: 0;
             padding: 0;
@@ -74,6 +72,11 @@ export default function RootLayout() {
             justify-content: center;
             align-items: center;
             overflow: hidden;
+          }
+          input, textarea {
+            direction: rtl;
+            text-align: right;
+            font-family: 'IRANSansWeb', system-ui, sans-serif;
           }
           #root {
             display: flex !important;
@@ -100,6 +103,10 @@ export default function RootLayout() {
               border: none !important;
               box-shadow: none !important;
             }
+          }
+          /* Ensure tab bar labels are never clipped */
+          [role="tab"] span, [role="tab"] div {
+            overflow: visible !important;
           }
           /* Custom scrollbar for web preview */
           ::-webkit-scrollbar {

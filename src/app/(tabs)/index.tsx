@@ -169,10 +169,10 @@ export default function HomeScreen() {
 
         {/* Plants List Section Header */}
         <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>لیست گیاهان</Text>
           <Text style={styles.plantCountBadge}>
             {toPersianDigits(filteredPlants.length)} گلدان
           </Text>
-          <Text style={styles.sectionTitle}>لیست گیاهان</Text>
         </View>
 
         {/* Plant Cards */}

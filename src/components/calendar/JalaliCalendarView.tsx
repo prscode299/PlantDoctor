@@ -169,19 +169,24 @@ export const JalaliCalendarView: React.FC<JalaliCalendarViewProps> = ({
         })}
       </View>
 
-      {/* Legend */}
-      <View style={styles.legendRow}>
-        <View style={styles.legendItem}>
-          <Text style={styles.legendText}>آبیاری</Text>
-          <View style={[styles.legendDot, { backgroundColor: Colors.waterBlue }]} />
+      {/* Legend - 3 Prominent Care Status Badges */}
+      <View style={styles.legendContainer}>
+        {/* Today */}
+        <View style={styles.legendPillToday}>
+          <View style={styles.legendDotToday} />
+          <Text style={styles.legendTextToday}>امروز</Text>
         </View>
-        <View style={styles.legendItem}>
-          <Text style={styles.legendText}>کوددهی</Text>
-          <View style={[styles.legendDot, { backgroundColor: Colors.fertilizerAmber }]} />
+
+        {/* Watering */}
+        <View style={styles.legendPillWater}>
+          <Ionicons name="water" size={13} color={Colors.waterBlue} style={{ marginLeft: 4 }} />
+          <Text style={styles.legendTextWater}>نوبت آبیاری</Text>
         </View>
-        <View style={styles.legendItem}>
-          <Text style={styles.legendText}>امروز</Text>
-          <View style={[styles.legendRing, { borderColor: Colors.primary }]} />
+
+        {/* Fertilizing */}
+        <View style={styles.legendPillFert}>
+          <Ionicons name="sparkles" size={13} color={Colors.fertilizerAmber} style={{ marginLeft: 4 }} />
+          <Text style={styles.legendTextFert}>نوبت کوددهی</Text>
         </View>
       </View>
 
@@ -340,44 +345,85 @@ const styles = StyleSheet.create({
   },
   dotsRow: {
     flexDirection: 'row',
-    gap: 2,
-    marginTop: 2,
-    height: 5,
+    gap: 3,
+    marginTop: 3,
+    height: 7,
   },
   dot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-  },
-  legendRow: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'center',
-    gap: 16,
-    marginTop: 14,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: Colors.borderLight,
-  },
-  legendItem: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-  },
-  legendText: {
-    fontFamily: 'IRANSansWeb',
-    fontSize: 11,
-    color: Colors.textMuted,
-    marginRight: 4,
-  },
-  legendDot: {
     width: 6,
     height: 6,
     borderRadius: 3,
   },
-  legendRing: {
+  legendContainer: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 16,
+    paddingTop: 14,
+    borderTopWidth: 1.5,
+    borderTopColor: Colors.borderLight,
+    gap: 8,
+  },
+  legendPillToday: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.primarySubtle,
+    borderWidth: 1,
+    borderColor: '#B7E4C7',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+  },
+  legendDotToday: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    borderWidth: 1.5,
+    backgroundColor: Colors.primary,
+    marginLeft: 6,
+  },
+  legendTextToday: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 12,
+    fontWeight: '700',
+    color: Colors.primaryDark,
+  },
+  legendPillWater: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F0F9FF',
+    borderWidth: 1,
+    borderColor: '#BAE6FD',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+  },
+  legendTextWater: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 12,
+    fontWeight: '700',
+    color: Colors.waterDark,
+  },
+  legendPillFert: {
+    flex: 1,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFFBEB',
+    borderWidth: 1,
+    borderColor: '#FDE68A',
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 12,
+  },
+  legendTextFert: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 12,
+    fontWeight: '700',
+    color: Colors.fertilizerDark,
   },
   agendaCard: {
     backgroundColor: Colors.background,

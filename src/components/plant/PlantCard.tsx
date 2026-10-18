@@ -47,12 +47,12 @@ export const PlantCard: React.FC<PlantCardProps> = ({
         {/* Plant Details */}
         <View style={styles.infoCol}>
           <View style={styles.headerRow}>
-            {plant.room ? (
-              <Badge label={plant.room} icon="location-outline" variant="neutral" />
-            ) : null}
             <Text style={styles.plantName} numberOfLines={1}>
               {plant.name}
             </Text>
+            {plant.room ? (
+              <Badge label={plant.room} icon="location-outline" variant="neutral" />
+            ) : null}
           </View>
 
           <Text style={styles.scientificName} numberOfLines={1}>
@@ -68,6 +68,12 @@ export const PlantCard: React.FC<PlantCardProps> = ({
                 isWaterDue ? styles.carePillAlert : styles.carePillWater,
               ]}
             >
+              <Ionicons
+                name="water"
+                size={13}
+                color={isWaterDue ? Colors.terracotta : Colors.waterBlue}
+                style={{ marginLeft: 4 }}
+              />
               <Text
                 style={[
                   styles.carePillText,
@@ -76,25 +82,19 @@ export const PlantCard: React.FC<PlantCardProps> = ({
               >
                 آبیاری: {waterStatus.label}
               </Text>
-              <Ionicons
-                name="water"
-                size={12}
-                color={isWaterDue ? Colors.terracotta : Colors.waterBlue}
-                style={{ marginLeft: 3 }}
-              />
             </View>
 
             {/* Fertilizing badge */}
             <View style={[styles.carePill, styles.carePillFert]}>
+              <Ionicons
+                name="sparkles"
+                size={12}
+                color={Colors.fertilizerAmber}
+                style={{ marginLeft: 4 }}
+              />
               <Text style={styles.carePillTextFert}>
                 کوددهی: {fertStatus.label}
               </Text>
-              <Ionicons
-                name="sparkles"
-                size={11}
-                color={Colors.fertilizerAmber}
-                style={{ marginLeft: 3 }}
-              />
             </View>
           </View>
         </View>
