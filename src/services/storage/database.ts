@@ -11,6 +11,23 @@ const STORAGE_KEYS = {
   AI_SETTINGS: '@plant_app_ai_settings_v1',
   NOTIFICATION_TIME: '@plant_app_notif_time_v1',
   INITIALIZED: '@plant_app_initialized_v1',
+  USER_PROFILE: '@plant_app_user_profile_v1',
+};
+
+export interface UserProfile {
+  name: string;
+  city: string;
+  temperature: number;
+  humidity: number;
+  experienceLevel: string;
+}
+
+const DEFAULT_USER_PROFILE: UserProfile = {
+  name: 'مصطفی موسوی',
+  city: 'مشهد',
+  temperature: 25,
+  humidity: 58,
+  experienceLevel: 'باغبان برتر سطح ۲ 🌿',
 };
 
 const INITIAL_SAMPLE_PLANTS: Plant[] = [
@@ -337,6 +354,23 @@ class DatabaseService {
 
   async saveNotificationTime(time: { hour: number; minute: number }): Promise<void> {
     await AsyncStorage.setItem(STORAGE_KEYS.NOTIFICATION_TIME, JSON.stringify(time));
+  }
+
+  /**
+   * User Profile (Name, City, Weather, Level)
+   */
+  async getUserProfile(): Promise<UserProfile> {
+    try {
+      const raw = await AsyncStorage.getItem(STORAGE_KEYS.USER_PROFILE);
+      if (!raw) return DEFAULT_USER_PROFILE;
+      return { ...DEFAULT_USER_PROFILE, ...JSON.parse(raw) };
+    } catch {
+      return DEFAULT_USER_PROFILE;
+    }
+  }
+
+  async saveUserProfile(profile: UserProfile): Promise<void> {
+    await AsyncStorage.setItem(STORAGE_KEYS.USER_PROFILE, JSON.stringify(profile));
   }
 
   /**

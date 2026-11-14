@@ -1,13 +1,20 @@
 export const LightColors = {
-  // Botanical Garden & Forest Palette
-  primary: '#1E5E3A', // Rich lush forest green
-  primaryDark: '#123A24',
-  primaryMedium: '#2D6A4F',
+  // Stitch Material You & Botanical Serenity Palette
+  primary: '#004625', // Deep rich forest green
+  primaryContainer: '#1E5E3A', // Rich velvet container
+  onPrimaryContainer: '#94D5A8',
+  primaryDark: '#002B16',
+  primaryMedium: '#1E5E3A',
   primaryLight: '#40916C',
   primaryMint: '#52B788',
   primarySubtle: '#D8F3DC',
-  primarySurface: '#EBF5EE', // Soft morning dew green
-  primaryGlow: 'rgba(30, 94, 58, 0.12)',
+  primarySurface: '#EBF5EE',
+  primaryGlow: 'rgba(30, 94, 58, 0.16)',
+
+  // Secondary Accents
+  secondary: '#006C48',
+  secondaryContainer: '#92F7C3',
+  secondaryFixed: '#92F7C3',
 
   // Earth & Warm Terracotta Accents
   terracotta: '#C85A32',
@@ -18,9 +25,11 @@ export const LightColors = {
   warmCream: '#FAF7F2',
 
   // Water & Droplet Accents
-  waterBlue: '#0284C7',
+  waterBlue: '#003F62',
   waterLight: '#E0F2FE',
-  waterDark: '#0369A1',
+  waterDark: '#00253B',
+  tertiary: '#003F62',
+  tertiaryContainer: '#005785',
 
   // Fertilizer & Sunlight Accents
   fertilizerAmber: '#D97706',
@@ -29,49 +38,61 @@ export const LightColors = {
   sunYellow: '#F59E0B',
   sunLight: '#FEF9C3',
 
-  // Backgrounds & Neutrals (Organic, non-sterile)
-  background: '#F2F7F2', // Crisp gentle garden mist
+  // Stitch Container Layers (Organic layered surfaces)
+  background: '#ECFEEE', // Morning dew tinted surface
   surface: '#FFFFFF',
-  surfaceSubtle: '#F8FAF8',
-  border: '#DDE7DD',
-  borderLight: '#EAF0EA',
+  surfaceSubtle: '#E6F8E8',
+  surfaceContainerLowest: '#FFFFFF',
+  surfaceContainerLow: '#E6F8E8',
+  surfaceContainer: '#E0F3E3',
+  surfaceContainerHigh: '#DBEDDD',
+  surfaceContainerHighest: '#D5E7D8',
+  border: '#C0C9BF',
+  borderLight: '#D5E7D8',
 
   // Typography
-  textPrimary: '#112218',
-  textSecondary: '#3C4F44',
+  textPrimary: '#101F15',
+  textSecondary: '#404941',
   textMuted: '#6B7E73',
   textLight: '#9BB0A4',
   textInverse: '#FFFFFF',
 
   // Status & Feedback
-  success: '#15803D',
+  success: '#006C48',
   successLight: '#DCFCE7',
   warning: '#D97706',
   warningLight: '#FEF3C7',
-  danger: '#DC2626',
-  dangerLight: '#FEE2E2',
-  info: '#0284C7',
+  danger: '#BA1A1A',
+  dangerLight: '#FFDAD6',
+  info: '#003F62',
   infoLight: '#E0F2FE',
 
   // Shadows & Elevation
-  shadow: 'rgba(18, 58, 36, 0.08)',
-  shadowHeavy: 'rgba(18, 58, 36, 0.16)',
+  shadow: 'rgba(30, 94, 58, 0.08)',
+  shadowHeavy: 'rgba(30, 94, 58, 0.22)',
 };
 
 export const DarkColors = {
-  // Vibrant Natural Emerald & Mint Accents on Dark
-  primary: '#10B981', // Clean vibrant emerald green
-  primaryDark: '#34D399',
-  primaryMedium: '#059669',
-  primaryLight: '#6EE7B7',
-  primaryMint: '#10B981',
+  // Stitch Dark Mode — Deep Obsidian Forest
+  primary: '#75DAA8', // Glowing emerald mint in dark
+  primaryContainer: '#005235',
+  onPrimaryContainer: '#92F7C3',
+  primaryDark: '#92F7C3',
+  primaryMedium: '#10B981',
+  primaryLight: '#A7F3D0',
+  primaryMint: '#75DAA8',
   primarySubtle: '#064E3B',
-  primarySurface: '#1F2937',
-  primaryGlow: 'rgba(16, 185, 129, 0.25)',
+  primarySurface: '#15231A',
+  primaryGlow: 'rgba(117, 218, 168, 0.25)',
+
+  // Secondary Accents
+  secondary: '#75DAA8',
+  secondaryContainer: '#1A3525',
+  secondaryFixed: '#92F7C3',
 
   // Warm Terracotta in Dark Mode
-  terracotta: '#F87171',
-  terracottaLight: '#450A0A',
+  terracotta: '#FF6B6B',
+  terracottaLight: '#3D1114',
   terracottaDark: '#EF4444',
   earthBrown: '#A8A29E',
   sand: '#57534E',
@@ -81,6 +102,8 @@ export const DarkColors = {
   waterBlue: '#38BDF8',
   waterLight: '#082F49',
   waterDark: '#7DD3FC',
+  tertiary: '#38BDF8',
+  tertiaryContainer: '#005785',
 
   // Fertilizer Accents
   fertilizerAmber: '#FBBF24',
@@ -89,33 +112,38 @@ export const DarkColors = {
   sunYellow: '#FBBF24',
   sunLight: '#422006',
 
-  // Backgrounds & Surfaces (Standard Modern Material Dark)
-  background: '#121212', // Pure sleek neutral dark background
-  surface: '#1E1E1E', // Standard dark elevated card surface
-  surfaceSubtle: '#262626',
-  border: '#333333',
-  borderLight: '#2A2A2A',
+  // Stitch Dark Container Layers (Lush night forest)
+  background: '#0B130E', // Obsidian deep green night
+  surface: '#111C15',
+  surfaceSubtle: '#15231A',
+  surfaceContainerLowest: '#080E0A',
+  surfaceContainerLow: '#111C15',
+  surfaceContainer: '#15231A',
+  surfaceContainerHigh: '#1E3327',
+  surfaceContainerHighest: '#284433',
+  border: '#233F2E',
+  borderLight: '#1E3327',
 
   // Typography
-  textPrimary: '#FFFFFF', // High-contrast clean white
-  textSecondary: '#E5E7EB',
-  textMuted: '#9CA3AF',
-  textLight: '#6B7280',
-  textInverse: '#121212',
+  textPrimary: '#F1F7F3', // High-contrast clean white
+  textSecondary: '#D1E0D5',
+  textMuted: '#9BB5A2',
+  textLight: '#6B7E73',
+  textInverse: '#0B130E',
 
   // Status & Feedback
-  success: '#10B981',
+  success: '#75DAA8',
   successLight: '#064E3B',
   warning: '#FBBF24',
   warningLight: '#451A03',
-  danger: '#F87171',
-  dangerLight: '#450A0A',
+  danger: '#FF6B6B',
+  dangerLight: '#3D1114',
   info: '#38BDF8',
   infoLight: '#082F49',
 
   // Shadows
-  shadow: 'rgba(0, 0, 0, 0.6)',
-  shadowHeavy: 'rgba(0, 0, 0, 0.85)',
+  shadow: 'rgba(0, 0, 0, 0.7)',
+  shadowHeavy: 'rgba(0, 0, 0, 0.9)',
 };
 
 export type ColorPalette = typeof LightColors;

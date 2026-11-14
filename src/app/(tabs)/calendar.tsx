@@ -74,6 +74,7 @@ export default function CalendarScreen() {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />
         }
@@ -91,12 +92,15 @@ export default function CalendarScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
   },
   container: {
     flex: 1,
   },
   contentContainer: {
-    paddingVertical: 12,
-    paddingBottom: 40,
+    paddingVertical: 10,
+    paddingBottom: 50,
   },
 });

@@ -9,7 +9,6 @@ import {
   Image,
   Alert,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
@@ -19,10 +18,20 @@ import { Plant, PlantPreset } from '@/types/plant';
 import { db } from '@/services/storage/database';
 import { aiService } from '@/services/ai/geminiService';
 import { notificationService } from '@/services/notifications/notificationService';
-import Colors from '@/constants/colors';
 import { useTheme } from '@/context/ThemeContext';
 import { POPULAR_PLANTS, DEFAULT_ROOMS } from '@/constants/presets';
 import { addDays, getTodayIso, toPersianDigits } from '@/utils/jalali';
+
+const PRESET_EMOJIS: Record<string, string> = {
+  'پوتوس': '🌱',
+  'زاموفیلیا': '🪴',
+  'سانسوریا': '🌿',
+  'برگ انجیری': '✨',
+  'فیکوس لیراتا': '🍃',
+  'اسپاتی فیلوم': '🌸',
+  'آگلونما': '🌾',
+  'شفلرا': '🎋',
+};
 
 export default function AddPlantScreen() {
   const insets = useSafeAreaInsets();
@@ -168,13 +177,19 @@ export default function AddPlantScreen() {
 
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
-      {/* Navigation Header */}
-      <View style={[styles.topBar, { borderBottomColor: colors.borderLight }]}>
-        <TouchableOpacity style={styles.closeBtn} onPress={() => router.back()}>
-          <Ionicons name="close" size={24} color={colors.textPrimary} />
-        </TouchableOpacity>
-        <Text style={[styles.topBarTitle, { color: colors.textPrimary }]}>افزودن گیاه جدید 🌱</Text>
-        <View style={{ width: 40 }} />
+      {/* Top Handle & Navigation */}
+      <View style={styles.sheetTopBar}>
+        <View style={[styles.sheetHandle, { backgroundColor: colors.border }]} />
+        <View style={styles.sheetHeaderRow}>
+          <TouchableOpacity
+            style={[styles.closeBtn, { backgroundColor: colors.surfaceContainerLow }]}
+            onPress={() => router.back()}
+          >
+            <Ionicons name="close" size={20} color={colors.textPrimary} />
+          </TouchableOpacity>
+          <Text style={[styles.sheetTitle, { color: colors.textPrimary }]}>افزودن گیاه جدید 🌱</Text>
+          <View style={{ width: 36 }} />
+        </View>
       </View>
 
       <ScrollView
@@ -185,36 +200,45 @@ export default function AddPlantScreen() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Magic AI Setup Banner */}
-        <View style={styles.aiBanner}>
+        {/* Magic AI Setup Banner (Stitch Glowing Hero Banner) */}
+        <View
+          style={[
+            styles.aiBanner,
+            {
+              backgroundColor: isDark ? colors.surfaceContainer : '#E6F8E8',
+              borderColor: isDark ? colors.border : '#C0C9BF',
+            },
+          ]}
+        >
           <View style={styles.aiBannerHeader}>
-            <View style={styles.aiBadge}>
-              <Text style={styles.aiBadgeText}>هوشمند ✨</Text>
+            <View style={[styles.aiBadge, { backgroundColor: colors.primaryContainer }]}>
+              <Ionicons name="sparkles" size={12} color="#92F7C3" style={{ marginLeft: 3 }} />
+              <Text style={styles.aiBadgeText}>هوش مصنوعی</Text>
             </View>
-            <Text style={styles.aiBannerTitle}>تنظیم خودکار با هوش مصنوعی</Text>
+            <Text style={[styles.aiBannerTitle, { color: colors.textPrimary }]}>تنظیم جادویی با هوش مصنوعی 🪄</Text>
           </View>
-          <Text style={styles.aiBannerDesc}>
-            عکس گیاه را بگیرید یا نام آن را بنویسید و دکمه زیر را لمس کنید تا تمام دوره‌های آبیاری و نیازمندی‌ها خودکار استخراج شوند.
+          <Text style={[styles.aiBannerDesc, { color: colors.textSecondary }]}>
+            کافیست عکس برگ را بگیرید یا نام گیاه را وارد کنید؛ Gemini تمام نیازمندی‌های فصلی و تقویم را خودکار تنظیم می‌کند.
           </Text>
 
           <TouchableOpacity
-            style={[styles.aiActionBtn, aiLoading && styles.btnDisabled]}
+            style={[styles.aiActionBtn, { backgroundColor: colors.primaryContainer }, aiLoading && styles.btnDisabled]}
             onPress={handleMagicAiSetup}
             disabled={aiLoading}
             activeOpacity={0.8}
           >
             {aiLoading ? (
-              <ActivityIndicator color="#FFFFFF" size="small" />
+              <ActivityIndicator color="#92F7C3" size="small" />
             ) : (
-              <>
-                <Text style={styles.aiActionBtnText}>استخراج خودکار تنظیمات با AI 🪄</Text>
-                <Ionicons name="sparkles" size={16} color="#FFFFFF" style={{ marginLeft: 6 }} />
-              </>
+              <View style={styles.aiActionBtnInner}>
+                <Ionicons name="sparkles" size={16} color="#92F7C3" style={{ marginLeft: 6 }} />
+                <Text style={styles.aiActionBtnText}>استخراج خودکار تنظیمات با AI ✨</Text>
+              </View>
             )}
           </TouchableOpacity>
         </View>
 
-        {/* Image Picker */}
+        {/* Image Picker Area */}
         <View style={styles.imageSection}>
           {imageUri ? (
             <View style={styles.imagePreviewWrapper}>
@@ -230,61 +254,69 @@ export default function AddPlantScreen() {
           ) : (
             <View style={styles.imageButtonsRow}>
               <TouchableOpacity
-                style={styles.pickImageBtn}
+                style={[styles.pickImageBtn, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}
                 onPress={() => handlePickImage(true)}
                 activeOpacity={0.7}
               >
-                <Ionicons name="camera" size={22} color={Colors.primary} />
-                <Text style={styles.pickImageText}>عکاسی از گیاه</Text>
+                <Ionicons name="camera-outline" size={22} color={colors.primary} />
+                <Text style={[styles.pickImageText, { color: colors.textPrimary }]}>عکاسی با دوربین</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={styles.pickImageBtn}
+                style={[styles.pickImageBtn, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}
                 onPress={() => handlePickImage(false)}
                 activeOpacity={0.7}
               >
-                <Ionicons name="images" size={22} color={Colors.primary} />
-                <Text style={styles.pickImageText}>انتخاب از گالری</Text>
+                <Ionicons name="images-outline" size={22} color={colors.primary} />
+                <Text style={[styles.pickImageText, { color: colors.textPrimary }]}>انتخاب از گالری</Text>
               </TouchableOpacity>
             </View>
           )}
         </View>
 
-        {/* Popular Presets Quick Selector */}
+        {/* Popular Presets Quick Selector with Emojis */}
         <View style={styles.presetsWrapper}>
-          <Text style={styles.presetsTitle}>🌱 انتخاب سریع از گیاهان پرطرفدار خانگی:</Text>
+          <Text style={[styles.presetsTitle, { color: colors.textMuted }]}>
+            انتخاب سریع گونه‌های پرطرفدار آپارتمانی:
+          </Text>
           <ScrollView
             ref={presetsScrollRef}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.presetsList}
             onContentSizeChange={() => {
-              // Scroll to start (right edge) on initial render for RTL
               presetsScrollRef.current?.scrollToEnd({ animated: false });
             }}
           >
-            {POPULAR_PLANTS.map((preset, idx) => (
-              <TouchableOpacity
-                key={`preset_${idx}`}
-                style={styles.presetChip}
-                onPress={() => handleSelectPreset(preset)}
-                activeOpacity={0.7}
-              >
-                <Text style={styles.presetChipText}>{preset.name.split(' ')[0]}</Text>
-                <Ionicons name="leaf" size={14} color={Colors.primary} style={{ marginLeft: 6 }} />
-              </TouchableOpacity>
-            ))}
+            {POPULAR_PLANTS.map((preset, idx) => {
+              const baseName = preset.name.split(' ')[0];
+              const emoji = PRESET_EMOJIS[baseName] || '🌱';
+              return (
+                <TouchableOpacity
+                  key={`preset_${idx}`}
+                  style={[styles.presetChip, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}
+                  onPress={() => handleSelectPreset(preset)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.presetEmoji}>{emoji}</Text>
+                  <Text style={[styles.presetChipText, { color: colors.textSecondary }]}>{preset.name}</Text>
+                </TouchableOpacity>
+              );
+            })}
           </ScrollView>
         </View>
 
         {/* Form Inputs */}
-        <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}>
+        <View style={[styles.formCard, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}>
           {/* Plant Name */}
           <View style={styles.inputGroup}>
-            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نام گیاه (فارسی / دلخواه) *</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نام دلخواه گیاه *</Text>
             <TextInput
-              style={[styles.input, { backgroundColor: colors.background, borderColor: colors.borderLight, color: colors.textPrimary }]}
-              placeholder="مثلاً: پوتوس ابلق من"
+              style={[
+                styles.input,
+                { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight, color: colors.textPrimary },
+              ]}
+              placeholder="مثلاً: پوتوس ابلق پنجره جنوبی"
               placeholderTextColor={colors.textMuted}
               value={name}
               onChangeText={setName}
@@ -294,9 +326,12 @@ export default function AddPlantScreen() {
 
           {/* Scientific Name */}
           <View style={styles.inputGroup}>
-            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نام علمی (لاتین)</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نام علمی یا گونه (لاتین)</Text>
             <TextInput
-              style={[styles.input, { backgroundColor: colors.background, borderColor: colors.borderLight, color: colors.textPrimary }]}
+              style={[
+                styles.input,
+                { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight, color: colors.textPrimary },
+              ]}
               placeholder="مثلاً: Epipremnum aureum"
               placeholderTextColor={colors.textMuted}
               value={scientificName}
@@ -305,9 +340,9 @@ export default function AddPlantScreen() {
             />
           </View>
 
-          {/* Room Selection - Flex Wrap so all options are 100% visible and never cut off */}
+          {/* Room Selection Grid */}
           <View style={styles.inputGroup}>
-            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>محل قرارگیری در منزل</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>محل استقرار در خانه</Text>
             <View style={styles.roomChipsGrid}>
               {DEFAULT_ROOMS.map((r) => {
                 const isSelected = room === r;
@@ -317,7 +352,9 @@ export default function AddPlantScreen() {
                     style={[
                       styles.formRoomChip,
                       {
-                        backgroundColor: isSelected ? colors.primary : colors.surfaceSubtle,
+                        backgroundColor: isSelected
+                          ? colors.primaryContainer
+                          : colors.surfaceContainerLow,
                         borderColor: isSelected ? colors.primary : colors.borderLight,
                       },
                     ]}
@@ -327,7 +364,7 @@ export default function AddPlantScreen() {
                     <Ionicons
                       name={isSelected ? 'checkmark-circle' : 'location-outline'}
                       size={14}
-                      color={isSelected ? '#FFFFFF' : colors.primary}
+                      color={isSelected ? '#92F7C3' : colors.primary}
                       style={{ marginLeft: 4 }}
                     />
                     <Text
@@ -345,68 +382,88 @@ export default function AddPlantScreen() {
             </View>
           </View>
 
-          {/* Intervals: Water & Fertilizer */}
-          <View style={styles.intervalsRow}>
-            {/* Fertilizing interval */}
-            <View style={styles.intervalBox}>
-              <Text style={[styles.intervalLabel, { color: colors.textPrimary }]}>کوددهی (هر چند روز)</Text>
-              <View style={[styles.stepperRow, { backgroundColor: colors.background, borderColor: colors.borderLight }]}>
-                <TouchableOpacity
-                  style={[styles.stepBtn, { backgroundColor: colors.surfaceSubtle }]}
-                  onPress={() => {
-                    const v = Math.max(7, (parseInt(fertilizingDays, 10) || 30) - 5);
-                    setFertilizingDays(String(v));
-                  }}
-                >
-                  <Text style={[styles.stepBtnText, { color: colors.primary }]}>-</Text>
-                </TouchableOpacity>
-                <TextInput
-                  style={[styles.intervalInput, { color: colors.textPrimary }]}
-                  value={fertilizingDays}
-                  onChangeText={setFertilizingDays}
-                  keyboardType="numeric"
-                  textAlign="center"
-                />
-                <TouchableOpacity
-                  style={[styles.stepBtn, { backgroundColor: colors.surfaceSubtle }]}
-                  onPress={() => {
-                    const v = (parseInt(fertilizingDays, 10) || 30) + 5;
-                    setFertilizingDays(String(v));
-                  }}
-                >
-                  <Text style={[styles.stepBtnText, { color: colors.primary }]}>+</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
+          {/* Steppers: Water & Fertilizer */}
+          <View style={styles.intervalsBlock}>
             {/* Watering interval */}
-            <View style={styles.intervalBox}>
-              <Text style={[styles.intervalLabel, { color: colors.textPrimary }]}>آبیاری (هر چند روز)</Text>
-              <View style={[styles.stepperRow, { backgroundColor: colors.background, borderColor: colors.borderLight }]}>
+            <View style={[styles.intervalCard, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight }]}>
+              <View style={styles.intervalHeader}>
+                <View style={styles.intervalTitleRow}>
+                  <Ionicons name="water-outline" size={18} color={colors.tertiary} style={{ marginLeft: 6 }} />
+                  <Text style={[styles.intervalTitle, { color: colors.textPrimary }]}>سیکل آبیاری</Text>
+                </View>
+                <View style={[styles.intervalTagPill, { backgroundColor: isDark ? colors.surfaceContainer : '#E0F2FE' }]}>
+                  <Text style={[styles.intervalTagText, { color: colors.tertiary }]}>توصیه هوشمند</Text>
+                </View>
+              </View>
+
+              <View style={styles.stepperContainer}>
                 <TouchableOpacity
-                  style={[styles.stepBtn, { backgroundColor: colors.surfaceSubtle }]}
+                  style={[styles.stepperActionBtn, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}
                   onPress={() => {
                     const v = Math.max(1, (parseInt(wateringDays, 10) || 7) - 1);
                     setWateringDays(String(v));
                   }}
+                  activeOpacity={0.7}
                 >
-                  <Text style={[styles.stepBtnText, { color: colors.primary }]}>-</Text>
+                  <Ionicons name="remove" size={20} color={colors.primary} />
                 </TouchableOpacity>
-                <TextInput
-                  style={[styles.intervalInput, { color: colors.textPrimary }]}
-                  value={wateringDays}
-                  onChangeText={setWateringDays}
-                  keyboardType="numeric"
-                  textAlign="center"
-                />
+
+                <View style={styles.stepperDisplay}>
+                  <Text style={[styles.stepperDayNumber, { color: colors.primary }]}>{toPersianDigits(wateringDays)}</Text>
+                  <Text style={[styles.stepperDayUnit, { color: colors.textMuted }]}>روز یک‌بار</Text>
+                </View>
+
                 <TouchableOpacity
-                  style={[styles.stepBtn, { backgroundColor: colors.surfaceSubtle }]}
+                  style={[styles.stepperActionBtn, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}
                   onPress={() => {
                     const v = (parseInt(wateringDays, 10) || 7) + 1;
                     setWateringDays(String(v));
                   }}
+                  activeOpacity={0.7}
                 >
-                  <Text style={[styles.stepBtnText, { color: colors.primary }]}>+</Text>
+                  <Ionicons name="add" size={20} color={colors.primary} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Fertilizing interval */}
+            <View style={[styles.intervalCard, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight }]}>
+              <View style={styles.intervalHeader}>
+                <View style={styles.intervalTitleRow}>
+                  <Ionicons name="sparkles-outline" size={18} color={colors.fertilizerAmber} style={{ marginLeft: 6 }} />
+                  <Text style={[styles.intervalTitle, { color: colors.textPrimary }]}>سیکل کوددهی</Text>
+                </View>
+                <View style={[styles.intervalTagPill, { backgroundColor: isDark ? colors.surfaceContainer : '#FEF3C7' }]}>
+                  <Text style={[styles.intervalTagText, { color: colors.fertilizerAmber }]}>فصل رشد</Text>
+                </View>
+              </View>
+
+              <View style={styles.stepperContainer}>
+                <TouchableOpacity
+                  style={[styles.stepperActionBtn, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}
+                  onPress={() => {
+                    const v = Math.max(7, (parseInt(fertilizingDays, 10) || 30) - 5);
+                    setFertilizingDays(String(v));
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="remove" size={20} color={colors.primary} />
+                </TouchableOpacity>
+
+                <View style={styles.stepperDisplay}>
+                  <Text style={[styles.stepperDayNumber, { color: colors.fertilizerAmber }]}>{toPersianDigits(fertilizingDays)}</Text>
+                  <Text style={[styles.stepperDayUnit, { color: colors.textMuted }]}>روز یک‌بار</Text>
+                </View>
+
+                <TouchableOpacity
+                  style={[styles.stepperActionBtn, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}
+                  onPress={() => {
+                    const v = (parseInt(fertilizingDays, 10) || 30) + 5;
+                    setFertilizingDays(String(v));
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="add" size={20} color={colors.primary} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -416,8 +473,11 @@ export default function AddPlantScreen() {
           <View style={styles.inputGroup}>
             <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نوع کود پیشنهادی</Text>
             <TextInput
-              style={[styles.input, { backgroundColor: colors.background, borderColor: colors.borderLight, color: colors.textPrimary }]}
-              placeholder="مثلاً: کود ۲۰-۲۰-۲۰ یا آهن"
+              style={[
+                styles.input,
+                { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight, color: colors.textPrimary },
+              ]}
+              placeholder="مثلاً: کود ۲۰-۲۰-۲۰ یا کلات آهن"
               placeholderTextColor={colors.textMuted}
               value={fertilizerType}
               onChangeText={setFertilizerType}
@@ -427,9 +487,13 @@ export default function AddPlantScreen() {
 
           {/* Care Tips */}
           <View style={styles.inputGroup}>
-            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نکات طلایی مراقبت</Text>
+            <Text style={[styles.inputLabel, { color: colors.textPrimary }]}>نکات نگهداری و نور</Text>
             <TextInput
-              style={[styles.input, styles.textArea, { backgroundColor: colors.background, borderColor: colors.borderLight, color: colors.textPrimary }]}
+              style={[
+                styles.input,
+                styles.textArea,
+                { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight, color: colors.textPrimary },
+              ]}
               placeholder="نکاتی درباره رطوبت، زهکشی خاک و غبارپاشی..."
               placeholderTextColor={colors.textMuted}
               value={careTips}
@@ -443,18 +507,18 @@ export default function AddPlantScreen() {
 
         {/* Submit Button */}
         <TouchableOpacity
-          style={[styles.saveBtn, { backgroundColor: colors.primary }, saving && styles.btnDisabled]}
+          style={[styles.saveBtn, { backgroundColor: colors.primaryContainer }, saving && styles.btnDisabled]}
           onPress={handleSave}
           disabled={saving}
-          activeOpacity={0.8}
+          activeOpacity={0.85}
         >
           {saving ? (
-            <ActivityIndicator color="#FFFFFF" size="small" />
+            <ActivityIndicator color="#92F7C3" size="small" />
           ) : (
-            <>
-              <Text style={styles.saveBtnText}>ذخیره و ثبت گیاه در باغچه 🌱</Text>
-              <Ionicons name="checkmark-circle" size={20} color="#FFFFFF" style={{ marginLeft: 6 }} />
-            </>
+            <View style={styles.saveBtnInner}>
+              <Ionicons name="checkmark-circle" size={20} color="#92F7C3" style={{ marginLeft: 6 }} />
+              <Text style={styles.saveBtnText}>ذخیره در باغچه من 🌱</Text>
+            </View>
           )}
         </TouchableOpacity>
       </ScrollView>
@@ -465,40 +529,52 @@ export default function AddPlantScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: Colors.background,
+    width: '100%',
+    maxWidth: 480,
+    alignSelf: 'center',
   },
-  topBar: {
-    flexDirection: 'row-reverse',
-    justifyContent: 'space-between',
+  sheetTopBar: {
+    paddingHorizontal: 18,
+    paddingTop: 8,
+    paddingBottom: 10,
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.borderLight,
-    backgroundColor: Colors.surface,
   },
-  topBarTitle: {
-    fontSize: 16,
+  sheetHandle: {
+    width: 44,
+    height: 4,
+    borderRadius: 2,
+    marginBottom: 10,
+  },
+  sheetHeaderRow: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  sheetTitle: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 16.5,
     fontWeight: '800',
-    color: Colors.textPrimary,
   },
   closeBtn: {
-    padding: 6,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
   },
   contentContainer: {
-    padding: 16,
+    paddingHorizontal: 18,
     paddingBottom: 40,
     gap: 14,
   },
   aiBanner: {
-    backgroundColor: Colors.primarySubtle,
-    borderRadius: 20,
+    borderRadius: 22,
     padding: 16,
-    borderWidth: 1.5,
-    borderColor: Colors.primaryLight,
+    borderWidth: 1,
   },
   aiBannerHeader: {
     flexDirection: 'row-reverse',
@@ -507,40 +583,46 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   aiBannerTitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 14,
     fontWeight: '800',
-    color: Colors.primaryDark,
   },
   aiBadge: {
-    backgroundColor: Colors.primary,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
   },
   aiBadgeText: {
-    color: '#FFFFFF',
+    fontFamily: 'IRANSansWeb',
+    color: '#92F7C3',
     fontSize: 10,
     fontWeight: '800',
   },
   aiBannerDesc: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
-    color: Colors.textSecondary,
     lineHeight: 18,
     textAlign: 'right',
     marginBottom: 12,
   },
   aiActionBtn: {
-    flexDirection: 'row-reverse',
+    borderRadius: 14,
+    paddingVertical: 11,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primaryDark,
-    paddingVertical: 11,
-    borderRadius: 14,
+  },
+  aiActionBtnInner: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
   },
   aiActionBtnText: {
-    color: '#FFFFFF',
+    fontFamily: 'IRANSansWeb',
+    color: '#92F7C3',
     fontSize: 13,
     fontWeight: '800',
+    writingDirection: 'rtl',
   },
   btnDisabled: {
     opacity: 0.6,
@@ -555,18 +637,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.surface,
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderRadius: 16,
     borderWidth: 1.5,
-    borderColor: Colors.borderLight,
     borderStyle: 'dashed',
     gap: 8,
   },
   pickImageText: {
-    fontSize: 13,
+    fontFamily: 'IRANSansWeb',
+    fontSize: 12.5,
     fontWeight: '700',
-    color: Colors.textPrimary,
   },
   imagePreviewWrapper: {
     height: 180,
@@ -591,17 +671,18 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   changeImageText: {
+    fontFamily: 'IRANSansWeb',
     color: '#FFFFFF',
     fontSize: 11,
     fontWeight: '700',
   },
   presetsWrapper: {
-    marginVertical: 4,
+    marginVertical: 2,
   },
   presetsTitle: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
-    color: Colors.textMuted,
     textAlign: 'right',
     marginBottom: 8,
   },
@@ -612,43 +693,41 @@ const styles = StyleSheet.create({
   presetChip: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    backgroundColor: Colors.surface,
     paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
+    gap: 6,
+  },
+  presetEmoji: {
+    fontSize: 14,
   },
   presetChipText: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
-    color: Colors.textSecondary,
   },
   formCard: {
-    backgroundColor: Colors.surface,
     borderRadius: 22,
     padding: 16,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
     gap: 12,
   },
   inputGroup: {},
   inputLabel: {
+    fontFamily: 'IRANSansWeb',
     fontSize: 12,
     fontWeight: '700',
-    color: Colors.textPrimary,
     textAlign: 'right',
     marginBottom: 6,
   },
   input: {
-    backgroundColor: Colors.background,
+    fontFamily: 'IRANSansWeb',
     borderRadius: 14,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 13,
-    color: Colors.textPrimary,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
   },
   textArea: {
     minHeight: 70,
@@ -657,96 +736,109 @@ const styles = StyleSheet.create({
   roomChipsGrid: {
     flexDirection: 'row-reverse',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
     gap: 8,
-    marginTop: 6,
+    marginTop: 4,
   },
   formRoomChip: {
     width: '31.5%',
     flexDirection: 'row-reverse',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.surfaceSubtle,
-    paddingHorizontal: 4,
-    paddingVertical: 10,
+    paddingVertical: 9,
     borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: Colors.borderLight,
-  },
-  formRoomChipSelected: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
+    borderWidth: 1,
   },
   formRoomChipText: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 11.5,
-    fontWeight: '700',
-    color: Colors.textSecondary,
-    writingDirection: 'rtl',
-    textAlign: 'center',
-  },
-  formRoomChipTextSelected: {
-    color: '#FFFFFF',
-    fontWeight: '800',
-  },
-  intervalsRow: {
-    flexDirection: 'row-reverse',
-    gap: 10,
-  },
-  intervalBox: {
-    flex: 1,
-  },
-  intervalLabel: {
     fontSize: 11,
     fontWeight: '700',
-    color: Colors.textPrimary,
-    textAlign: 'right',
-    marginBottom: 6,
+    textAlign: 'center',
   },
-  stepperRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.background,
-    borderRadius: 12,
+  intervalsBlock: {
+    gap: 12,
+  },
+  intervalCard: {
+    borderRadius: 16,
+    padding: 12,
     borderWidth: 1,
-    borderColor: Colors.borderLight,
-    overflow: 'hidden',
   },
-  stepBtn: {
-    width: 38,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors.surfaceSubtle,
-  },
-  stepBtnText: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: Colors.primary,
-  },
-  intervalInput: {
-    flex: 1,
-    fontSize: 14,
-    fontWeight: '800',
-    color: Colors.textPrimary,
-  },
-  saveBtn: {
+  intervalHeader: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  intervalTitleRow: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+  },
+  intervalTitle: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  intervalTagPill: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  intervalTagText: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 10.5,
+    fontWeight: '700',
+  },
+  stepperContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 8,
+  },
+  stepperActionBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primary,
-    paddingVertical: 15,
+    borderWidth: 1,
+    shadowColor: 'rgba(0,0,0,0.06)',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 1,
+  },
+  stepperDisplay: {
+    alignItems: 'center',
+  },
+  stepperDayNumber: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 20,
+    fontWeight: '800',
+  },
+  stepperDayUnit: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 11,
+    marginTop: 1,
+  },
+  saveBtn: {
     borderRadius: 18,
-    marginTop: 6,
-    shadowColor: Colors.shadowHeavy,
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: 'rgba(0,0,0,0.15)',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 3,
+  },
+  saveBtnInner: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
   },
   saveBtnText: {
-    color: '#FFFFFF',
-    fontSize: 15,
+    fontFamily: 'IRANSansWeb',
+    color: '#92F7C3',
+    fontSize: 14.5,
     fontWeight: '800',
+    writingDirection: 'rtl',
   },
 });

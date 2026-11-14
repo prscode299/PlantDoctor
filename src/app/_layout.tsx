@@ -37,11 +37,11 @@ function AppContent() {
       }
 
       const bodyBg = isDark
-        ? 'linear-gradient(135deg, #0A120E 0%, #060A08 100%)'
-        : 'linear-gradient(135deg, #CBD9CE 0%, #B8CBBF 100%)';
-      const rootBg = isDark ? '#0F1713' : '#F4F7F4';
-      const rootBorder = isDark ? '#273B30' : '#1B4332';
-      const rootShadow = isDark ? '0 20px 60px rgba(0, 0, 0, 0.65)' : '0 20px 60px rgba(18, 48, 38, 0.3)';
+        ? 'linear-gradient(135deg, #050B07 0%, #0B130E 100%)'
+        : 'linear-gradient(135deg, #D4ECD7 0%, #C3DEC7 100%)';
+      const rootBg = isDark ? '#0B130E' : '#ECFEEE';
+      const rootBorder = isDark ? '#1E3327' : '#D5E7D8';
+      const rootShadow = isDark ? '0 24px 64px rgba(0, 0, 0, 0.75)' : '0 24px 64px rgba(0, 70, 37, 0.16)';
 
       style.textContent = `
         @font-face {

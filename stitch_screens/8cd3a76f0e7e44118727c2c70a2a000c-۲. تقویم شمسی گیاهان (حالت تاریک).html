@@ -1,0 +1,390 @@
+﻿<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="fa"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;family=Vazirmatn:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-dim": "#0b160f", "primary-container": "#52b788", "on-surface-variant": "#bdcac0", "on-error-container": "#ffdad6", "surface-variant": "#2c372f", "surface-bright": "#303c34", "outline-variant": "#3e4942", "secondary-fixed-dim": "#b2cdb9", "error": "#ffb4ab", "on-tertiary-container": "#4c3700", "outline": "#88948b", "surface-tint": "#75daa8", "primary": "#75daa8", "on-primary-fixed-variant": "#005235", "on-primary": "#003823", "on-background": "#d9e6da", "inverse-surface": "#d9e6da", "on-primary-fixed": "#002113", "tertiary": "#f9bd22", "secondary-container": "#344c3d", "on-tertiary-fixed-variant": "#5c4300", "surface": "#0b160f", "on-error": "#690005", "background": "#0b160f", "tertiary-container": "#d19c00", "error-container": "#93000a", "on-tertiary-fixed": "#261a00", "surface-container-low": "#131e17", "surface-container-lowest": "#06100a", "inverse-on-surface": "#28332b", "secondary-fixed": "#cee9d4", "on-primary-container": "#00442c", "inverse-primary": "#006c48", "on-secondary": "#1e3527", "primary-fixed-dim": "#75daa8", "tertiary-fixed": "#ffdf9f", "on-surface": "#d9e6da", "surface-container-high": "#212d25", "surface-container": "#17221b", "on-secondary-fixed-variant": "#344c3d", "tertiary-fixed-dim": "#f9bd22", "on-tertiary": "#402d00", "surface-container-highest": "#2c372f", "secondary": "#b2cdb9", "on-secondary-container": "#a1bca8", "on-secondary-fixed": "#092013", "primary-fixed": "#92f7c3" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "gutter-sm": "0.75rem", "space-lg": "1.5rem", "margin-lg": "3rem", "gutter": "1.25rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "margin-sm": "1rem", "space-xl": "2.5rem", "space-md": "1rem", "gutter-lg": "2rem", "margin": "1.5rem" }, fontFamily: { "label-md": ["Plus Jakarta Sans", "Vazirmatn"], "body-sm": ["Plus Jakarta Sans", "Vazirmatn"], "body-md": ["Plus Jakarta Sans", "Vazirmatn"], "headline-sm": ["Newsreader", "Vazirmatn"], "headline-md": ["Newsreader", "Vazirmatn"], "headline-lg": ["Newsreader", "Vazirmatn"], "headline-lg-mobile": ["Newsreader", "Vazirmatn"], "label-sm": ["Plus Jakarta Sans", "Vazirmatn"], "label-lg": ["Plus Jakarta Sans", "Vazirmatn"], "headline-xl": ["Newsreader", "Vazirmatn"], "body-lg": ["Plus Jakarta Sans", "Vazirmatn"], "headline-xl-mobile": ["Newsreader", "Vazirmatn"] }, fontSize: { "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }], "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "500" }], "headline-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "400" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "headline-xl-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#0b160f;color:#d9e6da;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md flex flex-col min-h-screen"><header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="h-16 px-gutter flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[24px]">potted_plant</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface">Jalali Calendar</span><span class="font-label-sm text-label-sm text-on-surface-variant">گاه‌شمار هورتی‌کالچرال ایران</span></div></div><div class="flex items-center gap-space-xs"><button aria-label="اعلان‌ها" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_0_12px_rgba(117,218,168,0.25)]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full px-gutter pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full gap-space-md">
+<!-- Month Navigation & Seasonal Metric Card -->
+<section class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm relative overflow-hidden">
+<!-- Ambient botanical backlight aura -->
+<div class="absolute -top-12 -left-12 w-32 h-32 rounded-full bg-primary/10 blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between z-10">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_rgba(117,218,168,0.6)] animate-pulse"></span>
+<h2 class="font-headline-md text-headline-md text-on-surface">آبان ۱۴۰۳</h2>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">نوامبر ۲۰۲۴ • پاییز دلپذیر خانگی</p>
+</div>
+<!-- Navigation Arrows -->
+<div class="flex items-center gap-space-xs">
+<button aria-label="ماه قبل" class="w-10 h-10 rounded-full bg-surface-container-high hover:bg-surface-bright active:scale-95 text-on-surface flex items-center justify-center transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</button>
+<button aria-label="ماه بعد" class="w-10 h-10 rounded-full bg-surface-container-high hover:bg-surface-bright active:scale-95 text-on-surface flex items-center justify-center transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</button>
+</div>
+</div>
+<!-- Monthly Summary Stat Badges -->
+<div class="flex items-center justify-between bg-surface-container-lowest/80 rounded-lg p-space-sm gap-space-xs text-center z-10">
+<div class="flex items-center gap-1.5 justify-center flex-1">
+<span class="w-2 h-2 rounded-full bg-[#38bdf8] shadow-[0_0_6px_rgba(56,189,248,0.7)]"></span>
+<span class="font-label-sm text-label-sm text-on-surface">۲۴ آبیاری</span>
+</div>
+<div class="w-px h-3.5 bg-outline-variant/40"></div>
+<div class="flex items-center gap-1.5 justify-center flex-1">
+<span class="w-2 h-2 rounded-full bg-[#fbbf24] shadow-[0_0_6px_rgba(251,191,36,0.7)]"></span>
+<span class="font-label-sm text-label-sm text-on-surface">۶ کوددهی</span>
+</div>
+<div class="w-px h-3.5 bg-outline-variant/40"></div>
+<div class="flex items-center gap-1.5 justify-center flex-1">
+<span class="w-2 h-2 rounded-full bg-[#34d399] shadow-[0_0_6px_rgba(52,211,153,0.7)]"></span>
+<span class="font-label-sm text-label-sm text-on-surface">۲ غبارپاشی</span>
+</div>
+</div>
+</section>
+<!-- Jalali Monthly Calendar Grid -->
+<section class="bg-surface-container rounded-xl p-space-md shadow-md flex flex-col gap-space-sm">
+<!-- Day Header -->
+<div class="grid grid-cols-7 text-center font-label-md text-label-md pb-space-xs text-on-surface-variant">
+<div>ش</div>
+<div>ی</div>
+<div>د</div>
+<div>س</div>
+<div>چ</div>
+<div>پ</div>
+<div class="text-[#f87171] font-semibold">ج</div>
+</div>
+<!-- Calendar Cells Grid -->
+<div class="grid grid-cols-7 gap-y-2.5 gap-x-1.5 text-center font-body-sm text-body-sm">
+<!-- Faded Out Previous Month Days (27, 28, 29 Mehr) -->
+<div class="flex flex-col items-center justify-start py-1 opacity-25">
+<span class="text-on-surface-variant font-label-md text-label-md">۲۷</span>
+</div>
+<div class="flex flex-col items-center justify-start py-1 opacity-25">
+<span class="text-on-surface-variant font-label-md text-label-md">۲۸</span>
+</div>
+<div class="flex flex-col items-center justify-start py-1 opacity-25">
+<span class="text-on-surface-variant font-label-md text-label-md">۲۹</span>
+</div>
+<!-- Aban Days -->
+<!-- 1: Water Blue -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#38bdf8]"></span>
+</div>
+</button>
+<!-- 2 -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 3 -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۳</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 4: Water Blue (Friday) -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-[#f87171] font-label-md text-label-md">۴</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#38bdf8]"></span>
+</div>
+</button>
+<!-- Week 2 -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۵</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۶</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 7: Amber Fertilizer -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۷</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#fbbf24]"></span>
+</div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۸</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۹</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 10: Mint Mist -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱۰</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#34d399]"></span>
+</div>
+</button>
+<!-- 11 (Friday) -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-[#f87171] font-label-md text-label-md">۱۱</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- Week 3 -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱۲</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱۳</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 14: Dual Blue & Amber -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱۴</span>
+<div class="flex gap-1 mt-1 h-1.5 justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-[#38bdf8]"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#fbbf24]"></span>
+</div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱۵</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 16: Blue -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱۶</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#38bdf8]"></span>
+</div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱۷</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 18 (Friday): Mint -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-[#f87171] font-label-md text-label-md">۱۸</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#34d399]"></span>
+</div>
+</button>
+<!-- Week 4 -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۱۹</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲۰</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 21: Amber -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲۱</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#fbbf24]"></span>
+</div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲۲</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲۳</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 24: ACTIVE / TODAY (Special Glowing Pill with 3 indicator dots) -->
+<button class="flex flex-col items-center justify-start py-1 bg-secondary-container rounded-lg shadow-[0_0_16px_rgba(82,183,136,0.35)] relative scale-105 transition-transform" type="button">
+<span class="text-primary-fixed font-label-md text-label-md font-bold">۲۴</span>
+<div class="flex gap-0.5 mt-1 h-1.5 justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-[#38bdf8] shadow-[0_0_4px_#38bdf8]"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#fbbf24] shadow-[0_0_4px_#fbbf24]"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#34d399] shadow-[0_0_4px_#34d399]"></span>
+</div>
+</button>
+<!-- 25 (Friday) -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-[#f87171] font-label-md text-label-md">۲۵</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- Week 5 -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲۶</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲۷</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 28: Amber -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲۸</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#fbbf24]"></span>
+</div>
+</button>
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۲۹</span>
+<div class="h-1.5 mt-1"></div>
+</button>
+<!-- 30: Mint -->
+<button class="flex flex-col items-center justify-start py-1 rounded-lg hover:bg-surface-container-high transition-colors" type="button">
+<span class="text-on-surface font-label-md text-label-md">۳۰</span>
+<div class="flex gap-0.5 mt-1 h-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[#34d399]"></span>
+</div>
+</button>
+<!-- Next month days faded (1, 2 Azar) -->
+<div class="flex flex-col items-center justify-start py-1 opacity-25">
+<span class="text-on-surface-variant font-label-md text-label-md">۱</span>
+</div>
+<div class="flex flex-col items-center justify-start py-1 opacity-25">
+<span class="text-[#f87171] font-label-md text-label-md">۲</span>
+</div>
+</div>
+</section>
+<!-- Legend Bar -->
+<div class="flex items-center justify-around bg-surface-container-low/90 rounded-full px-space-md py-2 shadow-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#38bdf8]">water_drop</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">آبیاری خاک</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#fbbf24]">eco</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">کوددهی مغذی</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#34d399]">nest_heat_link_gen_3</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">غبارپاشی برگ</span>
+</div>
+</div>
+<!-- Selected Day Agenda Header -->
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-xs">
+<div class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">event_available</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">برنامه مراقبت امروز</h3>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-highest text-primary font-label-sm text-label-sm">۳ وظیفه</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">پنجشنبه، ۲۴ آبان ۱۴۰۳</span>
+</div>
+</div>
+<!-- Snooze Button -->
+<button class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high hover:bg-surface-bright active:scale-95 text-on-surface-variant hover:text-on-surface transition-all text-label-sm font-label-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+<span>تعویق به فردا</span>
+</button>
+</div>
+<!-- Today's Botanical Task Cards -->
+<div class="flex flex-col gap-space-sm">
+<!-- Task 1: Watering (Monstera) -->
+<div class="bg-surface-container rounded-xl p-space-sm flex items-center justify-between gap-space-sm shadow-sm transition-all hover:bg-surface-container-high">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 relative bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Close up dark moody photograph of a lush green Monstera Deliciosa leaf with delicate water beads resting on its glossy surface in a cozy indoor botanical setting with deep forest green shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwH4_DK4j6Tsu2IscRcmPuuXcw0ELLp26zBFwGEIVlsXph_lJ_oiWWavc5GvY-4RahT2UuSPkZq54_6AksiqsIRtbU7wgHiNbpID_2OuDalP8PD1Hcs-mJrvnzOmZHa90BkgfraXZBaXLvQTYqBEzrNN9SXJbOUI6Tp-Hgzha5oXvBzRTy4WKP1t8bSY_kF_cujJ95J0C_D-kEVlMi8PUeRnhJEePBc9wVrIGVk6I"/>
+<span class="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#0284c7] flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-[10px]">water_drop</span>
+</span>
+</div>
+<div class="flex flex-col min-w-0">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">آبیاری عمیق برگ‌انجیری (سالن)</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">۵۰۰ میلی‌لیتر آب بدون املاح ولرم</p>
+<span class="font-label-sm text-label-sm text-[#38bdf8] flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+<span>نوبت معمول: هر ۸ روز</span>
+</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center gap-1 bg-[#0369a1]/25 hover:bg-[#0284c7] text-[#38bdf8] hover:text-white px-3.5 py-2 rounded-lg font-label-md text-label-md transition-all active:scale-95 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>انجام شد</span>
+</button>
+</div>
+<!-- Task 2: Fertilizer (Pothos) -->
+<div class="bg-surface-container rounded-xl p-space-sm flex items-center justify-between gap-space-sm shadow-sm transition-all hover:bg-surface-container-high">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 relative bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Artistic macro photography of cascading golden pothos leaves hanging from an artisan ceramic pot under gentle atmospheric ambient conservatory lighting with rich dark emerald background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyEiyGznPKDfCnjRR5QXEOcWRjwFgI-3IZEYSSCFcB8JWQK1pGFEuygB0-kDLeSQsE0dphKhiAGIBHvx14z_Hf6a0w5O-mxBbdY4r4pEbXFc4Hm5mylJMFobjcTalHEhgM-3LVpRyn_-nBg0dW9eAKFh6hTKRyDyON7patWb6dLLFBMELacJUA3QoaLrd5fZoRhXMrz_D9lWy9xPHHPfeIKNl3xdsGhUZgKe2bSGQ"/>
+<span class="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#d97706] flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-[10px]">eco</span>
+</span>
+</div>
+<div class="flex flex-col min-w-0">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">کوددهی هیومیک اسید پوتوس</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">۲ سی‌سی در یک لیتر آب آبیاری</p>
+<span class="font-label-sm text-label-sm text-[#fbbf24] flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[12px]">science</span>
+<span>تقویت ریشه و برگ‌دهی پاییزه</span>
+</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center gap-1 bg-[#b45309]/25 hover:bg-[#d97706] text-[#fbbf24] hover:text-white px-3.5 py-2 rounded-lg font-label-md text-label-md transition-all active:scale-95 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>انجام شد</span>
+</button>
+</div>
+<!-- Task 3: Misting (Ficus) -->
+<div class="bg-surface-container rounded-xl p-space-sm flex items-center justify-between gap-space-sm shadow-sm transition-all hover:bg-surface-container-high">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-14 h-14 rounded-lg overflow-hidden shrink-0 relative bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="High-end botanical photography of deep burgundy glossy leaves of a Ficus Elastica rubber tree with a fine atmospheric haze of morning mist in a serene dark room sanctuary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAciTfgogDMHr0InKj9wXW9OwqBqdewmO1BuSkw-lA5eOpb-kq5FX_tngCp6tRtA4e2O3fpAHgfx0GlDvTRbkQoUKWXNJKCa7-nT-RI9gCdRMY-sRoUqFNl1fxoxl-XJodJDwDXOYLU6ACtJ37IIzsmyduntaWRO9HpTQ34CiECivHi0HNsA5ET06jNpqBX2Dd7-2f21hYR8YrCTgNBqM5LLfJodCLfT3xLcH7zAZ0"/>
+<span class="absolute bottom-1 right-1 w-4 h-4 rounded-full bg-[#059669] flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-[10px]">nest_heat_link_gen_3</span>
+</span>
+</div>
+<div class="flex flex-col min-w-0">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">غبارپاشی صبحگاهی فیکوس الاستیکا</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate mt-0.5">اسپری ملایم آب جوشیده سرد شده روی برگ‌ها</p>
+<span class="font-label-sm text-label-sm text-[#34d399] flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[12px]">humidity_mid</span>
+<span>افزایش شادابی در هوای خشک پاییزی</span>
+</span>
+</div>
+</div>
+<button class="shrink-0 flex items-center gap-1 bg-[#047857]/25 hover:bg-[#059669] text-[#34d399] hover:text-white px-3.5 py-2 rounded-lg font-label-md text-label-md transition-all active:scale-95 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>انجام شد</span>
+</button>
+</div>
+</div>
+<!-- Daily Botanical Tip Card -->
+<section class="bg-gradient-to-r from-secondary-container/60 to-surface-container-high rounded-xl p-space-md shadow-md flex items-start gap-space-sm relative overflow-hidden">
+<div class="w-10 h-10 rounded-full bg-primary/20 shrink-0 flex items-center justify-center text-primary shadow-[0_0_12px_rgba(117,218,168,0.25)]">
+<span class="material-symbols-outlined text-[22px]">lightbulb</span>
+</div>
+<div class="flex flex-col">
+<h4 class="font-label-lg text-label-lg text-primary flex items-center gap-1">
+<span>نکته باغبانی گیاه‌یار</span>
+</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-relaxed">
+        پاییز زمان کاهش سوخت‌وساز طبیعی گیاهان آپارتمانی است. پیش از اقدام به آبیاری، حتماً با لمس خاک مطمئن شوید حداقل ۳ بند انگشت از خاک گلدان کاملاً خشک شده باشد تا از پوسیدگی ریشه پیشگیری شود.
+      </p>
+</div>
+</section>
+</div>
+<script>
+  // Micro-interaction for completed tasks
+  document.querySelectorAll('button').forEach(btn => {
+    if (btn.textContent.includes('انجام شد')) {
+      btn.addEventListener('click', function() {
+        const isDone = this.dataset.done === 'true';
+        if (!isDone) {
+          this.dataset.done = 'true';
+          this.classList.remove('bg-[#0369a1]/25', 'bg-[#b45309]/25', 'bg-[#047857]/25');
+          this.classList.add('bg-primary', 'text-on-primary');
+          this.innerHTML = '<span class="material-symbols-outlined text-[16px]">task_alt</span><span>تکمیل شد</span>';
+        } else {
+          this.dataset.done = 'false';
+          this.classList.remove('bg-primary', 'text-on-primary');
+          this.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+          this.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span><span>انجام شد</span>';
+        }
+      });
+    }
+  });
+</script></main><nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-4px_20px_rgba(0,0,0,0.45)]" data-active-classes="text-primary font-bold"><div class="relative flex justify-between items-center h-20 px-gutter-sm"><a class="flex flex-col items-center justify-center gap-space-xs w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors" data-path="baghcheh-man" href="#"><span class="material-symbols-outlined text-[24px]">yard</span><span class="font-label-sm text-label-sm">باغچه من</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-space-xs w-14 h-14 transition-colors text-primary font-bold" data-path="jalali-calendar" href="#"><span class="material-symbols-outlined text-[24px]">calendar_month</span><span class="font-label-sm text-label-sm">تقویم شمسی</span></a><div class="relative -top-5 flex flex-col items-center"><a aria-label="افزودن گیاه یا رویداد" class="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-[0_8px_24px_rgba(117,218,168,0.35)] active:scale-95 transition-transform hover:bg-primary-fixed" data-path="add-specimen" href="#"><span class="material-symbols-outlined text-[28px]">add</span></a></div><a class="flex flex-col items-center justify-center gap-space-xs w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors" data-path="doctor-giah" href="#"><span class="material-symbols-outlined text-[24px]">medical_services</span><span class="font-label-sm text-label-sm">دکتر گیاه</span></a><a class="flex flex-col items-center justify-center gap-space-xs w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors" data-path="shenasnameh-list" href="#"><span class="material-symbols-outlined text-[24px]">menu_book</span><span class="font-label-sm text-label-sm">شناسنامه</span></a><a class="flex flex-col items-center justify-center gap-space-xs w-14 h-14 text-on-surface-variant hover:text-on-surface transition-colors" data-path="settings" href="#"><span class="material-symbols-outlined text-[24px]">tune</span><span class="font-label-sm text-label-sm">تنظیمات</span></a></div></nav></body></html>

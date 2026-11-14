@@ -1,0 +1,467 @@
+﻿<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="fa"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { 
+  darkMode: "class", 
+  theme: { 
+    extend: { 
+      "colors": { 
+        "on-primary": "#003823", 
+        "inverse-on-surface": "#28332b", 
+        "surface-variant": "#2c372f", 
+        "on-secondary-fixed-variant": "#344c3d", 
+        "surface": "#0b130e", 
+        "secondary": "#75daa8", 
+        "secondary-fixed": "#92f7c3", 
+        "surface-bright": "#303c34", 
+        "on-tertiary-fixed-variant": "#5c4300", 
+        "error": "#ff6b6b", 
+        "background": "#0b130e", 
+        "on-surface-variant": "#9bb5a2", 
+        "inverse-primary": "#006c48", 
+        "surface-dim": "#0b130e", 
+        "surface-container": "#15231a", 
+        "primary-fixed": "#92f7c3", 
+        "on-primary-fixed": "#002113", 
+        "on-tertiary": "#402d00", 
+        "surface-container-lowest": "#080e0a", 
+        "on-background": "#f1f7f3", 
+        "on-tertiary-container": "#4c3700", 
+        "surface-container-high": "#1e3327", 
+        "primary": "#75daa8", 
+        "on-primary-fixed-variant": "#005235", 
+        "surface-container-low": "#111c15", 
+        "on-secondary-fixed": "#092013", 
+        "tertiary-fixed-dim": "#f9bd22", 
+        "tertiary-fixed": "#ffdf9f", 
+        "error-container": "#3d1114", 
+        "outline": "#88948b", 
+        "on-error-container": "#ffb4ab", 
+        "inverse-surface": "#d9e6da", 
+        "tertiary-container": "#342600", 
+        "on-secondary-container": "#cee9d4", 
+        "outline-variant": "#233f2e", 
+        "surface-tint": "#75daa8", 
+        "tertiary": "#f9bd22", 
+        "secondary-fixed-dim": "#b2cdb9", 
+        "on-surface": "#f1f7f3", 
+        "secondary-container": "#1a3525", 
+        "primary-container": "#005235", 
+        "on-error": "#690005", 
+        "on-secondary": "#1e3527", 
+        "primary-fixed-dim": "#75daa8", 
+        "surface-container-highest": "#284433", 
+        "on-tertiary-fixed": "#261a00", 
+        "on-primary-container": "#92f7c3" 
+      }, 
+      "borderRadius": { 
+        "DEFAULT": "0.25rem", 
+        "lg": "0.5rem", 
+        "xl": "0.75rem", 
+        "full": "9999px" 
+      }, 
+      "spacing": { 
+        "gutter-mobile": "0.75rem", 
+        "space-xl": "2rem", 
+        "margin-mobile": "1rem", 
+        "space-lg": "1.375rem", 
+        "space-md": "1rem", 
+        "margin": "1.5rem", 
+        "space-sm": "0.5rem", 
+        "gutter": "1rem", 
+        "space-xs": "0.25rem" 
+      }, 
+      "fontFamily": { 
+        "headline-sm": ["Plus Jakarta Sans"], 
+        "headline-lg-mobile": ["Plus Jakarta Sans"], 
+        "label-lg": ["Plus Jakarta Sans"], 
+        "headline-xl": ["Plus Jakarta Sans"], 
+        "body-sm": ["Plus Jakarta Sans"], 
+        "headline-xl-mobile": ["Plus Jakarta Sans"], 
+        "label-sm": ["Plus Jakarta Sans"], 
+        "body-md": ["Plus Jakarta Sans"], 
+        "headline-md": ["Plus Jakarta Sans"], 
+        "headline-lg": ["Plus Jakarta Sans"], 
+        "body-lg": ["Plus Jakarta Sans"], 
+        "label-md": ["Plus Jakarta Sans"] 
+      }, 
+      "fontSize": { 
+        "headline-sm": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], 
+        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }], 
+        "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], 
+        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], 
+        "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], 
+        "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], 
+        "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "600" }], 
+        "body-md": ["14px", { "lineHeight": "22px", "fontWeight": "400" }], 
+        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], 
+        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" }], 
+        "body-lg": ["16px", { "lineHeight": "26px", "fontWeight": "400" }], 
+        "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }] 
+      } 
+    } 
+  } 
+}</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+
+    /* Motion & Animation Keyframes */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+      }
+      50% {
+        transform: scale(1.03);
+        box-shadow: 0 0 14px 4px rgba(255, 107, 107, 0.25);
+      }
+    }
+
+    @keyframes dropletBounce {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      50% {
+        transform: translateY(-3px) scale(1.1);
+      }
+    }
+
+    @keyframes shimmerSweep {
+      0% {
+        transform: translateX(150%) skewX(-20deg);
+      }
+      100% {
+        transform: translateX(-150%) skewX(-20deg);
+      }
+    }
+
+    @keyframes fabBreath {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 8px 24px rgba(117, 218, 168, 0.45), 0 0 18px rgba(117, 218, 168, 0.35);
+      }
+      50% {
+        transform: translateY(-4px) scale(1.04);
+        box-shadow: 0 14px 30px rgba(117, 218, 168, 0.6), 0 0 28px rgba(117, 218, 168, 0.5);
+      }
+    }
+
+    /* Entrance Animation Utility Classes */
+    .animate-entrance {
+      opacity: 0;
+      animation: fadeInUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .anim-delay-100 { animation-delay: 100ms; }
+    .anim-delay-200 { animation-delay: 200ms; }
+    .anim-delay-300 { animation-delay: 300ms; }
+    .anim-delay-400 { animation-delay: 400ms; }
+    .anim-delay-500 { animation-delay: 500ms; }
+
+    /* Interactive Ambient Classes */
+    .urgent-badge-pulse {
+      animation: pulseGlow 2.4s ease-in-out infinite;
+    }
+    .water-droplet-pulse {
+      display: inline-block;
+      animation: dropletBounce 2s ease-in-out infinite;
+    }
+    .fab-floating {
+      animation: fabBreath 3.5s ease-in-out infinite;
+    }
+
+    .shimmer-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .shimmer-btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      animation: shimmerSweep 4s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    /* Plant Card Motion & Glow */
+    .plant-card-interactive {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      will-change: transform, box-shadow;
+    }
+    .plant-card-interactive:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 16px 32px -4px rgba(0, 0, 0, 0.6), 0 0 20px rgba(117, 218, 168, 0.22);
+      border-color: rgba(117, 218, 168, 0.45);
+    }
+    .plant-card-interactive:active {
+      transform: translateY(-2px) scale(0.98);
+      transition-duration: 0.15s;
+    }
+
+    /* Respect accessibility preferences */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .animate-entrance {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .shimmer-btn::after {
+        display: none !important;
+      }
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-[#0b130e] font-body-md text-[#f1f7f3] flex flex-col min-h-screen selection:bg-primary/20 selection:text-primary"><header class="fixed top-0 inset-x-0 z-50 bg-[#0b130e]/85 backdrop-blur-xl border-b border-[#233f2e]/60 shadow-[0_4px_20px_rgba(0,0,0,0.5)] pt-safe transition-all duration-300"><div class="h-16 px-margin-mobile flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="p-1 rounded-xl bg-[#15231a] border border-[#233f2e] shadow-sm hover:border-[#75daa8]/40 transition-colors"><img alt="GiahYar Botanical Logo" class="h-7 w-auto object-contain brightness-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9V3G0mPiLGOCyXRuXL_Nu0Q8CBXMN7p6ltPj9ZY9VQfch6qcO_FOWHVWb3ntANEykwMUig69GIK-iWY_2XsTLKEGhspTxKBVPTrRd74_8_eOQtRHjrQB7eINO_4qNED9UVoms8epcFMP7gPqeQ0P1XupzWL0CUbINQ-rtJtvgvG6mECgKwseEpD2YOVUPk7ZZhSbxMDjJf-nOEXLYIq-6iOPvWuVXj5eQsrlfz30"/></div><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-[#75daa8] font-bold tracking-tight">گیاه‌یار</span><span class="text-sm">🌿</span></div><span class="font-label-sm text-label-sm text-[#9bb5a2]">Dashboard</span></div></div><div class="flex items-center gap-space-sm"><button aria-label="اعلان‌ها" class="relative w-11 h-11 flex items-center justify-center rounded-full text-[#9bb5a2] hover:text-[#f1f7f3] bg-[#15231a] border border-[#233f2e] hover:bg-[#1e3327] transition-all active:scale-90"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#75daa8] shadow-[0_0_8px_#75daa8] ring-2 ring-[#15231a] animate-ping opacity-75"></span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#75daa8] shadow-[0_0_8px_#75daa8] ring-2 ring-[#15231a]"></span></button><div class="flex items-center justify-center p-0.5 rounded-full ring-1 ring-[#75daa8]/40 shadow-sm transition-transform hover:scale-105 active:scale-95"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-[#233f2e]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8i2TLTNqnfxgZB1G18X5YRpvj9qMFUicjw0bkEbiSrNchAsuzsDwDnJ5Pw7CDr7XYy-P6p9o_mMCfJJ_jciDQ_0MX1GqJMt-t_52N_i2B76c5MbcBsNV-EmEx3_LI-dj5ov4ykVStf8YR9Ff2aCs-9_qjcXVVycjUJBkkGZ2sRqexKYlUC3Akz_NBpAcKvxg8bGrnwvJ4aLfaECS9kETMshS-g-IPZKW5svbdgVU"/></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-28 px-margin-mobile bg-[#0b130e]"><div class="flex flex-col w-full gap-space-lg select-none">
+<!-- Top Greeting & Atmospheric Microclimate -->
+<section class="flex flex-col gap-space-sm animate-entrance">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<h2 class="font-headline-md text-headline-md text-on-surface">سلام سارا جان</h2>
+<span class="text-xl animate-bounce">🌱</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">امروز، پنج‌شنبه ۲۴ آبان ۱۴۰۳</p>
+</div>
+<!-- Ambient Sensor Pill -->
+<div class="flex items-center gap-space-sm bg-surface-container-high py-1.5 px-3 rounded-full shadow-sm">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<span class="font-label-md text-label-md text-on-surface">۲۲°</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[18px]">humidity_percentage</span>
+<span class="font-label-md text-label-md text-on-surface">۵۵٪</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Hero: 100% Harmony & Peace State -->
+<section class="relative overflow-hidden rounded-xl bg-surface-container p-space-md shadow-xl animate-entrance anim-delay-100">
+<div class="absolute -top-12 -left-12 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-10 -right-10 w-36 h-36 bg-primary-fixed/5 rounded-full blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-space-md">
+<!-- Progress Bar & Completion Badge -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+            تمام ۵ وظیفه امروز انجام شد
+          </span>
+<span class="font-label-md text-label-md text-primary bg-primary-container/20 px-2 py-0.5 rounded-full">۱۰۰٪ تکمیل</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full rounded-full bg-gradient-to-r from-primary to-primary-fixed w-full shadow-[0_0_12px_rgba(117,218,168,0.5)]"></div>
+</div>
+</div>
+<!-- Hero Message -->
+<div class="flex flex-col gap-1">
+<h1 class="font-headline-sm text-headline-sm text-on-surface">
+          باغچه شما کاملاً سیراب و آرام است
+          <span class="inline-block text-primary">🌿✨</span>
+</h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          امروز دیگر هیچ گیاهی تشنه یا نیازمند توجه فوری نیست. اکنون بهترین زمان برای استراحت و تنفس عمیق در کنار سرسبزی خانه شماست.
+        </p>
+</div>
+<!-- Quick Stats Strip -->
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-xs bg-surface-container-low px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="font-label-sm text-label-sm text-on-surface">۸ گیاه شاداب و سرزنده</span>
+</div>
+<div class="flex items-center gap-space-xs bg-surface-container-low px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-secondary text-[18px]">task_alt</span>
+<span class="font-label-sm text-label-sm text-on-surface">۰ وظیفه باقی‌مانده</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Illustration & Next Scheduled Care -->
+<section class="flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-container-low shadow-md text-center animate-entrance anim-delay-200">
+<!-- Visual Centerpiece -->
+<div class="relative w-44 h-44 my-space-xs flex items-center justify-center">
+<div class="absolute inset-0 rounded-full bg-gradient-to-tr from-primary/10 via-surface-container-high/30 to-transparent animate-pulse"></div>
+<img class="w-36 h-36 rounded-full object-cover shadow-2xl relative z-10" data-alt="Close up cinematic shot of glistening dew drops on a deep green monstera and fiddle leaf fig leaves in a moody warm botanical night greenhouse with soft ambient emerald light and peaceful serenity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxjS70uYM7VHoXorYmZN2fk50VpTrRinGAZoeL-Cm1I9ETWxH92sqY-3-Nu_jcqPB_j-WavHidkou52DyFFgYxCpIGkY7BObq05FFu0rd6ifO2ONv9tuDVF0GunmKIftH8X_N3nrWe-BVftbEATB53iRJI9ldcynuobXvXkxy34HOK9lre1dbLPPCyRI_8BcLeORkmwZj3Qdshpr2JoK2XrOfrQAF_TroAJbjy_9Q"/>
+<div class="absolute bottom-1 right-2 z-20 w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary shadow-lg">
+<span class="material-symbols-outlined text-[22px]">shower</span>
+</div>
+</div>
+<!-- Friendly Next Alert -->
+<div class="flex flex-col items-center gap-1 mt-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">برنامه مراقبت پیش‌رو</span>
+<p class="font-body-md text-body-md text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-primary">event_upcoming</span>
+        فردا ساعت ۰۹:۰۰ صبح (آبیاری سانسوریا)
+      </p>
+</div>
+<!-- Thumb-Zone Quick Action Buttons -->
+<div class="grid grid-cols-2 gap-space-sm w-full mt-space-md">
+<button class="flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl bg-surface-container-high text-on-surface hover:bg-surface-bright active:scale-95 transition-all text-center">
+<span class="material-symbols-outlined text-[20px] text-primary">calendar_month</span>
+<span class="font-label-md text-label-md">تقویم آینده</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 py-3 px-2 rounded-xl bg-primary text-on-primary font-semibold shadow-md active:scale-95 hover:bg-primary-fixed transition-all text-center">
+<span class="material-symbols-outlined text-[20px]">add_a_photo</span>
+<span class="font-label-md text-label-md">ثبت عکس امروز</span>
+</button>
+</div>
+</section>
+<!-- Plant Collection Grid Header & Filters -->
+<section class="flex flex-col gap-space-sm animate-entrance anim-delay-300">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">وضعیت گلدان‌های شاداب</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">۸ گلدان فعال</span>
+</div>
+<!-- Horizontal Category Filter Scroll -->
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1 scrollbar-none">
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold shadow-sm">
+        همه گیاهان (۸)
+      </button>
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md">
+        اتاق پذیرایی (۴)
+      </button>
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md">
+        بالکن سبز (۲)
+      </button>
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md">
+        اتاق کار (۲)
+      </button>
+</div>
+</section>
+<!-- My Healthy Plants List Cards -->
+<section class="flex flex-col gap-space-sm animate-entrance anim-delay-400">
+<!-- Card 1: Monstera Deliciosa -->
+<div class="flex items-center justify-between p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<img class="w-14 h-14 rounded-lg object-cover shrink-0" data-alt="Monstera Deliciosa swiss cheese plant leaf shining with healthy water droplets in a luxury dark interior room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3qzxO6XA8v-1nTXvOYGbS0HdzIe2eG_GmDdyKi9YKO8we7OY_LSU0TD3iDjlVJy-UgG7tohD2EjPRRV7J-oxvhPWsfb7Dqht0sKXnQRCDM4UPc4DIGsnb4d-3sFmQ_FOM9natoG4VJ7LfxjGexnCaaCYOXDW4jIr4rpdS70jbMuJQ749CVv1yWENU9OtKeLYW_Hn7Gr_JnlNEYXBWBDCiYz2ORk1HAtERTc90RUs"/>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">مونسترا دلیکیوسا</h4>
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full">سیراب و شاداب</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">رطوبت خاک: ۹۲٪</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline mt-0.5">آبیاری بعدی: ۳ روز دیگر</span>
+</div>
+</div>
+<button aria-label="بررسی جزئیات مونسترا" class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">manage_search</span>
+</button>
+</div>
+<!-- Card 2: Ficus Lyrata -->
+<div class="flex items-center justify-between p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<img class="w-14 h-14 rounded-lg object-cover shrink-0" data-alt="Fiddle leaf fig ficus lyrata tall majestic indoor plant with glossy dark foliage in a matte black ceramic pot ambient dark lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTORTqPoYvx_VhsLwx80jnF_I7dNy2mCQqAOrT6PaIVprFmXzEPlzGyoSWNdxK5aPcs8xwHXwWHISP3xj6ZKiYSjT0wM-E8qB6alvbS_51RXsRAXfZtU-KhhWRpbZlkQW7v3J8obSrgtjnAkAp1uwOKsyt53GNNz4y6Rz3iKPBV_hBqbWhhwvVVeKUasPIGnnl46MY3r4WFR9k2WRomS5_lPHr5_1aZHdkOsv4N70"/>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">فیکوس لیراتا</h4>
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full">پرطراوت و شاداب</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">رطوبت خاک: ۸۸٪</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline mt-0.5">آبیاری بعدی: ۵ روز دیگر</span>
+</div>
+</div>
+<button aria-label="بررسی جزئیات فیکوس" class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">manage_search</span>
+</button>
+</div>
+<!-- Card 3: Golden Pothos -->
+<div class="flex items-center justify-between p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<img class="w-14 h-14 rounded-lg object-cover shrink-0" data-alt="Golden pothos epipremnum aureum trailing plant with heart shaped vibrant variegated leaves in a dark moody atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrOF9XXw-Ea8bIgMjQSVs0t8H2J1B217pmM2DOEEQoYe8hSFpure1i_2CPtkW83oQqj-ktzB1P2B5kqxivo3Wmc9w4TUM-paRirPiXzBxlCYbVWhHt9SuvPLtFX5NP-IZMN6mphukSoPbkogSndeH8K2WQkxeE3CPK9EA6NnkuYc8UBsHieK7A3hCiPC9UJqUXvqPQIVHOX8u1kh8ubnnPz1RTmtz0ImI1fg5wF7s"/>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">پوتوس طلایی</h4>
+<span class="material-symbols-outlined text-[16px] text-tertiary" style="font-variation-settings: 'FILL' 1;">compost</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary/10 px-2 py-0.5 rounded-full">کوددهی تکمیل شد</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">رطوبت خاک: ۸۰٪</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline mt-0.5">کوددهی بعدی: ۲ هفته دیگر</span>
+</div>
+</div>
+<button aria-label="بررسی جزئیات پوتوس" class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">manage_search</span>
+</button>
+</div>
+<!-- Card 4: Sansevieria Trifasciata -->
+<div class="flex items-center justify-between p-space-sm rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<img class="w-14 h-14 rounded-lg object-cover shrink-0" data-alt="Variegated snake plant Sansevieria trifasciata Laurentii tall upright leaves with yellow margins in dark minimalist room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiWLXpm2RSse5dtjXT4OET74fhbqQn9KpL3h-x6NUvz1hkJ0RvfVQJy69cgO3EYNLREYB_IzLXMITEutGLuZz-4KPxdQA1OjkkggCiZ6lxqvxj3lKzTWDmTmRImLgsSbgl50rXe3iFTmw5mvP7IhDbIYpmJR_KSqZMWbG8knfAEUjlL4pXjpQHnX-16GipI1de6M0_BugL0T0HnBjKWxNiIFTffEQ1zf6SAO9miwA"/>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<h4 class="font-label-lg text-label-lg text-on-surface truncate">سانسوریا ابلق</h4>
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-label-sm text-label-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full">نور کافی و شاداب</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">رطوبت خاک: ۶۵٪</span>
+</div>
+<span class="font-body-sm text-body-sm text-outline mt-0.5">آبیاری بعدی: فردا صبح</span>
+</div>
+</div>
+<button aria-label="بررسی جزئیات سانسوریا" class="p-2 rounded-lg bg-surface-container-low text-on-surface-variant hover:text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[20px]">manage_search</span>
+</button>
+</div>
+</section>
+<!-- Gardener's Daily Thought & Reflection -->
+<section class="relative overflow-hidden rounded-xl bg-surface-container-high p-space-md shadow-lg animate-entrance anim-delay-500 mb-space-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary/15 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">tips_and_updates</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-md text-label-md text-primary font-semibold">نکته هوشمند امروز گیاه‌یار</span>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+          روزهایی که وظایف آبیاری به اتمام می‌رسد، فرصتی عالی برای غبارروبی آرام است. پاک کردن لایه غبار از سطح برگ‌های پهن با پارچه نخی نم‌دار، تنفس سلولی و راندمان فتوسنتز را تا ۳۰ درصد افزایش می‌دهد.
+        </p>
+</div>
+</div>
+</section>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('section div.overflow-x-auto button');
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => {
+          btn.className = 'shrink-0 px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-md text-label-md';
+        });
+        button.className = 'shrink-0 px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold shadow-sm';
+      });
+    });
+  });
+</script></main><div class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50"><button aria-label="افزودن گیاه یا آبیاری" class="fab-floating w-14 h-14 rounded-full bg-gradient-to-tr from-[#005235] via-[#006c48] to-[#75daa8] text-[#002113] border border-[#92f7c3]/40 flex items-center justify-center transition-all duration-200 active:scale-90 hover:scale-105"><span class="material-symbols-outlined text-[28px] font-bold">add</span></button></div><nav class="fixed bottom-0 inset-x-0 z-40 pb-safe bg-[#0b130e]/90 backdrop-blur-xl border-t border-[#233f2e]/80 shadow-[0_-8px_24px_rgba(0,0,0,0.6)]" data-active-classes="text-[#75daa8] font-bold"><div class="flex justify-around items-center h-16 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] text-[#9bb5a2] transition-all duration-200 hover:text-[#75daa8] active:scale-95" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[22px]">potted_plant</span><span class="font-label-sm text-label-sm mt-space-xs">باغچه من</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] text-[#9bb5a2] transition-all duration-200 hover:text-[#75daa8] active:scale-95" data-path="jalali-calendar" href="#"><span class="material-symbols-outlined text-[22px]">calendar_today</span><span class="font-label-sm text-label-sm mt-space-xs">تقویم شمسی</span></a><div aria-hidden="true" class="w-12 h-full"></div><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] text-[#9bb5a2] transition-all duration-200 hover:text-[#75daa8] active:scale-95" data-path="ai-doctor" href="#"><span class="material-symbols-outlined text-[22px]">document_scanner</span><span class="font-label-sm text-label-sm mt-space-xs">دکتر گیاه</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] text-[#9bb5a2] transition-all duration-200 hover:text-[#75daa8] active:scale-95" data-path="plant-records" href="#"><span class="material-symbols-outlined text-[22px]">auto_stories</span><span class="font-label-sm text-label-sm mt-space-xs">شناسنامه</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] text-[#9bb5a2] transition-all duration-200 hover:text-[#75daa8] active:scale-95" data-path="settings" href="#"><span class="material-symbols-outlined text-[22px]">tune</span><span class="font-label-sm text-label-sm mt-space-xs">تنظیمات</span></a></div></nav></body></html>

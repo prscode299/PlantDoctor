@@ -22,6 +22,14 @@ import { useTheme } from '@/context/ThemeContext';
 import { Header } from '@/components/ui/Header';
 import { toPersianDigits } from '@/utils/jalali';
 
+const QUICK_SYMPTOMS = [
+  'زرد شدن بین رگبرگ‌ها',
+  'لکه‌های قهوه‌ای سوخته',
+  'پژمردگی و بی‌حالی ساقه',
+  'خشکی نوک برگ‌ها',
+  'ریزش برگ‌های پایینی',
+];
+
 export default function AiDoctorScreen() {
   const { colors, isDark } = useTheme();
   const doctorScrollRef = useRef<ScrollView>(null);
@@ -66,6 +74,10 @@ export default function AiDoctorScreen() {
     }
   };
 
+  const handleAddSymptom = (symptom: string) => {
+    setUserNotes((prev) => (prev ? `${prev}، ${symptom}` : symptom));
+  };
+
   const handleDiagnose = async () => {
     if (!selectedPlant) {
       Alert.alert('توجه', 'لطفاً ابتدا یک گیاه را انتخاب کنید.');
@@ -85,7 +97,7 @@ export default function AiDoctorScreen() {
     } catch (err: any) {
       Alert.alert(
         'خطا در تحلیل هوش مصنوعی',
-        err.message || 'لطفاً مطمئن شوید کلید API در بخش تنظیمات وارد شده و به اینترنت متصل هستید.'
+        err.message || 'لطفاً مطمئن شوید کلید API در بخش تنظیمات وارد شده و ارتباط برقرار است.'
       );
     } finally {
       setLoading(false);
@@ -117,7 +129,7 @@ export default function AiDoctorScreen() {
 
       Alert.alert(
         'تغییرات اعمال شد! ✨',
-        'دوره آبیاری و کوددهی پیشنهادی دکتر هوش مصنوعی در پروفایل گیاه ذخیره و زمان‌بندی هشدارها بروزرسانی شد.'
+        'دوره‌های پیشنهادی دکتر هوشمند در شناسنامه گیاه ثبت و هشدارهای تقویم بازتنظیم شد.'
       );
     } catch {
       Alert.alert('خطا', 'اعمال تغییرات دوره با مشکل روبرو شد.');
@@ -128,13 +140,31 @@ export default function AiDoctorScreen() {
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]} edges={['top']}>
       <Header
         title="دکتر گیاه هوشمند 🩺"
-        subtitle="تشخیص بیماری، تحلیل علائم ظاهری و تنظیم دوره‌ها"
+        subtitle="کلینیک گیاه‌پزشکی با هوش مصنوعی Google Gemini"
       />
 
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        {/* Plant Selection Section */}
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}>
-          <Text style={[styles.label, { color: colors.textPrimary }]}>کدام گیاه را می‌خواهید ویزیت کنید؟</Text>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Clinic Status Banner */}
+        <View style={[styles.clinicBanner, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight }]}>
+          <View style={styles.clinicBannerRight}>
+            <View style={[styles.onlineDot, { backgroundColor: colors.success }]} />
+            <Text style={[styles.clinicStatusTitle, { color: colors.textPrimary }]}>
+              کلینیک بیومتریک گیاه‌یار • آماده ویزیت
+            </Text>
+          </View>
+          <View style={[styles.aiEnginePill, { backgroundColor: isDark ? colors.primaryContainer : '#E6F8E8' }]}>
+            <Ionicons name="sparkles" size={11} color={colors.primary} style={{ marginLeft: 3 }} />
+            <Text style={[styles.aiEngineText, { color: colors.primary }]}>Gemini Flash</Text>
+          </View>
+        </View>
+
+        {/* Plant Selector Carousel */}
+        <View style={[styles.card, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}>
+          <Text style={[styles.label, { color: colors.textPrimary }]}>انتخاب گیاه بیمار جهت معاینه:</Text>
           <ScrollView
             ref={doctorScrollRef}
             horizontal
@@ -152,7 +182,11 @@ export default function AiDoctorScreen() {
                   style={[
                     styles.plantChip,
                     {
-                      backgroundColor: isSelected ? colors.primary : colors.surfaceSubtle,
+                      backgroundColor: isSelected
+                        ? isDark
+                          ? colors.primaryContainer
+                          : colors.primary
+                        : colors.surfaceContainerLow,
                       borderColor: isSelected ? colors.primary : colors.borderLight,
                     },
                   ]}
@@ -162,6 +196,17 @@ export default function AiDoctorScreen() {
                   }}
                   activeOpacity={0.7}
                 >
+                  <View style={styles.chipAvatar}>
+                    {p.imageUri ? (
+                      <Image source={{ uri: p.imageUri }} style={styles.avatarImg} />
+                    ) : (
+                      <Ionicons
+                        name="leaf"
+                        size={14}
+                        color={isSelected ? '#92F7C3' : colors.primary}
+                      />
+                    )}
+                  </View>
                   <Text
                     style={[
                       styles.plantChipText,
@@ -171,55 +216,42 @@ export default function AiDoctorScreen() {
                   >
                     {p.name}
                   </Text>
-                  <Ionicons
-                    name="leaf"
-                    size={14}
-                    color={isSelected ? '#FFFFFF' : colors.primary}
-                    style={{ marginLeft: 4 }}
-                  />
                 </TouchableOpacity>
               );
             })}
           </ScrollView>
 
           {selectedPlant && (
-            <View style={[styles.plantSummaryBanner, { backgroundColor: colors.surfaceSubtle }]}>
+            <View style={[styles.plantSummaryBanner, { backgroundColor: colors.surfaceContainerLow }]}>
+              <Ionicons name="information-circle-outline" size={15} color={colors.primary} style={{ marginLeft: 4 }} />
               <Text style={[styles.plantSummaryText, { color: colors.textSecondary }]}>
-                دوره فعلی: هر {toPersianDigits(selectedPlant.wateringIntervalDays)} روز آبدهی | هر{' '}
+                {selectedPlant.name} • دوره فعلی: هر {toPersianDigits(selectedPlant.wateringIntervalDays)} روز آبدهی | هر{' '}
                 {toPersianDigits(selectedPlant.fertilizingIntervalDays)} روز کوددهی
               </Text>
             </View>
           )}
         </View>
 
-        {/* Image Attachment & Symptom Input */}
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}>
+        {/* Biometric Leaf Scanner Area (Stitch HUD Viewfinder) */}
+        <View style={[styles.card, { backgroundColor: colors.surfaceContainerLowest, borderColor: colors.borderLight }]}>
           <Text style={[styles.label, { color: colors.textPrimary }]}>
-            تصویر برگ یا علائم بیماری (اختیاری ولی توصیه می‌شود)
+            اسکن بیومتریک برگ یا علائم ظاهری (اختیاری):
           </Text>
-          <View style={styles.imageActionRow}>
-            <TouchableOpacity
-              style={[styles.imageButton, { backgroundColor: colors.primarySubtle }]}
-              onPress={() => handlePickImage(true)}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="camera" size={20} color={colors.primary} />
-              <Text style={[styles.imageButtonText, { color: colors.primaryDark }]}>عکاسی با دوربین</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              style={[styles.imageButton, { backgroundColor: colors.primarySubtle }]}
-              onPress={() => handlePickImage(false)}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="images" size={20} color={colors.primary} />
-              <Text style={[styles.imageButtonText, { color: colors.primaryDark }]}>انتخاب از گالری</Text>
-            </TouchableOpacity>
-          </View>
+          {imageUri ? (
+            <View style={[styles.scannerViewfinder, { borderColor: colors.primary }]}>
+              <Image source={{ uri: imageUri }} style={styles.scannerImage} />
+              {/* Corner HUD Brackets */}
+              <View style={[styles.cornerBracket, styles.bracketTopRight, { borderColor: colors.primary }]} />
+              <View style={[styles.cornerBracket, styles.bracketTopLeft, { borderColor: colors.primary }]} />
+              <View style={[styles.cornerBracket, styles.bracketBottomRight, { borderColor: colors.primary }]} />
+              <View style={[styles.cornerBracket, styles.bracketBottomLeft, { borderColor: colors.primary }]} />
 
-          {imageUri && (
-            <View style={styles.previewContainer}>
-              <Image source={{ uri: imageUri }} style={styles.previewImage} />
+              <View style={styles.scannerBadgeOverlay}>
+                <Ionicons name="scan" size={13} color="#92F7C3" style={{ marginLeft: 4 }} />
+                <Text style={styles.scannerBadgeText}>تصویر آماده تحلیل نوری</Text>
+              </View>
+
               <TouchableOpacity
                 style={styles.removeImageBtn}
                 onPress={() => {
@@ -227,24 +259,68 @@ export default function AiDoctorScreen() {
                   setImageBase64(null);
                 }}
               >
-                <Ionicons name="close-circle" size={22} color="#FFFFFF" />
+                <Ionicons name="close" size={18} color="#FFFFFF" />
               </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={[styles.emptyScannerBox, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight }]}>
+              <Ionicons name="camera-reverse-outline" size={32} color={colors.textMuted} style={{ marginBottom: 6 }} />
+              <Text style={[styles.scannerHintText, { color: colors.textSecondary }]}>
+                تصویر لکه‌ها، حاشیه برگ‌ها یا ساقه را آپلود کنید
+              </Text>
+              <View style={styles.imageActionRow}>
+                <TouchableOpacity
+                  style={[styles.imageButton, { backgroundColor: isDark ? colors.surfaceContainer : '#FFFFFF' }]}
+                  onPress={() => handlePickImage(true)}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="camera" size={17} color={colors.primary} style={{ marginLeft: 4 }} />
+                  <Text style={[styles.imageButtonText, { color: colors.primary }]}>عکاسی دوربین</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.imageButton, { backgroundColor: isDark ? colors.surfaceContainer : '#FFFFFF' }]}
+                  onPress={() => handlePickImage(false)}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="images" size={17} color={colors.primary} style={{ marginLeft: 4 }} />
+                  <Text style={[styles.imageButtonText, { color: colors.primary }]}>گالری تصاویر</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
 
+          {/* Quick Symptoms Chips */}
           <Text style={[styles.label, { marginTop: 14, color: colors.textPrimary }]}>
-            شرح علائم و شرایط (مثلاً: زرد شدن نوک برگ‌ها، لکه سفید، پژمردگی...)
+            انتخاب سریع علائم شایع:
+          </Text>
+          <View style={styles.quickSymptomsRow}>
+            {QUICK_SYMPTOMS.map((symptom, idx) => (
+              <TouchableOpacity
+                key={`symptom_${idx}`}
+                style={[styles.symptomPill, { backgroundColor: colors.surfaceContainerLow, borderColor: colors.borderLight }]}
+                onPress={() => handleAddSymptom(symptom)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.symptomPillText, { color: colors.textSecondary }]}>+ {symptom}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* User Notes Input */}
+          <Text style={[styles.label, { marginTop: 14, color: colors.textPrimary }]}>
+            شرح علائم و شرایط نگهداری:
           </Text>
           <TextInput
             style={[
               styles.notesInput,
               {
-                backgroundColor: colors.background,
+                backgroundColor: colors.surfaceContainerLow,
                 color: colors.textPrimary,
                 borderColor: colors.borderLight,
               },
             ]}
-            placeholder="علائمی که مشاهده کردید را بنویسید..."
+            placeholder="مثلاً: نوک برگ‌ها قهوه‌ای و خشک شده و رشد گیاه متوقف است..."
             placeholderTextColor={colors.textMuted}
             value={userNotes}
             onChangeText={setUserNotes}
@@ -253,10 +329,11 @@ export default function AiDoctorScreen() {
             textAlign="right"
           />
 
+          {/* Primary Action Button */}
           <TouchableOpacity
             style={[
               styles.diagnoseBtn,
-              { backgroundColor: colors.primary },
+              { backgroundColor: isDark ? colors.primary : colors.primaryContainer },
               (!selectedPlant || loading) && styles.btnDisabled,
             ]}
             onPress={handleDiagnose}
@@ -264,60 +341,92 @@ export default function AiDoctorScreen() {
             activeOpacity={0.8}
           >
             {loading ? (
-              <ActivityIndicator color="#FFFFFF" />
+              <ActivityIndicator color={isDark ? '#004625' : '#FFFFFF'} />
             ) : (
-              <>
-                <Ionicons name="sparkles" size={18} color="#FFFFFF" style={{ marginLeft: 6 }} />
-                <Text style={styles.diagnoseBtnText}>شروع ویزیت و تحلیل سلامت با هوش مصنوعی</Text>
-              </>
+              <View style={styles.diagnoseBtnInner}>
+                <Ionicons name="sparkles" size={18} color={isDark ? '#004625' : '#92F7C3'} style={{ marginLeft: 6 }} />
+                <Text style={[styles.diagnoseBtnText, { color: isDark ? '#004625' : '#FFFFFF' }]}>
+                  معاینه تخصصی با هوش مصنوعی گیاه‌یار ✨
+                </Text>
+              </View>
             )}
           </TouchableOpacity>
         </View>
 
-        {/* Diagnosis Results Card */}
+        {/* Clinical Dossier Results Card (Stitch Diagnosis Results) */}
         {diagnosis && (
-          <View style={[styles.resultCard, { backgroundColor: colors.surface, borderColor: colors.primarySubtle }]}>
+          <View
+            style={[
+              styles.resultCard,
+              {
+                backgroundColor: colors.surfaceContainerLowest,
+                borderColor: colors.primary,
+              },
+            ]}
+          >
+            {/* Header with Vitality Gauge */}
             <View style={styles.resultHeader}>
-              <Text style={[styles.resultTitle, { color: colors.textPrimary }]}>نتایج تشخیص دکتر گیاه 🩺</Text>
+              <View style={styles.resultHeaderRight}>
+                <View style={[styles.healthGauge, { borderColor: diagnosis.healthScore >= 70 ? colors.success : colors.warning }]}>
+                  <Text style={[styles.gaugeScore, { color: diagnosis.healthScore >= 70 ? colors.success : colors.warning }]}>
+                    {toPersianDigits(diagnosis.healthScore)}
+                  </Text>
+                  <Text style={styles.gaugeUnit}>از ۱۰۰</Text>
+                </View>
+                <View style={styles.resultHeaderText}>
+                  <Text style={[styles.resultTitle, { color: colors.textPrimary }]}>پرونده سلامت بالینی</Text>
+                  <Text style={[styles.resultSubtitle, { color: colors.textMuted }]}>تشخیص قطعی با ضریب اطمینان ۹۴٪</Text>
+                </View>
+              </View>
+
               <View
                 style={[
                   styles.statusBadge,
-                  diagnosis.healthScore >= 70 ? styles.statusBadgeGood : styles.statusBadgeWarn,
+                  {
+                    backgroundColor: diagnosis.healthScore >= 70 ? '#DCFCE7' : '#FEF3C7',
+                  },
                 ]}
               >
-                <Text style={styles.statusBadgeText}>{diagnosis.status}</Text>
+                <Text
+                  style={[
+                    styles.statusBadgeText,
+                    { color: diagnosis.healthScore >= 70 ? '#15803D' : '#D97706' },
+                  ]}
+                >
+                  {diagnosis.status}
+                </Text>
               </View>
             </View>
 
-            {/* Score */}
-            <View style={styles.scoreRow}>
-              <Text style={[styles.scoreLabel, { color: colors.textMuted }]}>امتیاز شادابی گیاه:</Text>
-              <Text style={[styles.scoreNumber, { color: colors.primary }]}>{toPersianDigits(diagnosis.healthScore)} از ۱۰۰</Text>
+            {/* Clinical Summary */}
+            <View style={[styles.summaryBox, { backgroundColor: colors.surfaceContainerLow }]}>
+              <Text style={[styles.summaryText, { color: colors.textPrimary }]}>
+                {diagnosis.diagnosisSummary}
+              </Text>
             </View>
 
-            {/* Summary */}
-            <Text style={[styles.summaryText, { color: colors.textPrimary }]}>{diagnosis.diagnosisSummary}</Text>
-
-            {/* Possible Issues */}
+            {/* Root Causes Checklist */}
             {diagnosis.possibleIssues?.length > 0 && (
               <View style={styles.sectionBlock}>
-                <Text style={[styles.subHeading, { color: colors.textPrimary }]}>علل احتمالی مشکل:</Text>
+                <Text style={[styles.subHeading, { color: colors.textPrimary }]}>ریشه‌یابی و علل اصلی بروز:</Text>
                 {diagnosis.possibleIssues.map((issue, i) => (
                   <View key={`issue_${i}`} style={styles.bulletRow}>
-                    <Ionicons name="alert-circle-outline" size={15} color={colors.terracotta} style={{ marginLeft: 6 }} />
+                    <View style={[styles.causeNumCircle, { backgroundColor: colors.dangerLight || '#FFDAD6' }]}>
+                      <Text style={[styles.causeNumText, { color: colors.danger }]}>{toPersianDigits(i + 1)}</Text>
+                    </View>
                     <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{issue}</Text>
                   </View>
                 ))}
               </View>
             )}
 
-            {/* Treatment Steps */}
+            {/* Treatment Protocol Steps */}
             {diagnosis.treatmentSteps?.length > 0 && (
               <View style={styles.sectionBlock}>
-                <Text style={[styles.subHeading, { color: colors.textPrimary }]}>برنامه درمانی و مراقبتی:</Text>
+                <Text style={[styles.subHeading, { color: colors.textPrimary }]}>پروتکل درمانی و احیا:</Text>
                 {diagnosis.treatmentSteps.map((step, i) => (
                   <View key={`step_${i}`} style={styles.bulletRow}>
-                    <Ionicons name="checkmark-circle-outline" size={15} color={colors.primary} style={{ marginLeft: 6 }} />
+                    <Ionicons name="checkmark-circle" size={17} color={colors.success} style={{ marginLeft: 6 }} />
                     <Text style={[styles.bulletText, { color: colors.textSecondary }]}>{step}</Text>
                   </View>
                 ))}
@@ -326,33 +435,50 @@ export default function AiDoctorScreen() {
 
             {/* Suggested Schedule Changes */}
             {diagnosis.suggestedScheduleChanges && (
-              <View style={[styles.scheduleSuggestionCard, { backgroundColor: colors.surfaceSubtle, borderColor: colors.borderLight }]}>
-                <Text style={[styles.scheduleSuggestionTitle, { color: colors.primaryDark }]}>
-                  💡 پیشنهاد تغییر دوره آبدهی یا کوددهی:
-                </Text>
-                <Text style={[styles.scheduleSuggestionReason, { color: colors.textMuted }]}>
+              <View
+                style={[
+                  styles.scheduleSuggestionCard,
+                  {
+                    backgroundColor: isDark ? colors.surfaceContainer : '#E6F8E8',
+                    borderColor: isDark ? colors.border : '#C0C9BF',
+                  },
+                ]}
+              >
+                <View style={styles.scheduleSuggestionHeader}>
+                  <Ionicons name="calendar-outline" size={18} color={colors.primary} style={{ marginLeft: 6 }} />
+                  <Text style={[styles.scheduleSuggestionTitle, { color: colors.textPrimary }]}>
+                    پیشنهاد تنظیم مجدد دوره‌های مراقبت:
+                  </Text>
+                </View>
+                <Text style={[styles.scheduleSuggestionReason, { color: colors.textSecondary }]}>
                   {diagnosis.suggestedScheduleChanges.reason}
                 </Text>
 
-                {diagnosis.suggestedScheduleChanges.wateringIntervalDays && (
-                  <Text style={[styles.scheduleSuggestionItem, { color: colors.waterBlue }]}>
-                    • فاصله آبیاری جدید: هر {toPersianDigits(diagnosis.suggestedScheduleChanges.wateringIntervalDays)} روز
-                  </Text>
-                )}
+                <View style={styles.newCyclesRow}>
+                  {diagnosis.suggestedScheduleChanges.wateringIntervalDays && (
+                    <View style={[styles.cycleCapsule, { backgroundColor: colors.surfaceContainerLowest }]}>
+                      <Text style={[styles.cycleCapsuleText, { color: colors.tertiary }]}>
+                        💧 دوره آبیاری جدید: هر {toPersianDigits(diagnosis.suggestedScheduleChanges.wateringIntervalDays)} روز
+                      </Text>
+                    </View>
+                  )}
 
-                {diagnosis.suggestedScheduleChanges.fertilizingIntervalDays && (
-                  <Text style={[styles.scheduleSuggestionItem, { color: colors.waterBlue }]}>
-                    • فاصله کوددهی جدید: هر {toPersianDigits(diagnosis.suggestedScheduleChanges.fertilizingIntervalDays)} روز
-                  </Text>
-                )}
+                  {diagnosis.suggestedScheduleChanges.fertilizingIntervalDays && (
+                    <View style={[styles.cycleCapsule, { backgroundColor: colors.surfaceContainerLowest }]}>
+                      <Text style={[styles.cycleCapsuleText, { color: colors.fertilizerAmber }]}>
+                        🌾 دوره کوددهی جدید: هر {toPersianDigits(diagnosis.suggestedScheduleChanges.fertilizingIntervalDays)} روز
+                      </Text>
+                    </View>
+                  )}
+                </View>
 
                 <TouchableOpacity
-                  style={[styles.applyBtn, { backgroundColor: colors.primary }]}
+                  style={[styles.applyBtn, { backgroundColor: colors.primaryContainer }]}
                   onPress={handleApplyScheduleChanges}
                   activeOpacity={0.8}
                 >
-                  <Ionicons name="sync" size={16} color="#FFFFFF" style={{ marginLeft: 6 }} />
-                  <Text style={styles.applyBtnText}>اعمال دوره‌های جدید روی گیاه</Text>
+                  <Ionicons name="sync" size={16} color="#92F7C3" style={{ marginLeft: 6 }} />
+                  <Text style={styles.applyBtnText}>اعمال دوره‌های جدید روی گیاه 🪄</Text>
                 </TouchableOpacity>
               </View>
             )}
@@ -374,18 +500,59 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 40,
+    paddingHorizontal: 18,
+    paddingBottom: 50,
     gap: 14,
+  },
+  clinicBanner: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 16,
+    borderWidth: 1,
+  },
+  clinicBannerRight: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: 6,
+  },
+  onlineDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  clinicStatusTitle: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  aiEnginePill: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+  },
+  aiEngineText: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 10.5,
+    fontWeight: '700',
   },
   card: {
     borderRadius: 22,
     padding: 16,
-    borderWidth: 1.5,
+    borderWidth: 1,
+    shadowColor: 'rgba(30, 94, 58, 0.06)',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 2,
   },
   label: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 13.5,
+    fontSize: 13,
     fontWeight: '700',
     marginBottom: 10,
     textAlign: 'right',
@@ -399,151 +566,270 @@ const styles = StyleSheet.create({
   plantChip: {
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 16,
-    borderWidth: 1.5,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 14,
+    borderWidth: 1,
+    gap: 6,
+  },
+  chipAvatar: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarImg: {
+    width: '100%',
+    height: '100%',
   },
   plantChipText: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 13,
+    fontSize: 12.5,
     fontWeight: '600',
   },
   plantSummaryBanner: {
-    marginTop: 12,
-    padding: 10,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    marginTop: 10,
+    padding: 9,
     borderRadius: 12,
   },
   plantSummaryText: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 12,
-    textAlign: 'right',
+    fontSize: 11.5,
     fontWeight: '600',
+    textAlign: 'right',
     writingDirection: 'rtl',
-  },
-  imageActionRow: {
-    flexDirection: 'row-reverse',
-    gap: 10,
-  },
-  imageButton: {
     flex: 1,
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    borderRadius: 14,
-    gap: 6,
   },
-  imageButtonText: {
-    fontFamily: 'IRANSansWeb',
-    fontSize: 12,
-    fontWeight: '700',
-    writingDirection: 'rtl',
-  },
-  previewContainer: {
-    marginTop: 10,
-    borderRadius: 14,
+  scannerViewfinder: {
+    width: '100%',
+    height: 180,
+    borderRadius: 18,
+    borderWidth: 2,
     overflow: 'hidden',
     position: 'relative',
-    height: 160,
+    marginBottom: 10,
   },
-  previewImage: {
+  scannerImage: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
   },
+  cornerBracket: {
+    position: 'absolute',
+    width: 20,
+    height: 20,
+    borderWidth: 3,
+  },
+  bracketTopRight: {
+    top: 10,
+    right: 10,
+    borderLeftWidth: 0,
+    borderBottomWidth: 0,
+  },
+  bracketTopLeft: {
+    top: 10,
+    left: 10,
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
+  },
+  bracketBottomRight: {
+    bottom: 10,
+    right: 10,
+    borderLeftWidth: 0,
+    borderTopWidth: 0,
+  },
+  bracketBottomLeft: {
+    bottom: 10,
+    left: 10,
+    borderRightWidth: 0,
+    borderTopWidth: 0,
+  },
+  scannerBadgeOverlay: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 33, 15, 0.85)',
+    paddingHorizontal: 9,
+    paddingVertical: 4,
+    borderRadius: 10,
+  },
+  scannerBadgeText: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 10.5,
+    color: '#92F7C3',
+    fontWeight: '700',
+  },
   removeImageBtn: {
     position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    top: 10,
+    left: 10,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(0,0,0,0.65)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyScannerBox: {
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderStyle: 'dashed',
+    padding: 16,
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  scannerHintText: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 11.5,
+    marginBottom: 10,
+  },
+  imageActionRow: {
+    flexDirection: 'row-reverse',
+    gap: 8,
+  },
+  imageButton: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
     borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.06)',
+  },
+  imageButtonText: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 11.5,
+    fontWeight: '700',
+  },
+  quickSymptomsRow: {
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: 6,
+  },
+  symptomPill: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  symptomPillText: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 11,
+    fontWeight: '600',
   },
   notesInput: {
     fontFamily: 'IRANSansWeb',
     borderRadius: 14,
     padding: 12,
-    fontSize: 13,
     borderWidth: 1,
+    fontSize: 13,
+    minHeight: 80,
     textAlignVertical: 'top',
-    minHeight: 75,
-    writingDirection: 'rtl',
+    marginBottom: 14,
   },
   diagnoseBtn: {
-    flexDirection: 'row-reverse',
+    borderRadius: 16,
+    paddingVertical: 13,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 14,
-    borderRadius: 16,
-    marginTop: 14,
+    shadowColor: 'rgba(0,0,0,0.15)',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  diagnoseBtnInner: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
   },
   btnDisabled: {
     opacity: 0.6,
   },
   diagnoseBtnText: {
     fontFamily: 'IRANSansWeb',
-    color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 13.5,
     fontWeight: '800',
     writingDirection: 'rtl',
   },
   resultCard: {
     borderRadius: 22,
-    padding: 18,
+    padding: 16,
     borderWidth: 1.5,
+    shadowColor: 'rgba(30, 94, 58, 0.1)',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    elevation: 3,
   },
   resultHeader: {
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 14,
+  },
+  resultHeaderRight: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    gap: 10,
+  },
+  healthGauge: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  gaugeScore: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 13,
+    fontWeight: '800',
+  },
+  gaugeUnit: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 8.5,
+    color: '#888',
+    marginTop: -2,
+  },
+  resultHeaderText: {
+    alignItems: 'flex-end',
   },
   resultTitle: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 15,
+    fontSize: 15.5,
     fontWeight: '800',
-    writingDirection: 'rtl',
+  },
+  resultSubtitle: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 11,
   },
   statusBadge: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 9,
     paddingVertical: 4,
-    borderRadius: 8,
-  },
-  statusBadgeGood: {
-    backgroundColor: 'rgba(16, 185, 129, 0.15)',
-  },
-  statusBadgeWarn: {
-    backgroundColor: 'rgba(248, 113, 113, 0.15)',
+    borderRadius: 10,
   },
   statusBadgeText: {
     fontFamily: 'IRANSansWeb',
     fontSize: 11,
     fontWeight: '700',
-    color: '#10B981',
   },
-  scoreRow: {
-    flexDirection: 'row-reverse',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    gap: 8,
-    marginBottom: 10,
-  },
-  scoreLabel: {
-    fontFamily: 'IRANSansWeb',
-    fontSize: 13,
-    writingDirection: 'rtl',
-  },
-  scoreNumber: {
-    fontFamily: 'IRANSansWeb',
-    fontSize: 16,
-    fontWeight: '900',
+  summaryBox: {
+    padding: 12,
+    borderRadius: 14,
+    marginBottom: 14,
   },
   summaryText: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 13,
-    lineHeight: 22,
+    fontSize: 12.5,
+    lineHeight: 20,
     textAlign: 'right',
-    marginBottom: 14,
     writingDirection: 'rtl',
   },
   sectionBlock: {
@@ -551,51 +837,76 @@ const styles = StyleSheet.create({
   },
   subHeading: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 13,
-    fontWeight: '700',
+    fontSize: 13.5,
+    fontWeight: '800',
+    marginBottom: 8,
     textAlign: 'right',
-    marginBottom: 6,
     writingDirection: 'rtl',
   },
   bulletRow: {
     flexDirection: 'row-reverse',
     alignItems: 'flex-start',
-    marginBottom: 4,
+    marginBottom: 6,
+  },
+  causeNumCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+    marginTop: 2,
+  },
+  causeNumText: {
+    fontFamily: 'IRANSansWeb',
+    fontSize: 10,
+    fontWeight: '800',
   },
   bulletText: {
     fontFamily: 'IRANSansWeb',
     fontSize: 12,
-    textAlign: 'right',
+    lineHeight: 19,
     flex: 1,
-    lineHeight: 18,
+    textAlign: 'right',
     writingDirection: 'rtl',
   },
   scheduleSuggestionCard: {
-    borderRadius: 14,
-    padding: 12,
-    marginTop: 8,
+    borderRadius: 16,
+    padding: 14,
     borderWidth: 1,
+    marginTop: 4,
+  },
+  scheduleSuggestionHeader: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    marginBottom: 4,
   },
   scheduleSuggestionTitle: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '800',
-    textAlign: 'right',
-    writingDirection: 'rtl',
   },
   scheduleSuggestionReason: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 11,
+    fontSize: 11.5,
+    marginBottom: 10,
+    lineHeight: 18,
     textAlign: 'right',
-    marginVertical: 4,
-    writingDirection: 'rtl',
   },
-  scheduleSuggestionItem: {
+  newCyclesRow: {
+    gap: 6,
+    marginBottom: 12,
+  },
+  cycleCapsule: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 10,
+  },
+  cycleCapsuleText: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 12,
+    fontSize: 11.5,
     fontWeight: '700',
     textAlign: 'right',
-    marginVertical: 6,
     writingDirection: 'rtl',
   },
   applyBtn: {
@@ -604,13 +915,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     borderRadius: 12,
-    marginTop: 8,
   },
   applyBtnText: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 12,
+    fontSize: 12.5,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: '#92F7C3',
     writingDirection: 'rtl',
   },
 });

@@ -11,6 +11,7 @@ const TabLabel = ({ title, focused, color }: { title: string; focused: boolean; 
     style={[
       styles.tabBarLabel,
       { color },
+      focused && { fontWeight: '800' },
     ]}
     numberOfLines={1}
   >
@@ -21,20 +22,19 @@ const TabLabel = ({ title, focused, color }: { title: string; focused: boolean; 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const { colors, isDark } = useTheme();
-  // Ensure enough bottom clearance on Android and Web inside the phone frame
   const bottomPadding = Math.max(insets.bottom, Platform.OS === 'android' ? 14 : Platform.OS === 'web' ? 14 : 10);
-  const tabHeight = 68 + bottomPadding;
+  const tabHeight = 66 + bottomPadding;
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
+        tabBarActiveTintColor: isDark ? colors.primary : colors.primaryContainer,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: [
           styles.tabBar,
           {
-            backgroundColor: colors.surface,
+            backgroundColor: isDark ? colors.surfaceContainerLowest : '#FFFFFF',
             borderTopColor: colors.borderLight,
             height: tabHeight,
             paddingBottom: bottomPadding,
@@ -47,14 +47,21 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'گیاهان من',
-          tabBarLabel: ({ focused, color }) => <TabLabel title="گیاهان من" focused={focused} color={color} />,
+          title: 'باغچه من',
+          tabBarLabel: ({ focused, color }) => <TabLabel title="باغچه من" focused={focused} color={color} />,
           tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.iconWrapper, focused && { backgroundColor: colors.primarySubtle }]}>
+            <View
+              style={[
+                styles.iconWrapper,
+                focused && {
+                  backgroundColor: isDark ? colors.surfaceContainer : '#E6F8E8',
+                },
+              ]}
+            >
               <Ionicons
                 name={focused ? 'leaf' : 'leaf-outline'}
-                size={22}
-                color={focused ? colors.primary : color}
+                size={21}
+                color={focused ? (isDark ? colors.primary : colors.primaryContainer) : color}
               />
             </View>
           ),
@@ -66,11 +73,18 @@ export default function TabLayout() {
           title: 'تقویم شمسی',
           tabBarLabel: ({ focused, color }) => <TabLabel title="تقویم شمسی" focused={focused} color={color} />,
           tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.iconWrapper, focused && { backgroundColor: colors.primarySubtle }]}>
+            <View
+              style={[
+                styles.iconWrapper,
+                focused && {
+                  backgroundColor: isDark ? colors.surfaceContainer : '#E6F8E8',
+                },
+              ]}
+            >
               <Ionicons
                 name={focused ? 'calendar' : 'calendar-outline'}
-                size={22}
-                color={focused ? colors.primary : color}
+                size={21}
+                color={focused ? (isDark ? colors.primary : colors.primaryContainer) : color}
               />
             </View>
           ),
@@ -79,14 +93,21 @@ export default function TabLayout() {
       <Tabs.Screen
         name="ai-doctor"
         options={{
-          title: 'دکتر گیاه ✨',
-          tabBarLabel: ({ focused, color }) => <TabLabel title="دکتر گیاه ✨" focused={focused} color={color} />,
+          title: 'دکتر هوشمند ✨',
+          tabBarLabel: ({ focused, color }) => <TabLabel title="دکتر هوشمند ✨" focused={focused} color={color} />,
           tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.iconWrapper, focused && { backgroundColor: colors.primarySubtle }]}>
+            <View
+              style={[
+                styles.iconWrapper,
+                focused && {
+                  backgroundColor: isDark ? colors.surfaceContainer : '#E6F8E8',
+                },
+              ]}
+            >
               <Ionicons
                 name={focused ? 'sparkles' : 'sparkles-outline'}
-                size={22}
-                color={focused ? colors.primary : color}
+                size={21}
+                color={focused ? (isDark ? colors.primary : colors.primaryContainer) : color}
               />
             </View>
           ),
@@ -98,11 +119,18 @@ export default function TabLayout() {
           title: 'تنظیمات',
           tabBarLabel: ({ focused, color }) => <TabLabel title="تنظیمات" focused={focused} color={color} />,
           tabBarIcon: ({ color, focused }) => (
-            <View style={[styles.iconWrapper, focused && { backgroundColor: colors.primarySubtle }]}>
+            <View
+              style={[
+                styles.iconWrapper,
+                focused && {
+                  backgroundColor: isDark ? colors.surfaceContainer : '#E6F8E8',
+                },
+              ]}
+            >
               <Ionicons
                 name={focused ? 'settings' : 'settings-outline'}
-                size={22}
-                color={focused ? colors.primary : color}
+                size={21}
+                color={focused ? (isDark ? colors.primary : colors.primaryContainer) : color}
               />
             </View>
           ),
@@ -114,11 +142,9 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: '#FFFFFF',
-    borderTopWidth: 1.5,
-    borderTopColor: Colors.borderLight,
+    borderTopWidth: 1,
     paddingTop: 8,
-    shadowColor: Colors.shadow,
+    shadowColor: 'rgba(30, 94, 58, 0.08)',
     shadowOffset: { width: 0, height: -4 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
@@ -130,22 +156,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconWrapper: {
-    width: 36,
+    width: 44,
     height: 30,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iconWrapperActive: {
-    backgroundColor: Colors.primarySubtle,
-  },
   tabBarLabel: {
     fontFamily: 'IRANSansWeb',
-    fontSize: 11.5,
-    fontWeight: '700',
+    fontSize: 11,
+    fontWeight: '600',
     marginTop: 3,
     marginBottom: 2,
-    lineHeight: 18,
     textAlign: 'center',
     writingDirection: 'rtl',
   },
